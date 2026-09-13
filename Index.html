@@ -1,0 +1,1135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ara Chocolates — Absolute Richness Chocolate</title>
+<meta name="description" content="Ara Chocolates — Swiss-inspired handcrafted chocolate from Dhaka. Absolute Richness Chocolate.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600;700;900&family=Archivo+Expanded:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cocoa-dark:#241209;
+    --cocoa:#4A2C1A;
+    --cream:#EDE4D0;
+    --cream-2:#F6F1E6;
+    --gold:#B8873A;
+    --swiss-red:#C8102E;
+    --white:#FFFFFF;
+    --line: rgba(36,18,9,0.16);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    font-family:'Archivo', sans-serif;
+    background:var(--cream-2);
+    color:var(--cocoa-dark);
+    font-weight:400;
+    -webkit-font-smoothing:antialiased;
+  }
+  img{max-width:100%;display:block;}
+  a{color:inherit;text-decoration:none;}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 24px;}
+
+  /* ---------- HEADER ---------- */
+  header{
+    position:sticky;top:0;z-index:50;
+    background:var(--cream-2);
+    border-bottom:1px solid var(--line);
+  }
+  .nav{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:18px 24px;
+    max-width:1120px;margin:0 auto;
+  }
+  .brand{
+    font-family:'Archivo Expanded', sans-serif;
+    font-weight:700;
+    font-size:1.3rem;
+    letter-spacing:0.01em;
+    display:flex;align-items:center;gap:10px;
+  }
+  .brand .logo-img{
+    width:34px;height:34px;object-fit:contain;flex:none;
+  }
+  nav.links{display:flex;gap:28px;font-size:0.95rem;}
+  nav.links a{text-decoration:none;border-bottom:1px solid transparent;padding-bottom:2px;transition:border-color .2s;}
+  nav.links a:hover{border-color:var(--cocoa-dark);}
+  .nav-toggle{display:none;background:none;border:none;font-size:1.6rem;cursor:pointer;color:var(--cocoa-dark);}
+
+  @media(max-width:720px){
+    nav.links{
+      position:fixed;top:64px;left:0;right:0;
+      background:var(--cream-2);
+      flex-direction:column;gap:0;
+      border-bottom:1px solid var(--line);
+      max-height:0;overflow:hidden;
+      transition:max-height .3s ease;
+    }
+    nav.links.open{max-height:400px;}
+    nav.links a{padding:16px 24px;border-bottom:1px solid var(--line);}
+    .nav-toggle{display:block;}
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    border-bottom:1px solid var(--line);
+    padding:64px 0 0;
+  }
+  .hero-grid{
+    display:grid;grid-template-columns:1.5fr 1fr;gap:40px;
+    align-items:end;
+    padding-bottom:48px;
+  }
+  .hero-tag{
+    font-size:0.85rem;color:var(--gold);
+    letter-spacing:0.02em;margin-bottom:18px;
+    font-weight:600;
+  }
+  .hero h1{
+    font-family:'Archivo Expanded', sans-serif;
+    font-weight:700;
+    font-size:clamp(2.4rem, 6vw, 4.6rem);
+    line-height:0.98;
+    letter-spacing:-0.01em;
+  }
+  .hero h1 em{
+    font-style:normal;color:var(--swiss-red);
+  }
+  .hero-side{
+    border-left:1px solid var(--line);
+    padding-left:28px;
+    display:flex;flex-direction:column;gap:18px;
+  }
+  .hero-side p{font-size:1rem;line-height:1.6;color:var(--cocoa);}
+  .hero-cta{
+    display:inline-flex;align-items:center;gap:10px;
+    background:var(--cocoa-dark);color:var(--white);
+    padding:14px 22px;font-weight:600;font-size:0.95rem;
+    width:fit-content;
+    transition:background .2s;
+    border:none;cursor:pointer;
+  }
+  .hero-cta:hover{background:var(--swiss-red);}
+
+  .hero-strip{
+    display:grid;grid-template-columns:repeat(4,1fr);
+    border-top:1px solid var(--line);
+  }
+  .hero-strip div{
+    padding:18px 24px;border-right:1px solid var(--line);
+  }
+  .hero-strip div:last-child{border-right:none;}
+  .hero-strip .num{font-family:'Archivo Expanded',sans-serif;font-weight:700;font-size:1.4rem;color:var(--cocoa-dark);}
+  .hero-strip .lbl{font-size:0.8rem;color:var(--cocoa);margin-top:4px;}
+
+  @media(max-width:720px){
+    .hero-grid{grid-template-columns:1fr;gap:28px;}
+    .hero-side{border-left:none;padding-left:0;border-top:1px solid var(--line);padding-top:20px;}
+    .hero-strip{grid-template-columns:repeat(2,1fr);}
+    .hero-strip div:nth-child(2){border-right:none;}
+    .hero-strip div:nth-child(3),.hero-strip div:nth-child(4){border-top:1px solid var(--line);}
+  }
+
+  /* ---------- SECTION HEADINGS ---------- */
+  .section{padding:72px 0;border-bottom:1px solid var(--line);}
+  .section-head{
+    display:grid;grid-template-columns:1fr 2fr;gap:24px;
+    margin-bottom:44px;
+  }
+  .section-head .label{
+    font-weight:600;color:var(--gold);font-size:0.9rem;
+  }
+  .section-head h2{
+    font-family:'Archivo Expanded',sans-serif;
+    font-weight:700;font-size:clamp(1.8rem,4vw,2.6rem);
+    line-height:1.08;
+  }
+  @media(max-width:720px){
+    .section-head{grid-template-columns:1fr;gap:10px;}
+  }
+
+  /* ---------- ABOUT ---------- */
+  .about-body{
+    display:grid;grid-template-columns:1fr 1fr;gap:48px;
+  }
+  .about-body p{font-size:1.05rem;line-height:1.75;color:var(--cocoa);margin-bottom:18px;}
+  .about-visual{
+    aspect-ratio:4/5;
+    background:
+      linear-gradient(135deg, var(--cocoa-dark) 0%, var(--cocoa) 55%, var(--gold) 100%);
+    position:relative;overflow:hidden;
+  }
+  .about-visual::after{
+    content:"";position:absolute;inset:0;
+    background-image:repeating-linear-gradient(45deg, rgba(255,255,255,0.04) 0 2px, transparent 2px 18px);
+  }
+  .about-visual .cross{
+    position:absolute;bottom:28px;right:28px;width:34px;height:34px;
+  }
+  .about-visual .cross::before,.about-visual .cross::after{
+    content:"";position:absolute;background:var(--cream-2);
+  }
+  .about-visual .cross::before{left:50%;top:0;width:6px;height:100%;transform:translateX(-50%);}
+  .about-visual .cross::after{top:50%;left:0;height:6px;width:100%;transform:translateY(-50%);}
+
+  @media(max-width:720px){
+    .about-body{grid-template-columns:1fr;}
+    .about-visual{order:-1;aspect-ratio:16/9;}
+  }
+
+  /* ---------- PRODUCTS ---------- */
+  .products{display:flex;flex-direction:column;gap:40px;}
+  .product{
+    background:var(--cream-2);
+    padding:40px 32px;
+    display:flex;flex-direction:column;gap:16px;
+    cursor:pointer;
+    border-radius:10px;
+    border:1px solid var(--line);
+    box-shadow:0 6px 18px rgba(36,18,9,0.38);
+    transition:box-shadow .25s, transform .25s;
+  }
+  .product:hover{box-shadow:0 10px 24px rgba(36,18,9,0.46);transform:translateY(-2px);}
+  .view-details{
+    align-self:flex-start;
+    background:none;border:none;padding:0;
+    font-family:'Archivo',sans-serif;
+    font-weight:600;font-size:0.88rem;
+    color:var(--gold);cursor:pointer;
+    transition:color .2s;
+  }
+  .view-details:hover{color:var(--swiss-red);}
+  .product .ph{
+    aspect-ratio:1/1;
+    background:var(--cocoa-dark);
+    position:relative;
+    overflow:hidden;
+    border-radius:8px;
+  }
+  .product .ph img{
+    width:100%;height:100%;object-fit:cover;display:block;
+  }
+  .product h3{
+    font-family:'Archivo Expanded',sans-serif;font-weight:700;
+    font-size:1.5rem;margin-top:8px;
+  }
+  .product .desc{color:var(--cocoa);font-size:0.98rem;line-height:1.6;}
+  .product .row{
+    display:flex;align-items:center;justify-content:space-between;
+    border-top:1px solid var(--line);padding-top:16px;margin-top:auto;
+  }
+  .product .price{font-family:'Archivo Expanded',sans-serif;font-weight:700;font-size:1.3rem;}
+  .product .order{
+    font-weight:600;font-size:0.85rem;
+    background:none;border:none;padding:0;
+    color:var(--swiss-red);border-bottom:1px solid var(--swiss-red);
+    padding-bottom:2px;cursor:pointer;
+    font-family:'Archivo',sans-serif;
+  }
+  .product .order:hover{color:var(--cocoa-dark);border-color:var(--cocoa-dark);}
+  @media(min-width:721px){
+    .product{flex-direction:row;align-items:stretch;gap:32px;}
+    .product .ph{width:280px;flex:none;aspect-ratio:1/1;}
+    .product > div.pbody{flex:1;display:flex;flex-direction:column;gap:16px;}
+  }
+
+  /* ---------- PRODUCT DETAILS MODAL ---------- */
+  .product-modal-overlay{
+    position:fixed;inset:0;
+    background:rgba(36,18,9,0.55);
+    display:flex;align-items:center;justify-content:center;
+    padding:24px;z-index:200;
+    opacity:0;visibility:hidden;
+    transition:opacity .25s ease, visibility .25s ease;
+  }
+  .product-modal-overlay.open{opacity:1;visibility:visible;}
+  .product-modal{
+    background:var(--cream-2);
+    max-width:640px;width:100%;
+    max-height:86vh;overflow-y:auto;
+    border-radius:10px;position:relative;
+    padding:44px;
+    transform:translateY(18px) scale(.97);
+    transition:transform .35s cubic-bezier(.2,.8,.2,1);
+  }
+  .product-modal-overlay.open .product-modal{transform:translateY(0) scale(1);}
+  .product-modal-close{
+    position:absolute;top:16px;right:16px;
+    width:36px;height:36px;
+    background:none;border:none;
+    font-size:1.2rem;color:var(--cocoa);
+    cursor:pointer;transition:color .2s;
+  }
+  .product-modal-close:hover{color:var(--swiss-red);}
+  .product-modal-tabs{
+    display:flex;gap:1px;background:var(--line);
+    margin-bottom:28px;border-radius:6px;overflow:hidden;
+  }
+  .product-tab{
+    flex:1;background:var(--cream);border:none;
+    padding:14px;font-family:'Archivo',sans-serif;
+    font-weight:600;font-size:0.95rem;color:var(--cocoa);
+    cursor:pointer;transition:background .2s,color .2s;
+  }
+  .product-tab.active{background:var(--cocoa-dark);color:var(--white);}
+  .product-modal-panel{display:none;}
+  .product-modal-panel.active{display:block;animation:pmFade .3s ease;}
+  @keyframes pmFade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+  .pm-head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:12px;}
+  .pm-head h3{font-family:'Archivo Expanded',sans-serif;font-weight:700;font-size:1.6rem;}
+  .pm-price{font-family:'Archivo Expanded',sans-serif;font-weight:700;font-size:1.3rem;color:var(--swiss-red);}
+  .pm-intro{color:var(--cocoa);line-height:1.6;margin-bottom:24px;}
+  .pm-flavors{display:flex;flex-direction:column;gap:16px;margin-bottom:28px;}
+  .pm-flavor{display:flex;gap:16px;padding:16px;background:var(--cream);border-radius:8px;}
+  .pm-flavor-tag{
+    font-family:'Archivo Expanded',sans-serif;font-weight:700;
+    color:var(--gold);font-size:1.1rem;flex:none;width:26px;
+  }
+  .pm-flavor h4{font-size:1.05rem;font-weight:600;margin-bottom:4px;}
+  .pm-flavor p{font-size:0.92rem;color:var(--cocoa);line-height:1.5;}
+  .pm-order{
+    display:inline-flex;align-items:center;gap:8px;
+    background:var(--cocoa-dark);color:var(--white);
+    padding:14px 24px;font-weight:600;font-size:0.95rem;
+    border:none;cursor:pointer;transition:background .2s;
+  }
+  .pm-order:hover{background:var(--swiss-red);}
+  @media(max-width:720px){
+    .product-modal{padding:30px 22px;}
+    .pm-head{flex-direction:column;align-items:flex-start;gap:6px;}
+  }
+
+  /* ---------- ORDER CHOICE / ORDER FORM ---------- */
+  .order-choice-overlay, .order-form-overlay{
+    position:fixed;inset:0;
+    background:rgba(36,18,9,0.55);
+    display:flex;align-items:center;justify-content:center;
+    padding:24px;z-index:300;
+    opacity:0;visibility:hidden;
+    transition:opacity .25s ease, visibility .25s ease;
+  }
+  .order-choice-overlay.open, .order-form-overlay.open{opacity:1;visibility:visible;}
+  .order-choice-box{
+    background:var(--cream-2);
+    max-width:380px;width:100%;
+    border-radius:10px;position:relative;
+    padding:36px 30px;
+    text-align:center;
+  }
+  .order-choice-box h3{
+    font-family:'Archivo Expanded',sans-serif;font-weight:700;
+    font-size:1.3rem;margin-bottom:8px;
+  }
+  .order-choice-box p{color:var(--cocoa);font-size:0.92rem;margin-bottom:24px;}
+  .order-choice-box .oc-btn{
+    display:block;width:100%;
+    padding:14px 20px;margin-bottom:12px;
+    font-weight:600;font-size:0.95rem;
+    border-radius:6px;border:none;cursor:pointer;
+    font-family:'Archivo',sans-serif;
+    transition:opacity .2s;
+  }
+  .order-choice-box .oc-btn:hover{opacity:0.88;}
+  .oc-whatsapp{background:#25D366;color:#fff;}
+  .oc-website{background:var(--cocoa-dark);color:#fff;}
+  .order-choice-close, .order-form-close{
+    position:absolute;top:14px;right:14px;
+    width:32px;height:32px;background:none;border:none;
+    font-size:1.1rem;color:var(--cocoa);cursor:pointer;
+  }
+  .order-form-box{
+    background:var(--cream-2);
+    max-width:480px;width:100%;
+    max-height:88vh;overflow-y:auto;
+    border-radius:10px;position:relative;
+    padding:36px 30px;
+  }
+  .order-form-box h3{
+    font-family:'Archivo Expanded',sans-serif;font-weight:700;
+    font-size:1.3rem;margin-bottom:20px;
+  }
+  #orderForm{display:flex;flex-direction:column;gap:16px;}
+  #orderSubmitMsg{font-size:0.9rem;margin-top:4px;}
+  #orderSubmitMsg.success{color:#1a7d3c;}
+  #orderSubmitMsg.error{color:var(--swiss-red);}
+
+  /* ---------- WHY / VALUES ---------- */
+  .values{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);}
+  .value{background:var(--cream-2);padding:32px 26px;}
+  .value .n{font-family:'Archivo Expanded',sans-serif;color:var(--gold);font-weight:700;font-size:0.95rem;margin-bottom:14px;}
+  .value h4{font-size:1.15rem;font-weight:600;margin-bottom:10px;}
+  .value p{font-size:0.95rem;color:var(--cocoa);line-height:1.6;}
+  @media(max-width:720px){.values{grid-template-columns:1fr;}}
+
+  /* ---------- TEAM ---------- */
+  .team-container{display:grid;grid-template-columns:1fr 1fr;gap:48px;}
+  .team-member{
+    background:var(--cream-2);
+    border:1px solid var(--line);
+    padding:0;
+    border-radius:8px;
+    overflow:hidden;
+  }
+  .team-header{
+    background:linear-gradient(135deg, var(--cocoa-dark) 0%, var(--cocoa) 100%);
+    color:var(--white);
+    padding:28px 24px;
+    cursor:pointer;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    transition:background .2s;
+  }
+  .team-header:hover{background:linear-gradient(135deg, var(--swiss-red) 0%, var(--cocoa-dark) 100%);}
+  .team-header h3{
+    font-family:'Archivo Expanded',sans-serif;
+    font-weight:700;
+    font-size:1.3rem;
+    margin:0;
+  }
+  .team-header .role{
+    font-size:0.85rem;
+    color:var(--cream);
+    font-weight:500;
+    margin-top:4px;
+  }
+  .team-toggle{
+    font-size:1.4rem;
+    background:none;
+    border:none;
+    color:var(--white);
+    cursor:pointer;
+    transition:transform .3s;
+  }
+  .team-toggle.open{transform:rotate(180deg);}
+  .team-details{
+    max-height:0;
+    overflow:hidden;
+    transition:max-height .4s cubic-bezier(.4,0,.2,1), opacity .3s ease;
+    background:var(--cream-2);
+    opacity:0;
+  }
+  .team-details.open{max-height:600px;opacity:1;}
+  .team-info{
+    padding:24px;
+    display:flex;flex-direction:column;gap:16px;
+  }
+  .team-item{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:12px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .team-item:last-child{border-bottom:none;}
+  .team-label{
+    font-weight:600;
+    color:var(--cocoa-dark);
+    font-size:0.9rem;
+  }
+  .team-value{
+    color:var(--cocoa);
+    font-size:0.95rem;
+    text-align:right;
+  }
+  .team-value a{
+    color:var(--swiss-red);
+    border-bottom:1px solid var(--swiss-red);
+    transition:color .2s;
+  }
+  .team-value a:hover{color:var(--cocoa-dark);}
+
+  @media(max-width:720px){
+    .team-container{grid-template-columns:1fr;}
+  }
+
+  /* ---------- COMPLAINTS ---------- */
+  .complaints-wrapper{
+    background:var(--cream);
+    padding:48px 24px;
+    border-radius:12px;
+  }
+  .complaints-form{
+    display:flex;flex-direction:column;gap:18px;
+  }
+  .form-group{
+    display:flex;flex-direction:column;gap:8px;
+  }
+  .form-group label{
+    font-weight:600;
+    color:var(--cocoa-dark);
+    font-size:0.95rem;
+  }
+  .form-group input, .form-group textarea, .form-group select{
+    border:1px solid var(--line);
+    padding:12px 16px;
+    font-family:'Archivo', sans-serif;
+    font-size:0.95rem;
+    color:var(--cocoa-dark);
+    border-radius:6px;
+    background:var(--white);
+    transition:border-color .2s;
+  }
+  .form-group input:focus, .form-group textarea:focus, .form-group select:focus{
+    outline:none;
+    border-color:var(--swiss-red);
+    box-shadow:0 0 0 3px rgba(200,16,46,0.1);
+  }
+  .form-group textarea{
+    resize:vertical;
+    min-height:120px;
+  }
+  .complaints-submit{
+    background:var(--cocoa-dark);
+    color:var(--white);
+    border:none;
+    padding:14px 28px;
+    font-weight:600;
+    font-size:0.95rem;
+    border-radius:6px;
+    cursor:pointer;
+    transition:background .2s;
+    width:fit-content;
+  }
+  .complaints-submit:hover{background:var(--swiss-red);}
+  .complaints-submit:disabled{
+    background:var(--cocoa);
+    cursor:not-allowed;
+  }
+  .form-message{
+    padding:16px;
+    border-radius:6px;
+    font-weight:600;
+    text-align:center;
+    display:none;
+  }
+  .form-message.success{
+    background:rgba(76,175,80,0.1);
+    color:#2e7d32;
+    display:block;
+  }
+  .form-message.error{
+    background:rgba(244,67,54,0.1);
+    color:#c62828;
+    display:block;
+  }
+
+  /* ---------- CONTACT ---------- */
+  .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;}
+  .contact-list{display:flex;flex-direction:column;}
+  .contact-list a, .contact-list div.item{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:18px 0;border-bottom:1px solid var(--line);
+    font-size:1rem;
+  }
+  .contact-list .k{color:var(--cocoa);font-size:0.85rem;}
+  .contact-list .v{font-weight:600;}
+  .contact-form{display:flex;flex-direction:column;gap:14px;}
+  .contact-form input,.contact-form textarea{
+    border:none;border-bottom:1px solid var(--line);
+    background:transparent;padding:12px 4px;font-family:'Archivo',sans-serif;
+    font-size:1rem;color:var(--cocoa-dark);
+  }
+  .contact-form input:focus,.contact-form textarea:focus{
+    outline:none;border-bottom-color:var(--cocoa-dark);
+  }
+  .contact-form textarea{resize:vertical;min-height:90px;}
+  .contact-form button{
+    margin-top:8px;background:var(--cocoa-dark);color:var(--white);
+    border:none;padding:14px 22px;font-weight:600;font-size:0.95rem;
+    cursor:pointer;width:fit-content;transition:background .2s;
+  }
+  .contact-form button:hover{background:var(--swiss-red);}
+  @media(max-width:720px){.contact-grid{grid-template-columns:1fr;}}
+
+  /* ---------- FOOTER ---------- */
+  footer{padding:32px 0;}
+  .foot-row{
+    display:flex;justify-content:space-between;align-items:center;
+    font-size:0.85rem;color:var(--cocoa);flex-wrap:wrap;gap:10px;
+  }
+
+  /* focus visibility */
+  a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible{
+    outline:2px solid var(--swiss-red);outline-offset:2px;
+  }
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{transition:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <div class="brand"><img src="images/logo.png" alt="Ara Chocolates Logo" class="logo-img">Ara Chocolates</div>
+    <button class="nav-toggle" id="navToggle" aria-label="Open menu">☰</button>
+    <nav class="links" id="navLinks">
+      <a href="#about">About</a>
+      <a href="#products">Products</a>
+      <a href="#team">Team</a>
+      <a href="#complaints">Complaints</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div>
+        <div class="hero-tag">Absolute Richness Chocolate</div>
+        <h1>Richness that<br><em>melts</em> into flavor</h1>
+      </div>
+      <div class="hero-side">
+        <p>Inspired by Swiss chocolate heritage, handcrafted in Dhaka — Ara Chocolates is an experience in absolute balance.</p>
+        <button class="hero-cta" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">View products →</button>
+      </div>
+    </div>
+  </div>
+  <div class="hero-strip">
+    <div><div class="num">Swiss</div><div class="lbl">Inspiration</div></div>
+    <div><div class="num">Dhaka</div><div class="lbl">Handmade in</div></div>
+    <div><div class="num">2</div><div class="lbl">Product types</div></div>
+    <div><div class="num">Artisan</div><div class="lbl">Every batch</div></div>
+  </div>
+</section>
+
+<section class="section" id="about">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="label">About</div>
+      <h2>A name that didn't come from convention — it came from inspiration</h2>
+    </div>
+    <div class="about-body">
+      <div>
+        <p>Ara Chocolates is a small, dedicated brand inspired by the Swiss tradition of chocolate-making. We believe chocolate is more than a sweet — it's the result of patience, precision, and rich ingredients.</p>
+        <p>Every batch is made by hand, in small quantities, so each bite carries that "Absolute Richness" feeling our name promises.</p>
+      </div>
+      <div class="about-visual"><div class="cross"></div></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="products">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="label">Products</div>
+      <h2>Two kinds right now, each for its own moment</h2>
+    </div>
+  </div>
+  <div class="products">
+    <div class="product combo" onclick="openProductModal('combo')">
+      <div class="ph"><img src="images/combo-box.png" alt="Ara Chocolates Combo Box — Premium Artisan Selection"></div>
+      <div class="pbody">
+        <h3>Combo Box</h3>
+        <p class="desc">A larger collection made for sharing — ideal for gifting or a family occasion. Includes 3 flavors.</p>
+        <button type="button" class="view-details">View flavors &amp; details →</button>
+        <div class="row">
+          <div class="price">৳ 1500</div>
+          <button type="button" class="order" onclick="event.stopPropagation(); openProductModal('combo')">Order</button>
+        </div>
+      </div>
+    </div>
+    <div class="product solo" onclick="openProductModal('solo')">
+      <div class="ph"><img src="images/solo-bar.png" alt="Ara Chocolates Solo Dark Chocolate Bar"></div>
+      <div class="pbody">
+        <h3>Solo</h3>
+        <p class="desc">Made for a single serving — a small, rich moment just for you.</p>
+        <button type="button" class="view-details">View details →</button>
+        <div class="row">
+          <div class="price">৳ 390</div>
+          <button type="button" class="order" onclick="event.stopPropagation(); openProductModal('solo')">Order</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== PRODUCT DETAILS MODAL ========== -->
+<div class="product-modal-overlay" id="productModalOverlay" onclick="closeProductModalOnOverlay(event)">
+  <div class="product-modal" role="dialog" aria-modal="true" aria-labelledby="productModalTitle">
+    <button class="product-modal-close" onclick="closeProductModal()" aria-label="Close">✕</button>
+
+    <div class="product-modal-tabs">
+      <button type="button" class="product-tab" id="tabCombo" onclick="switchProductTab('combo')">Combo Box</button>
+      <button type="button" class="product-tab" id="tabSolo" onclick="switchProductTab('solo')">Solo</button>
+    </div>
+
+    <div class="product-modal-panel" id="panelCombo">
+      <div class="pm-head">
+        <h3 id="productModalTitle">Combo Box</h3>
+        <div class="pm-price">৳ 1500</div>
+      </div>
+      <p class="pm-intro">One box, three rich experiences — made for sharing, gifting, or a family occasion. Every Combo Box includes all three flavors below.</p>
+      <div class="pm-flavors">
+        <div class="pm-flavor">
+          <div class="pm-flavor-tag">01</div>
+          <div>
+            <h4>Pure Dark Chocolate</h4>
+            <p>Intense, deep cocoa richness for those who love chocolate at its most honest.</p>
+          </div>
+        </div>
+        <div class="pm-flavor">
+          <div class="pm-flavor-tag">02</div>
+          <div>
+            <h4>White Chocolate</h4>
+            <p>Smooth, creamy, and delicately sweet — a lighter counterpoint to the dark.</p>
+          </div>
+        </div>
+        <div class="pm-flavor">
+          <div class="pm-flavor-tag">03</div>
+          <div>
+            <h4>Special Touch</h4>
+            <p>Our signature blend, finished with an artisan twist you won't find anywhere else.</p>
+          </div>
+        </div>
+      </div>
+      <button type="button" class="pm-order" onclick="openOrderChoice('Combo Box','৳ 1500')">Order</button>
+    </div>
+
+    <div class="product-modal-panel" id="panelSolo">
+      <div class="pm-head">
+        <h3>Solo</h3>
+        <div class="pm-price">৳ 390</div>
+      </div>
+      <p class="pm-intro">Made for a single serving — a small, rich moment just for you.</p>
+      <div class="pm-flavors">
+        <div class="pm-flavor">
+          <div class="pm-flavor-tag">01</div>
+          <div>
+            <h4>Pure Dark Chocolate</h4>
+            <p>Intense, deep cocoa richness for those who love chocolate at its most honest.</p>
+          </div>
+        </div>
+      </div>
+      <button type="button" class="pm-order" onclick="openOrderChoice('Solo','৳ 390')">Order</button>
+    </div>
+  </div>
+</div>
+
+<!-- ========== ORDER CHOICE MODAL ========== -->
+<div class="order-choice-overlay" id="orderChoiceOverlay" onclick="if(event.target===this)closeOrderChoice()">
+  <div class="order-choice-box">
+    <button class="order-choice-close" onclick="closeOrderChoice()" aria-label="Close">✕</button>
+    <h3 id="ocProductTitle">Order</h3>
+    <p>How would you like to place your order?</p>
+    <button type="button" class="oc-btn oc-whatsapp" onclick="continueToWhatsApp()">Continue to WhatsApp</button>
+    <button type="button" class="oc-btn oc-website" onclick="openOrderForm()">Order on Website</button>
+  </div>
+</div>
+
+<!-- ========== ORDER ON WEBSITE FORM ========== -->
+<div class="order-form-overlay" id="orderFormOverlay" onclick="if(event.target===this)closeOrderForm()">
+  <div class="order-form-box">
+    <button class="order-form-close" onclick="closeOrderForm()" aria-label="Close">✕</button>
+    <h3>Order on Website</h3>
+    <form id="orderForm">
+      <div class="form-group">
+        <label for="oProduct">Product</label>
+        <input type="text" id="oProduct" name="product" readonly>
+      </div>
+      <div class="form-group">
+        <label for="oName">Your Name</label>
+        <input type="text" id="oName" name="name" placeholder="Full name" required>
+      </div>
+      <div class="form-group">
+        <label for="oPhone">Phone Number</label>
+        <input type="tel" id="oPhone" name="phone" placeholder="Phone number" required>
+      </div>
+      <div class="form-group">
+        <label for="oAddress">Delivery Address</label>
+        <textarea id="oAddress" name="address" placeholder="Full delivery address" required></textarea>
+      </div>
+      <div class="form-group">
+        <label for="oQty">Quantity</label>
+        <input type="number" id="oQty" name="quantity" value="1" min="1" required>
+      </div>
+      <div class="form-group">
+        <label for="oNotes">Notes (optional)</label>
+        <textarea id="oNotes" name="notes" placeholder="Anything else we should know?"></textarea>
+      </div>
+      <button type="submit" class="complaints-submit">Submit Order</button>
+      <div class="form-message" id="orderSubmitMsg"></div>
+    </form>
+  </div>
+</div>
+
+<section class="section">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="label">Why Ara</div>
+      <h2>What sets our chocolate apart</h2>
+    </div>
+    <div class="values">
+      <div class="value">
+        <div class="n">Ingredients</div>
+        <h4>Fully natural</h4>
+        <p>No artificial colors or flavors — just real cocoa and honest ingredients.</p>
+      </div>
+      <div class="value">
+        <div class="n">Process</div>
+        <h4>Made in small batches</h4>
+        <p>Every batch is handmade, so quality control stays precise.</p>
+      </div>
+      <div class="value">
+        <div class="n">Inspiration</div>
+        <h4>Swiss craftsmanship</h4>
+        <p>Balance and precision learned from Swiss chocolate-making principles.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== TEAM SECTION ========== -->
+<section class="section" id="team">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="label">Our Team</div>
+      <h2>Meet the people behind Ara Chocolates</h2>
+    </div>
+    <div class="team-container">
+      <!-- FOUNDER -->
+      <div class="team-member">
+        <div class="team-header" onclick="toggleTeam(this)">
+          <div>
+            <h3>Rayhan Gazi</h3>
+            <div class="role">Founder</div>
+          </div>
+          <button class="team-toggle" type="button" aria-label="Toggle details">▼</button>
+        </div>
+        <div class="team-details">
+          <div class="team-info">
+            <div class="team-item">
+              <span class="team-label">Position</span>
+              <span class="team-value">Founder</span>
+            </div>
+            <div class="team-item">
+              <span class="team-label">Email</span>
+              <span class="team-value"><a href="mailto:rayhan120y@gmail.com">rayhan120y@gmail.com</a></span>
+            </div>
+            <div class="team-item">
+              <span class="team-label">Phone</span>
+              <span class="team-value"><a href="tel:01403896475">01403896475</a></span>
+            </div>
+            <div class="team-item">
+              <span class="team-label">WhatsApp</span>
+              <span class="team-value"><a href="https://wa.me/8801764491395" target="_blank">01764491395</a></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CO-FOUNDER -->
+      <div class="team-member">
+        <div class="team-header" onclick="toggleTeam(this)">
+          <div>
+            <h3>Jannatul Ferdaus Ananna</h3>
+            <div class="role">Co-Founder & CEO</div>
+          </div>
+          <button class="team-toggle" type="button" aria-label="Toggle details">▼</button>
+        </div>
+        <div class="team-details">
+          <div class="team-info">
+            <div class="team-item">
+              <span class="team-label">Position</span>
+              <span class="team-value">Co-Founder & CEO</span>
+            </div>
+            <div class="team-item">
+              <span class="team-label">Email</span>
+              <span class="team-value"><a href="mailto:anannaanu775@gmail.com">anannaanu775@gmail.com</a></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== COMPLAINTS SECTION ========== -->
+<section class="section" id="complaints">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="label">Support</div>
+      <h2>Have a complaint or suggestion?</h2>
+    </div>
+    <div class="complaints-wrapper">
+      <form class="complaints-form" id="complaintsForm">
+        <div class="form-group">
+          <label for="cname">Your Name</label>
+          <input type="text" id="cname" name="name" placeholder="Enter your full name" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="cemail">Email</label>
+          <input type="email" id="cemail" name="email" placeholder="Your email address" required>
+        </div>
+
+        <div class="form-group">
+          <label for="cphone">Phone Number</label>
+          <input type="tel" id="cphone" name="phone" placeholder="Your phone number" required>
+        </div>
+
+        <div class="form-group">
+          <label for="ctype">Complaint Type</label>
+          <select id="ctype" name="type" required>
+            <option value="">--- Select an option ---</option>
+            <option value="Product Quality">Product Quality</option>
+            <option value="Delivery Issue">Delivery Issue</option>
+            <option value="Customer Service">Customer Service</option>
+            <option value="Billing">Billing Issue</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="cmessage">Detailed Description</label>
+          <textarea id="cmessage" name="message" placeholder="Please describe your complaint or suggestion in detail..." required></textarea>
+        </div>
+
+        <button type="submit" class="complaints-submit">Submit Complaint</button>
+        <div class="form-message" id="formMessage"></div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ========== CONTACT SECTION ========== -->
+<section class="section" id="contact" style="border-bottom:none;">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="label">Contact</div>
+      <h2>Reach out to order or ask a question</h2>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-list">
+        <a href="tel:01403896475"><span class="k">Phone</span><span class="v">01403896475</span></a>
+        <a href="mailto:rayhan120y@gmail.com"><span class="k">Email</span><span class="v">rayhan120y@gmail.com</span></a>
+        <a href="https://wa.me/8801764491395" target="_blank" rel="noopener"><span class="k">WhatsApp</span><span class="v">01764491395</span></a>
+      </div>
+      <form class="contact-form" id="contactForm">
+        <input type="text" placeholder="Your name" required>
+        <input type="email" placeholder="Your email" required>
+        <textarea placeholder="Write your message" required></textarea>
+        <button type="submit">Send message on WhatsApp</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-row">
+      <div>© <span id="year"></span> Ara Chocolates. All rights reserved.</div>
+      <div>Absolute Richness Chocolate</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // Navigation Toggle
+  const navToggle = document.getElementById('navToggle');
+  const navLinks = document.getElementById('navLinks');
+  navToggle.addEventListener('click', () => navLinks.classList.toggle('open'));
+  navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+
+  // Team Accordion
+  let teamAnimating = false;
+  function toggleTeam(header) {
+    if (teamAnimating) return; // ignore rapid repeat clicks while a panel is mid-transition
+    teamAnimating = true;
+
+    const details = header.nextElementSibling;
+    const toggle = header.querySelector('.team-toggle');
+
+    document.querySelectorAll('.team-details').forEach(d => {
+      if (d !== details) {
+        d.classList.remove('open');
+        d.previousElementSibling.querySelector('.team-toggle').classList.remove('open');
+      }
+    });
+
+    details.classList.toggle('open');
+    toggle.classList.toggle('open');
+
+    setTimeout(() => { teamAnimating = false; }, 420);
+  }
+
+  // Product Details Modal
+  const productModalOverlay = document.getElementById('productModalOverlay');
+
+  function switchProductTab(which) {
+    document.getElementById('tabCombo').classList.toggle('active', which === 'combo');
+    document.getElementById('tabSolo').classList.toggle('active', which === 'solo');
+    document.getElementById('panelCombo').classList.toggle('active', which === 'combo');
+    document.getElementById('panelSolo').classList.toggle('active', which === 'solo');
+  }
+
+  function openProductModal(which) {
+    switchProductTab(which);
+    productModalOverlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeProductModal() {
+    productModalOverlay.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function closeProductModalOnOverlay(e) {
+    if (e.target === productModalOverlay) closeProductModal();
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeProductModal();
+  });
+
+  // Order Choice + Order on Website flow
+  const orderChoiceOverlay = document.getElementById('orderChoiceOverlay');
+  const orderFormOverlay = document.getElementById('orderFormOverlay');
+  let currentOrderProduct = { name: '', price: '' };
+  const WHATSAPP_NUMBER = '8801764491395';
+
+  function openOrderChoice(productName, price) {
+    currentOrderProduct = { name: productName, price: price };
+    document.getElementById('ocProductTitle').textContent = 'Order — ' + productName;
+    document.getElementById('oProduct').value = productName + ' (' + price + ')';
+    orderChoiceOverlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeOrderChoice() {
+    orderChoiceOverlay.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  function continueToWhatsApp() {
+    const text = encodeURIComponent('I would like to order the Ara Chocolates ' + currentOrderProduct.name);
+    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${text}`, '_blank');
+    closeOrderChoice();
+  }
+
+  function openOrderForm() {
+    closeOrderChoice();
+    orderFormOverlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeOrderForm() {
+    orderFormOverlay.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  document.getElementById('orderForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const submitBtn = this.querySelector('.complaints-submit');
+    const msgDiv = document.getElementById('orderSubmitMsg');
+
+    const formData = {
+      formType: 'order',
+      product: document.getElementById('oProduct').value,
+      name: document.getElementById('oName').value,
+      phone: document.getElementById('oPhone').value,
+      address: document.getElementById('oAddress').value,
+      quantity: document.getElementById('oQty').value,
+      notes: document.getElementById('oNotes').value
+    };
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending...';
+
+    try {
+      const response = await fetch('YOUR_GOOGLE_APPS_SCRIPT_URL_HERE', {
+        method: 'POST',
+        body: JSON.stringify(formData)
+      });
+      const result = await response.json();
+      if (result.success) {
+        msgDiv.className = 'form-message success';
+        msgDiv.textContent = '✓ Your order has been submitted. We will contact you shortly to confirm.';
+        this.reset();
+      } else {
+        throw new Error('Server error');
+      }
+    } catch (err) {
+      msgDiv.className = 'form-message error';
+      msgDiv.textContent = '✗ Error: Please try again, or use the WhatsApp option.';
+    }
+
+    setTimeout(() => {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Submit Order';
+      msgDiv.className = 'form-message';
+    }, 3000);
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') { closeOrderChoice(); closeOrderForm(); }
+  });
+
+  // Complaints Form Submission
+  document.getElementById('complaintsForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    
+    const submitBtn = this.querySelector('.complaints-submit');
+    const messageDiv = document.getElementById('formMessage');
+    
+    const formData = {
+      name: document.getElementById('cname').value,
+      email: document.getElementById('cemail').value,
+      phone: document.getElementById('cphone').value,
+      type: document.getElementById('ctype').value,
+      message: document.getElementById('cmessage').value
+    };
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending...';
+
+    try {
+      const response = await fetch('YOUR_GOOGLE_APPS_SCRIPT_URL_HERE', {
+        method: 'POST',
+        body: JSON.stringify(formData)
+      });
+
+      const result = await response.json();
+
+      if(result.success) {
+        messageDiv.className = 'form-message success';
+        messageDiv.textContent = '✓ Your complaint has been submitted successfully. We will get in touch with you shortly.';
+        document.getElementById('complaintsForm').reset();
+      } else {
+        throw new Error('Server error');
+      }
+    } catch(err) {
+      messageDiv.className = 'form-message error';
+      messageDiv.textContent = '✗ Error: Please try again.';
+    }
+
+    setTimeout(() => {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Submit Complaint';
+      messageDiv.className = 'form-message';
+    }, 3000);
+  });
+
+  // Contact Form (WhatsApp)
+  document.getElementById('contactForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    const name = this.querySelector('input[type="text"]').value.trim();
+    const email = this.querySelector('input[type="email"]').value.trim();
+    const message = this.querySelector('textarea').value.trim();
+    if(name && email && message){
+      const text = `New website message%0AName: ${encodeURIComponent(name)}%0AEmail: ${encodeURIComponent(email)}%0AMessage: ${encodeURIComponent(message)}`;
+      window.open(`https://wa.me/8801764491395?text=${text}`, '_blank');
+      this.reset();
+    }
+  });
+</script>
+
+</body>
+</html>
