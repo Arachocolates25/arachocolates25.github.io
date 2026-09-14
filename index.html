@@ -23,7 +23,9 @@
   html{scroll-behavior:smooth;}
   body{
     font-family:'Archivo', sans-serif;
-    background:var(--cream-2);
+    background:
+      radial-gradient(ellipse 1200px 600px at 50% 0%, rgba(184,135,58,0.05) 0%, transparent 60%),
+      var(--cream-2);
     color:var(--cocoa-dark);
     font-weight:400;
     -webkit-font-smoothing:antialiased;
@@ -114,13 +116,17 @@
   .hero-side p{font-size:1rem;line-height:1.6;color:var(--cocoa);}
   .hero-cta{
     display:inline-flex;align-items:center;gap:10px;
-    background:var(--cocoa-dark);color:var(--white);
-    padding:14px 22px;font-weight:600;font-size:0.95rem;
+    background:linear-gradient(135deg, var(--cocoa) 0%, var(--cocoa-dark) 100%);
+    color:var(--white);
+    padding:14px 24px;font-weight:600;font-size:0.95rem;letter-spacing:0.01em;
     width:fit-content;
-    transition:background .2s, transform .15s ease;
+    box-shadow:0 8px 20px rgba(36,18,9,0.22);
+    transition:background .25s ease, transform .15s ease, box-shadow .25s ease;
     border:none;cursor:pointer;
   }
-  .hero-cta:hover{background:var(--swiss-red);}
+  .hero-cta span.arrow{display:inline-block;transition:transform .25s cubic-bezier(.2,.8,.2,1);}
+  .hero-cta:hover{background:linear-gradient(135deg, var(--swiss-red) 0%, #8f0c22 100%);box-shadow:0 10px 24px rgba(200,16,46,0.28);}
+  .hero-cta:hover span.arrow{transform:translateX(4px);}
   .hero-cta:active{transform:scale(.97);}
 
   .hero-strip{
@@ -197,7 +203,7 @@
   /* ---------- PRODUCTS ---------- */
   .products{display:flex;flex-direction:column;gap:40px;}
   .product{
-    background:var(--cream-2);
+    background:linear-gradient(165deg, var(--cream-2) 0%, var(--cream) 100%);
     padding:40px 32px;
     display:flex;flex-direction:column;gap:16px;
     cursor:pointer;
@@ -220,12 +226,19 @@
     transition:color .2s;
   }
   .view-details:hover{color:var(--swiss-red);}
+  .view-details span.arrow{display:inline-block;transition:transform .25s cubic-bezier(.2,.8,.2,1);}
+  .view-details:hover span.arrow{transform:translateX(3px);}
   .product .ph{
     aspect-ratio:1/1;
     background:var(--cocoa-dark);
     position:relative;
     overflow:hidden;
     border-radius:8px;
+    box-shadow:inset 0 0 0 1px rgba(184,135,58,0.22);
+  }
+  .product .ph::after{
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background:linear-gradient(160deg, rgba(184,135,58,0.08) 0%, transparent 40%, rgba(36,18,9,0.14) 100%);
   }
   .product .ph img{
     width:100%;height:100%;object-fit:cover;display:block;
@@ -244,12 +257,19 @@
   .product .price{font-family:'Archivo Expanded',sans-serif;font-weight:700;font-size:1.3rem;}
   .product .order{
     font-weight:600;font-size:0.85rem;
-    background:none;border:none;padding:0;
-    color:var(--swiss-red);border-bottom:1px solid var(--swiss-red);
-    padding-bottom:2px;cursor:pointer;
+    background:linear-gradient(135deg, var(--cocoa) 0%, var(--cocoa-dark) 100%);
+    border:none;color:var(--white);
+    padding:10px 20px;border-radius:6px;
+    cursor:pointer;
     font-family:'Archivo',sans-serif;
+    box-shadow:0 4px 12px rgba(36,18,9,0.18);
+    transition:background .25s ease, transform .15s ease, box-shadow .25s ease;
   }
-  .product .order:hover{color:var(--cocoa-dark);border-color:var(--cocoa-dark);}
+  .product .order:hover{
+    background:linear-gradient(135deg, var(--swiss-red) 0%, #8f0c22 100%);
+    box-shadow:0 6px 16px rgba(200,16,46,0.24);
+  }
+  .product .order:active{transform:scale(.95);}
   @media(min-width:721px){
     .product{flex-direction:row;align-items:stretch;gap:32px;}
     .product .ph{width:280px;flex:none;aspect-ratio:1/1;}
@@ -268,8 +288,8 @@
   .product-modal-overlay.open{opacity:1;visibility:visible;}
   .product-modal{
     background:var(--cream-2);
-    max-width:640px;width:100%;
-    max-height:86vh;overflow-y:auto;
+    max-width:680px;width:100%;
+    max-height:90vh;overflow-y:auto;
     border-radius:10px;position:relative;
     padding:44px;
     transform:translateY(18px) scale(.97);
@@ -282,11 +302,12 @@
     background:none;border:none;
     font-size:1.2rem;color:var(--cocoa);
     cursor:pointer;transition:color .2s;
+    z-index:2;
   }
   .product-modal-close:hover{color:var(--swiss-red);}
   .product-modal-tabs{
     display:flex;gap:1px;background:var(--line);
-    margin-bottom:28px;border-radius:6px;overflow:hidden;
+    margin-bottom:24px;border-radius:6px;overflow:hidden;
   }
   .product-tab{
     flex:1;background:var(--cream);border:none;
@@ -295,9 +316,19 @@
     cursor:pointer;transition:background .2s,color .2s;
   }
   .product-tab.active{background:var(--cocoa-dark);color:var(--white);}
-  .product-modal-panel{display:none;}
-  .product-modal-panel.active{display:block;animation:pmFade .3s ease;}
-  @keyframes pmFade{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+
+  /* Swipeable Combo/Solo track */
+  .pm-swipeport{
+    position:relative;overflow:hidden;
+    touch-action:pan-y;
+    transition:height .3s cubic-bezier(.2,.8,.2,1);
+  }
+  .pm-track{
+    display:flex;
+    transition:transform .34s cubic-bezier(.22,.8,.28,1);
+    will-change:transform;
+  }
+  .product-modal-panel{flex:none;width:100%;box-sizing:border-box;}
   .pm-head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:12px;}
   .pm-head h3{font-family:'Archivo Expanded',sans-serif;font-weight:700;font-size:1.6rem;}
   .pm-price{font-family:'Archivo Expanded',sans-serif;font-weight:700;font-size:1.3rem;color:var(--swiss-red);}
@@ -312,14 +343,17 @@
   .pm-flavor p{font-size:0.92rem;color:var(--cocoa);line-height:1.5;}
   .pm-order{
     display:inline-flex;align-items:center;gap:8px;
-    background:var(--cocoa-dark);color:var(--white);
+    background:linear-gradient(135deg, var(--cocoa) 0%, var(--cocoa-dark) 100%);
+    color:var(--white);
     padding:14px 24px;font-weight:600;font-size:0.95rem;
-    border:none;cursor:pointer;transition:background .2s, transform .15s ease;
+    border:none;cursor:pointer;transition:background .25s ease, transform .15s ease, box-shadow .25s ease;
+    box-shadow:0 8px 18px rgba(36,18,9,0.2);
   }
-  .pm-order:hover{background:var(--swiss-red);}
+  .pm-order:hover{background:linear-gradient(135deg, var(--swiss-red) 0%, #8f0c22 100%);box-shadow:0 10px 22px rgba(200,16,46,0.26);}
   .pm-order:active{transform:scale(.97);}
   @media(max-width:720px){
-    .product-modal{padding:30px 22px;}
+    .product-modal-overlay{padding:12px;}
+    .product-modal{padding:26px 18px 30px;max-height:92vh;border-radius:14px;}
     .pm-head{flex-direction:column;align-items:flex-start;gap:6px;}
   }
 
@@ -334,12 +368,17 @@
   }
   .order-choice-overlay.open, .order-form-overlay.open{opacity:1;visibility:visible;}
   .order-choice-box{
-    background:var(--cream-2);
+    background:linear-gradient(165deg, var(--cream-2) 0%, var(--cream) 100%);
     max-width:380px;width:100%;
-    border-radius:10px;position:relative;
-    padding:36px 30px;
+    border-radius:14px;position:relative;
+    padding:40px 30px 34px;
     text-align:center;
+    box-shadow:0 24px 60px rgba(36,18,9,0.28);
+    border-top:4px solid var(--gold);
+    transform:translateY(18px) scale(.97);
+    transition:transform .35s cubic-bezier(.2,.8,.2,1);
   }
+  .order-choice-overlay.open .order-choice-box{transform:translateY(0) scale(1);}
   .order-choice-box h3{
     font-family:'Archivo Expanded',sans-serif;font-weight:700;
     font-size:1.3rem;margin-bottom:8px;
@@ -355,25 +394,59 @@
   }
   .order-choice-box .oc-btn:hover{opacity:0.88;}
   .order-choice-box .oc-btn:active{transform:scale(.97);}
-  .oc-whatsapp{background:#25D366;color:#fff;}
-  .oc-website{background:var(--cocoa-dark);color:#fff;}
+  .oc-whatsapp{background:#25D366;color:#fff;box-shadow:0 6px 16px rgba(37,211,102,0.25);}
+  .oc-website{background:linear-gradient(135deg, var(--cocoa) 0%, var(--cocoa-dark) 100%);color:#fff;box-shadow:0 6px 16px rgba(36,18,9,0.22);}
   .order-choice-close, .order-form-close{
     position:absolute;top:14px;right:14px;
-    width:32px;height:32px;background:none;border:none;
+    width:34px;height:34px;background:none;border:none;
+    border-radius:50%;
     font-size:1.1rem;color:var(--cocoa);cursor:pointer;
+    transition:background .2s ease, color .2s ease;
+  }
+  .order-choice-close:hover, .order-form-close:hover{
+    background:rgba(36,18,9,0.08);color:var(--swiss-red);
   }
   .order-form-box{
-    background:var(--cream-2);
+    background:linear-gradient(165deg, var(--cream-2) 0%, var(--cream) 100%);
     max-width:480px;width:100%;
     max-height:88vh;overflow-y:auto;
-    border-radius:10px;position:relative;
-    padding:36px 30px;
+    border-radius:14px;position:relative;
+    padding:40px 32px 36px;
+    box-shadow:0 24px 60px rgba(36,18,9,0.28);
+    border-top:4px solid var(--gold);
+    transform:translateY(18px) scale(.97);
+    transition:transform .35s cubic-bezier(.2,.8,.2,1);
   }
+  .order-form-overlay.open .order-form-box{transform:translateY(0) scale(1);}
   .order-form-box h3{
     font-family:'Archivo Expanded',sans-serif;font-weight:700;
-    font-size:1.3rem;margin-bottom:20px;
+    font-size:1.4rem;margin-bottom:6px;
+  }
+  .order-form-box .oform-sub{
+    color:var(--cocoa);font-size:0.88rem;margin-bottom:22px;
   }
   #orderForm{display:flex;flex-direction:column;gap:16px;}
+  .qty-btn{
+    width:40px;height:40px;border:1px solid var(--line);
+    background:var(--white);font-size:1.2rem;font-weight:700;
+    cursor:pointer;border-radius:8px;color:var(--cocoa-dark);
+    transition:transform .15s ease, border-color .2s ease, background .2s ease;
+  }
+  .qty-btn:hover{border-color:var(--gold);background:rgba(184,135,58,0.08);}
+  .qty-btn:active{transform:scale(.9);}
+  .order-total-box{
+    margin-top:10px;padding:14px 18px;border-radius:8px;
+    background:linear-gradient(135deg, var(--cocoa) 0%, var(--cocoa-dark) 100%);
+    display:flex;justify-content:space-between;align-items:center;
+    box-shadow:0 8px 18px rgba(36,18,9,0.2);
+  }
+  .order-total-box span:first-child{color:var(--cream-2);font-size:0.95rem;}
+  .order-total-box span#oQtyTotal{color:var(--white);font-weight:700;font-size:1.25rem;font-family:'Archivo Expanded',sans-serif;}
+  .advance-note{
+    background:var(--cream-2);border-left:3px solid var(--gold);
+    border-radius:0 8px 8px 0;padding:14px 18px;
+  }
+  .advance-note p{font-size:0.9rem;line-height:1.6;color:var(--cocoa-dark);margin:0;}
   #orderForm button[onclick^="changeQty"]:active{transform:scale(.9);}
   #orderSubmitMsg{font-size:0.9rem;margin-top:4px;}
   #orderSubmitMsg.success{color:#1a7d3c;}
@@ -381,16 +454,178 @@
 
   /* ---------- WHY / VALUES ---------- */
   .values{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);}
-  .value{background:var(--cream-2);padding:32px 26px;}
+  .value{background:linear-gradient(165deg, var(--cream-2) 0%, var(--cream) 100%);padding:32px 26px;}
   .value .n{font-family:'Archivo Expanded',sans-serif;color:var(--gold);font-weight:700;font-size:0.95rem;margin-bottom:14px;}
   .value h4{font-size:1.15rem;font-weight:600;margin-bottom:10px;}
   .value p{font-size:0.95rem;color:var(--cocoa);line-height:1.6;}
   @media(max-width:720px){.values{grid-template-columns:1fr;}}
 
+  /* ---------- CUSTOMER REVIEWS ---------- */
+  .reviews-grid{
+    display:flex;overflow:hidden;position:relative;
+    background:var(--white);border-radius:16px;
+    padding:3px;gap:3px;
+    box-shadow:0 4px 12px rgba(36,18,9,0.08);
+    touch-action:pan-y;
+  }
+  .carousel-track{
+    display:flex;
+    width:100%;gap:3px;
+    transition:transform .8s cubic-bezier(.15,.85,.35,1.1);
+    will-change:transform;
+  }
+  .review-card{
+    flex:0 0 100%;
+    padding:18px 20px 14px;
+    border-radius:18px 18px 10px 10px;
+    border:1px solid var(--line);
+    box-shadow:0 4px 12px rgba(36,18,9,0.06), 0 20px 40px rgba(36,18,9,0.08);
+    display:flex;flex-direction:column;gap:9px;
+    transition:box-shadow .35s cubic-bezier(.2,.8,.2,1);
+    position:relative;
+    overflow:hidden;
+  }
+  .review-card::before{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(135deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.3) 100%);
+    pointer-events:none;opacity:0.4;
+  }
+  .review-card::after{
+    content:"";position:absolute;inset:0;
+    border-radius:22px 22px 12px 12px;
+    box-shadow:inset 0 1px 2px rgba(255,255,255,0.8);
+    pointer-events:none;
+  }
+  .review-card > *{position:relative;z-index:1;}
+  
+  /* Unique vibrant color gradients for each card - directly visible */
+  .review-card:nth-child(1){
+    background:linear-gradient(135deg, rgba(229,147,96,0.35) 0%, rgba(255,200,150,0.15) 40%, #FFFFFF 100%);
+    position:relative;
+  }
+  
+  .review-card:nth-child(2){
+    background:linear-gradient(135deg, rgba(76,159,168,0.35) 0%, rgba(150,200,210,0.15) 40%, #FFFFFF 100%);
+  }
+  
+  .review-card:nth-child(3){
+    background:linear-gradient(135deg, rgba(255,193,7,0.40) 0%, rgba(255,220,100,0.18) 40%, #FFFFFF 100%);
+  }
+  
+  .review-card:nth-child(4){
+    background:linear-gradient(135deg, rgba(184,135,58,0.35) 0%, rgba(220,180,120,0.15) 40%, #FFFFFF 100%);
+  }
+  
+  .review-card:nth-child(5){
+    background:linear-gradient(135deg, rgba(196,108,74,0.35) 0%, rgba(230,165,140,0.15) 40%, #FFFFFF 100%);
+  }
+
+  .review-card:hover{
+    box-shadow:0 8px 24px rgba(36,18,9,0.1), 0 28px 56px rgba(36,18,9,0.12);
+  }
+  .review-card .stars{
+    color:var(--gold);
+    font-size:1rem;
+    letter-spacing:3px;
+    font-weight:700;
+    text-shadow:0 2px 3px rgba(184,135,58,0.12);
+  }
+  .review-card .quote{
+    font-size:0.88rem;
+    line-height:1.55;
+    color:var(--cocoa);
+    flex:1;
+  }
+  .review-card .quote[lang="bn"]{
+    font-family:'Noto Sans Bengali', sans-serif;
+    line-height:1.7;
+  }
+  .review-card .profile{
+    display:flex;align-items:center;gap:10px;
+    padding:10px 12px;
+    margin-top:4px;
+    border-radius:16px;
+    background:rgba(255,255,255,0.45);
+    position:relative;
+    width:fit-content;
+    max-width:100%;
+  }
+  .review-card .profile::before{
+    content:"";
+    position:absolute;
+    top:0;left:50%;
+    transform:translateX(-50%);
+    width:44px;height:3px;
+    border-radius:10px;
+    background:rgba(36,18,9,0.1);
+  }
+  .review-card .avatar{
+    width:40px;height:40px;
+    border-radius:50%;
+    object-fit:cover;
+    flex:none;
+    border:2px solid var(--line);
+    background:var(--cream);
+    box-shadow:0 2px 6px rgba(36,18,9,0.1);
+  }
+  .review-card .avatar-fallback{
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Archivo',sans-serif;font-weight:700;font-size:0.85rem;
+    color:var(--cocoa-dark);
+  }
+  .review-card .profile-name{
+    font-weight:700;
+    font-size:0.97rem;
+    color:var(--cocoa-dark);
+  }
+  .review-card .profile-role{
+    font-size:0.81rem;
+    color:var(--gold);
+    margin-top:3px;
+    font-weight:500;
+  }
+
+  /* Carousel Navigation Dots */
+  .carousel-dots{
+    display:flex;justify-content:center;align-items:center;gap:8px;
+    margin-top:24px;
+    padding:14px 0;
+  }
+  .dot{
+    width:10px;height:10px;
+    border-radius:50%;
+    background:rgba(36,18,9,0.15);
+    border:1.5px solid rgba(36,18,9,0.2);
+    cursor:pointer;
+    transition:all .35s cubic-bezier(.2,.8,.2,1);
+    position:relative;
+  }
+  .dot:hover{
+    background:rgba(36,18,9,0.25);
+    transform:scale(1.15);
+  }
+  .dot.active{
+    background:var(--cocoa-dark);
+    border-color:var(--cocoa-dark);
+    box-shadow:0 0 0 3px rgba(36,18,9,0.12);
+    width:12px;height:12px;
+  }
+
+  @media(max-width:720px){
+    .reviews-grid{padding:0;border-radius:0;box-shadow:none;}
+    .carousel-track{gap:0;}
+    .review-card{border-radius:0;padding:16px 16px 14px;gap:9px;border:none;border-bottom:1px solid var(--line);}
+    .review-card::before{display:none;}
+    .review-card::after{border-radius:0;box-shadow:none;}
+    .carousel-dots{margin-top:18px;gap:6px;padding:12px 0;}
+    .dot{width:8px;height:8px;}
+    .dot.active{width:10px;height:10px;}
+  }
+
   /* ---------- TEAM ---------- */
   .team-container{display:grid;grid-template-columns:1fr 1fr;gap:48px;}
   .team-member{
-    background:var(--cream-2);
+    background:linear-gradient(165deg, var(--cream-2) 0%, var(--cream) 100%);
     border:1px solid var(--line);
     padding:0;
     border-radius:8px;
@@ -471,9 +706,10 @@
 
   /* ---------- COMPLAINTS ---------- */
   .complaints-wrapper{
-    background:var(--cream);
+    background:linear-gradient(165deg, var(--cream) 0%, var(--cream-2) 100%);
     padding:48px 24px;
     border-radius:12px;
+    box-shadow:0 4px 14px rgba(36,18,9,0.05);
   }
   .complaints-form{
     display:flex;flex-direction:column;gap:18px;
@@ -508,13 +744,16 @@
   }
   .form-group input, .form-group textarea, .form-group select{
     border:1px solid var(--line);
-    padding:12px 16px;
+    padding:13px 16px;
     font-family:'Archivo', sans-serif;
     font-size:0.95rem;
     color:var(--cocoa-dark);
-    border-radius:6px;
+    border-radius:8px;
     background:var(--white);
-    transition:border-color .2s;
+    transition:border-color .2s ease, box-shadow .2s ease;
+  }
+  .form-group input:hover, .form-group textarea:hover, .form-group select:hover{
+    border-color:rgba(184,135,58,0.5);
   }
   .form-group input:focus, .form-group textarea:focus, .form-group select:focus{
     outline:none;
@@ -526,7 +765,7 @@
     min-height:120px;
   }
   .complaints-submit{
-    background:var(--cocoa-dark);
+    background:linear-gradient(135deg, var(--cocoa) 0%, var(--cocoa-dark) 100%);
     color:var(--white);
     border:none;
     padding:14px 28px;
@@ -534,13 +773,15 @@
     font-size:0.95rem;
     border-radius:6px;
     cursor:pointer;
-    transition:background .2s, transform .15s ease;
+    box-shadow:0 8px 18px rgba(36,18,9,0.2);
+    transition:background .25s ease, transform .15s ease, box-shadow .25s ease;
     width:fit-content;
   }
-  .complaints-submit:hover{background:var(--swiss-red);}
+  .complaints-submit:hover{background:linear-gradient(135deg, var(--swiss-red) 0%, #8f0c22 100%);box-shadow:0 10px 22px rgba(200,16,46,0.26);}
   .complaints-submit:active:not(:disabled){transform:scale(.98);}
   .complaints-submit:disabled{
     background:var(--cocoa);
+    box-shadow:none;
     cursor:not-allowed;
   }
   .form-message{
@@ -582,11 +823,12 @@
   }
   .contact-form textarea{resize:vertical;min-height:90px;}
   .contact-form button{
-    margin-top:8px;background:var(--cocoa-dark);color:var(--white);
+    margin-top:8px;background:linear-gradient(135deg, var(--cocoa) 0%, var(--cocoa-dark) 100%);color:var(--white);
     border:none;padding:14px 22px;font-weight:600;font-size:0.95rem;
-    cursor:pointer;width:fit-content;transition:background .2s, transform .15s ease;
+    box-shadow:0 8px 18px rgba(36,18,9,0.2);
+    cursor:pointer;width:fit-content;transition:background .25s ease, transform .15s ease, box-shadow .25s ease;
   }
-  .contact-form button:hover{background:var(--swiss-red);}
+  .contact-form button:hover{background:linear-gradient(135deg, var(--swiss-red) 0%, #8f0c22 100%);box-shadow:0 10px 22px rgba(200,16,46,0.26);}
   .contact-form button:active{transform:scale(.98);}
   @media(max-width:720px){.contact-grid{grid-template-columns:1fr;}}
 
@@ -640,9 +882,92 @@
     .hero-title-mask h1{animation:none;}
     .reveal{opacity:1;transform:none;transition:none;}
   }
+
+  /* ---------- FALLING LEAVES OVERLAY ---------- */
+  .leaf-fall-layer{
+    position:fixed;inset:0;
+    pointer-events:none;
+    overflow:hidden;
+    z-index:60;
+  }
+  .branch-topright{
+    position:fixed;top:-6px;right:-10px;
+    width:230px;height:auto;
+    pointer-events:none;
+    z-index:61;
+    filter:drop-shadow(0 8px 14px rgba(36,18,9,0.22));
+  }
+  @media(max-width:720px){
+    .branch-topright{width:160px;top:0;right:-8px;}
+  }
+  .fall-leaf{
+    position:absolute;
+    opacity:0;
+    will-change:transform, opacity;
+    animation-timing-function:linear;
+    animation-fill-mode:forwards;
+  }
+  .fall-leaf.type-straight{ animation-name:leafFallStraight; }
+  .fall-leaf.type-sway{ animation-name:leafFallSway; }
+  .fall-leaf.type-diagonal{ animation-name:leafFallDiagonal; }
+
+  @keyframes leafFallStraight{
+    0%{transform:translate(0,0) rotate(0deg); opacity:0;}
+    10%{opacity:0.9;}
+    100%{transform:translate(-8vw,108vh) rotate(140deg); opacity:0.85;}
+  }
+  @keyframes leafFallSway{
+    0%{transform:translate(0,0) rotate(0deg); opacity:0;}
+    8%{opacity:0.9;}
+    25%{transform:translate(-14vw,25vh) rotate(60deg);}
+    50%{transform:translate(4vw,50vh) rotate(-40deg);}
+    75%{transform:translate(-18vw,75vh) rotate(80deg);}
+    92%{opacity:0.8;}
+    100%{transform:translate(2vw,108vh) rotate(-20deg); opacity:0;}
+  }
+  @keyframes leafFallDiagonal{
+    0%{transform:translate(0,0) rotate(0deg); opacity:0;}
+    8%{opacity:0.85;}
+    50%{transform:translate(-55vw,55vh) rotate(190deg);}
+    92%{opacity:0.8;}
+    100%{transform:translate(-118vw,118vh) rotate(360deg); opacity:0;}
+  }
 </style>
 </head>
 <body>
+
+<div class="leaf-fall-layer" id="leafFallLayer" aria-hidden="true"></div>
+<svg class="branch-topright" viewBox="0 0 230 210" aria-hidden="true">
+  <defs>
+    <linearGradient id="woodGrad" x1="0" y1="1" x2="0.3" y2="0">
+      <stop offset="0%" stop-color="#3A2313"/>
+      <stop offset="100%" stop-color="#6B4A2E"/>
+    </linearGradient>
+  </defs>
+  <path d="M230,210 C220,150 216,110 196,74 C180,46 168,30 150,8" fill="none" stroke="url(#woodGrad)" stroke-width="9" stroke-linecap="round"/>
+  <path d="M230,210 C220,150 216,110 196,74 C180,46 168,30 150,8" fill="none" stroke="#8A6440" stroke-width="2" stroke-linecap="round" opacity="0.55"/>
+  <path d="M204,130 C186,116 166,106 140,100" fill="none" stroke="url(#woodGrad)" stroke-width="5" stroke-linecap="round"/>
+  <path d="M196,90 C176,82 158,78 132,78" fill="none" stroke="url(#woodGrad)" stroke-width="5" stroke-linecap="round"/>
+  <path d="M170,40 C150,36 132,38 110,48" fill="none" stroke="url(#woodGrad)" stroke-width="4" stroke-linecap="round"/>
+
+  <g>
+    <g transform="translate(150,8) rotate(-30)"><ellipse rx="17" ry="9" fill="#D9A441"/><line x1="-17" y1="0" x2="17" y2="0" stroke="#A9781F" stroke-width="1"/></g>
+    <g transform="translate(168,26) rotate(10)"><ellipse rx="15" ry="8" fill="#C1522E"/><line x1="-15" y1="0" x2="15" y2="0" stroke="#8C3A1F" stroke-width="1"/></g>
+    <g transform="translate(110,48) rotate(-15)"><ellipse rx="16" ry="8.5" fill="#8A5A2E"/><line x1="-16" y1="0" x2="16" y2="0" stroke="#5F3C1B" stroke-width="1"/></g>
+    <g transform="translate(132,78) rotate(25)"><ellipse rx="15" ry="8" fill="#D9A441"/><line x1="-15" y1="0" x2="15" y2="0" stroke="#A9781F" stroke-width="1"/></g>
+    <g transform="translate(140,100) rotate(-20)"><ellipse rx="14" ry="7.5" fill="#C1522E"/><line x1="-14" y1="0" x2="14" y2="0" stroke="#8C3A1F" stroke-width="1"/></g>
+    <g transform="translate(196,74) rotate(35)"><ellipse rx="13" ry="7" fill="#8A5A2E"/><line x1="-13" y1="0" x2="13" y2="0" stroke="#5F3C1B" stroke-width="1"/></g>
+    <g transform="translate(196,90) rotate(-5)"><ellipse rx="12" ry="6.5" fill="#D9A441"/><line x1="-12" y1="0" x2="12" y2="0" stroke="#A9781F" stroke-width="1"/></g>
+    <g transform="translate(204,130) rotate(15)"><ellipse rx="11" ry="6" fill="#C1522E"/><line x1="-11" y1="0" x2="11" y2="0" stroke="#8C3A1F" stroke-width="1"/></g>
+    <g transform="translate(120,60) rotate(5)"><ellipse rx="10" ry="5.5" fill="#8A5A2E"/><line x1="-10" y1="0" x2="10" y2="0" stroke="#5F3C1B" stroke-width="1"/></g>
+    <g transform="translate(158,16) rotate(20)"><ellipse rx="12" ry="6.5" fill="#B8873A"/><line x1="-12" y1="0" x2="12" y2="0" stroke="#8A6528" stroke-width="1"/></g>
+    <g transform="translate(180,50) rotate(-25)"><ellipse rx="13" ry="7" fill="#C1522E"/><line x1="-13" y1="0" x2="13" y2="0" stroke="#8C3A1F" stroke-width="1"/></g>
+    <g transform="translate(122,34) rotate(15)"><ellipse rx="11" ry="6" fill="#D9A441"/><line x1="-11" y1="0" x2="11" y2="0" stroke="#A9781F" stroke-width="1"/></g>
+    <g transform="translate(148,60) rotate(-10)"><ellipse rx="12" ry="6.5" fill="#8A5A2E"/><line x1="-12" y1="0" x2="12" y2="0" stroke="#5F3C1B" stroke-width="1"/></g>
+    <g transform="translate(180,110) rotate(20)"><ellipse rx="11" ry="6" fill="#D9A441"/><line x1="-11" y1="0" x2="11" y2="0" stroke="#A9781F" stroke-width="1"/></g>
+    <g transform="translate(210,50) rotate(-15)"><ellipse rx="10" ry="5.5" fill="#B8873A"/><line x1="-10" y1="0" x2="10" y2="0" stroke="#8A6528" stroke-width="1"/></g>
+  </g>
+</svg>
 
 <header>
   <div class="nav">
@@ -667,7 +992,7 @@
       </div>
       <div class="hero-side">
         <p>Inspired by Swiss chocolate heritage, handcrafted in Dhaka — Ara Chocolates is an experience in absolute balance.</p>
-        <button class="hero-cta" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">View products →</button>
+        <button class="hero-cta" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">View products <span class="arrow">→</span></button>
       </div>
     </div>
   </div>
@@ -708,7 +1033,7 @@
       <div class="pbody">
         <h3>Combo Box</h3>
         <p class="desc">A larger collection made for sharing — ideal for gifting or a family occasion. Includes 3 flavors.</p>
-        <button type="button" class="view-details">View flavors &amp; details →</button>
+        <button type="button" class="view-details">View flavors &amp; details <span class="arrow">→</span></button>
         <div class="row">
           <div class="price">৳ 1500</div>
           <button type="button" class="order" onclick="event.stopPropagation(); openProductModal('combo')">Order</button>
@@ -720,7 +1045,7 @@
       <div class="pbody">
         <h3>Solo</h3>
         <p class="desc">Made for a single serving — a small, rich moment just for you.</p>
-        <button type="button" class="view-details">View details →</button>
+        <button type="button" class="view-details">View details <span class="arrow">→</span></button>
         <div class="row">
           <div class="price">৳ 390</div>
           <button type="button" class="order" onclick="event.stopPropagation(); openProductModal('solo')">Order</button>
@@ -740,54 +1065,58 @@
       <button type="button" class="product-tab" id="tabSolo" onclick="switchProductTab('solo')">Solo</button>
     </div>
 
-    <div class="product-modal-panel" id="panelCombo">
-      <div class="pm-head">
-        <h3 id="productModalTitle">Combo Box</h3>
-        <div class="pm-price">৳ 1500</div>
-      </div>
-      <p class="pm-intro">One box, three rich experiences — made for sharing, gifting, or a family occasion. Every Combo Box includes all three flavors below.</p>
-      <div class="pm-flavors">
-        <div class="pm-flavor">
-          <div class="pm-flavor-tag">01</div>
-          <div>
-            <h4>Pure Dark Chocolate</h4>
-            <p>Intense, deep cocoa richness for those who love chocolate at its most honest.</p>
+    <div class="pm-swipeport" id="pmSwipeport">
+      <div class="pm-track" id="pmTrack">
+        <div class="product-modal-panel" id="panelCombo">
+          <div class="pm-head">
+            <h3 id="productModalTitle">Combo Box</h3>
+            <div class="pm-price">৳ 1500</div>
           </div>
-        </div>
-        <div class="pm-flavor">
-          <div class="pm-flavor-tag">02</div>
-          <div>
-            <h4>White Chocolate</h4>
-            <p>Smooth, creamy, and delicately sweet — a lighter counterpoint to the dark.</p>
+          <p class="pm-intro">One box, three rich experiences — made for sharing, gifting, or a family occasion. Every Combo Box includes all three flavors below.</p>
+          <div class="pm-flavors">
+            <div class="pm-flavor">
+              <div class="pm-flavor-tag">01</div>
+              <div>
+                <h4>Pure Dark Chocolate</h4>
+                <p>Intense, deep cocoa richness for those who love chocolate at its most honest.</p>
+              </div>
+            </div>
+            <div class="pm-flavor">
+              <div class="pm-flavor-tag">02</div>
+              <div>
+                <h4>White Chocolate</h4>
+                <p>Smooth, creamy, and delicately sweet — a lighter counterpoint to the dark.</p>
+              </div>
+            </div>
+            <div class="pm-flavor">
+              <div class="pm-flavor-tag">03</div>
+              <div>
+                <h4>Special Touch</h4>
+                <p>Our signature blend, finished with an artisan twist you won't find anywhere else.</p>
+              </div>
+            </div>
           </div>
+          <button type="button" class="pm-order" onclick="openOrderChoice('Combo Box','৳ 1500')">Order</button>
         </div>
-        <div class="pm-flavor">
-          <div class="pm-flavor-tag">03</div>
-          <div>
-            <h4>Special Touch</h4>
-            <p>Our signature blend, finished with an artisan twist you won't find anywhere else.</p>
-          </div>
-        </div>
-      </div>
-      <button type="button" class="pm-order" onclick="openOrderChoice('Combo Box','৳ 1500')">Order</button>
-    </div>
 
-    <div class="product-modal-panel" id="panelSolo">
-      <div class="pm-head">
-        <h3>Solo</h3>
-        <div class="pm-price">৳ 390</div>
-      </div>
-      <p class="pm-intro">Made for a single serving — a small, rich moment just for you.</p>
-      <div class="pm-flavors">
-        <div class="pm-flavor">
-          <div class="pm-flavor-tag">01</div>
-          <div>
-            <h4>Pure Dark Chocolate</h4>
-            <p>Intense, deep cocoa richness for those who love chocolate at its most honest.</p>
+        <div class="product-modal-panel" id="panelSolo">
+          <div class="pm-head">
+            <h3>Solo</h3>
+            <div class="pm-price">৳ 390</div>
           </div>
+          <p class="pm-intro">Made for a single serving — a small, rich moment just for you.</p>
+          <div class="pm-flavors">
+            <div class="pm-flavor">
+              <div class="pm-flavor-tag">01</div>
+              <div>
+                <h4>Pure Dark Chocolate</h4>
+                <p>Intense, deep cocoa richness for those who love chocolate at its most honest.</p>
+              </div>
+            </div>
+          </div>
+          <button type="button" class="pm-order" onclick="openOrderChoice('Solo','৳ 390')">Order</button>
         </div>
       </div>
-      <button type="button" class="pm-order" onclick="openOrderChoice('Solo','৳ 390')">Order</button>
     </div>
   </div>
 </div>
@@ -808,6 +1137,7 @@
   <div class="order-form-box">
     <button class="order-form-close" onclick="closeOrderForm()" aria-label="Close">✕</button>
     <h3>Order on Website</h3>
+    <p class="oform-sub">Fill in your details below — we'll confirm your order shortly.</p>
     <form id="orderForm">
       <div class="form-group">
         <label for="oProduct"><span class="lbl-en">Product</span><span class="lbl-sep">/</span><span class="lbl-bn" lang="bn">পণ্য</span></label>
@@ -844,20 +1174,18 @@
       <div class="form-group">
         <label for="oQty"><span class="lbl-en">Quantity</span><span class="lbl-sep">/</span><span class="lbl-bn" lang="bn">পরিমাণ</span></label>
         <div style="display:flex;align-items:center;gap:10px;">
-          <button type="button" onclick="changeQty(-1)" aria-label="Decrease quantity"
-            style="width:38px;height:38px;border:1px solid var(--line);background:var(--cream-2);font-size:1.2rem;font-weight:700;cursor:pointer;border-radius:6px;color:var(--cocoa-dark);transition:transform .15s;">−</button>
+          <button type="button" class="qty-btn" onclick="changeQty(-1)" aria-label="Decrease quantity">−</button>
           <input type="number" id="oQty" name="quantity" value="1" min="1" required
             oninput="updateOrderTotal()" style="text-align:center;width:70px;">
-          <button type="button" onclick="changeQty(1)" aria-label="Increase quantity"
-            style="width:38px;height:38px;border:1px solid var(--line);background:var(--cream-2);font-size:1.2rem;font-weight:700;cursor:pointer;border-radius:6px;color:var(--cocoa-dark);transition:transform .15s;">+</button>
+          <button type="button" class="qty-btn" onclick="changeQty(1)" aria-label="Increase quantity">+</button>
         </div>
-        <div style="margin-top:10px;padding:10px 14px;background:var(--cocoa-dark);border-radius:6px;display:flex;justify-content:space-between;align-items:center;">
-          <span style="color:var(--cream-2);font-size:0.95rem;" lang="bn">মোট দাম</span>
-          <span id="oQtyTotal" style="color:var(--white);font-weight:700;font-size:1.25rem;">৳ 0</span>
+        <div class="order-total-box">
+          <span lang="bn">মোট দাম</span>
+          <span id="oQtyTotal">৳ 0</span>
         </div>
       </div>
-      <div class="form-group" style="background:var(--cream-2);border:1px solid var(--line);border-radius:8px;padding:14px 16px;">
-        <p style="font-size:0.9rem;line-height:1.6;color:var(--cocoa-dark);margin:0;">
+      <div class="form-group advance-note">
+        <p>
           অর্ডার কনফার্ম করতে <strong>মোট মূল্যের ২০%</strong> অগ্রিম bKash/Nagad করুন এই নম্বরে:
           <strong>01799403099</strong><br>
           আপনাকে পাঠাতে হবে: <strong id="oAdvanceAmount">৳ 0</strong>
@@ -899,6 +1227,93 @@
         <h4>Swiss craftsmanship</h4>
         <p>Balance and precision learned from Swiss chocolate-making principles.</p>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== CUSTOMER REVIEWS SECTION ========== -->
+<section class="section" id="reviews">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="label">Reviews</div>
+      <h2>What our customers are saying</h2>
+    </div>
+    <div class="reviews-grid" id="reviewsCarousel">
+      <div class="carousel-track" id="carouselTrack">
+
+        <!-- PROFILE 1 -->
+        <div class="review-card">
+          <div class="stars">★★★★★</div>
+          <p class="quote" lang="bn">চকলেটটা হাতে পাওয়ার পর সত্যিই ভালো লেগেছে। স্বাদটা বেশ সুন্দর এবং খাওয়ার সময় একটা homemade ও premium feeling পাওয়া যায়। আবার অর্ডার করার ইচ্ছা আছে।</p>
+          <div class="profile">
+            <img class="avatar" src="images/reviews/rani-mukharji.jpg" alt="Rani Mukharji" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'avatar avatar-fallback',textContent:'RM'}))">
+            <div>
+              <div class="profile-name">Rani Mukharji</div>
+              <div class="profile-role">Student</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PROFILE 2 -->
+        <div class="review-card">
+          <div class="stars">★★★★★</div>
+          <p class="quote">"Chocolate was really enjoyable and felt worth the order. I loved the taste and the overall presentation. It was a simple purchase that genuinely made my day a little better."</p>
+          <div class="profile">
+            <img class="avatar" src="images/reviews/mymuna-binte-mohammad.jpg" alt="Mymuna Binte Mohammad" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'avatar avatar-fallback',textContent:'MB'}))">
+            <div>
+              <div class="profile-name">Mymuna Binte Mohammad</div>
+              <div class="profile-role">Student</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PROFILE 3 -->
+        <div class="review-card">
+          <div class="stars">★★★★★</div>
+          <p class="quote" lang="bn">চকলেটের স্বাদ ও মান দুটোই বেশ ভালো লেগেছে। বিশেষ করে এর presentation এবং overall quality আলাদা একটা ভালো অনুভূতি দিয়েছে। দামের তুলনায় experience-টা বেশ সন্তোষজনক।</p>
+          <div class="profile">
+            <img class="avatar" src="images/reviews/sm-salim-munna.jpg" alt="SM Salim Munna" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'avatar avatar-fallback',textContent:'SM'}))">
+            <div>
+              <div class="profile-name">SM Salim Munna</div>
+              <div class="profile-role">Businessman</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PROFILE 4 -->
+        <div class="review-card">
+          <div class="stars">★★★★★</div>
+          <p class="quote">"I really liked the chocolate, especially the taste and premium presentation. I ordered it after seeing the options, and the overall experience was lovely. I would happily order my favorite chocolate again."</p>
+          <div class="profile">
+            <img class="avatar" src="images/reviews/israt-jahan-momo.jpg" alt="Israt Jahan Momo" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'avatar avatar-fallback',textContent:'IM'}))">
+            <div>
+              <div class="profile-name">Israt Jahan Momo</div>
+              <div class="profile-role">Housewife</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- PROFILE 5 -->
+        <div class="review-card">
+          <div class="stars">★★★★★</div>
+          <p class="quote" lang="bn">চকলেটটির premium presentation এবং স্বাদের মধ্যে সুন্দর একটি balance আছে। দেখতে যেমন আকর্ষণীয়, খেতেও তেমন ভালো লেগেছে। পুরো experience-টাই বেশ পরিপাটি ও মানসম্মত মনে হয়েছে।</p>
+          <div class="profile">
+            <img class="avatar" src="images/reviews/asma-akter.jpg" alt="Asma Akter" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'avatar avatar-fallback',textContent:'AA'}))">
+            <div>
+              <div class="profile-name">Asma Akter</div>
+              <div class="profile-role">Job Holder</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    <div class="carousel-dots" id="carouselDots">
+      <button class="dot active" data-index="0" aria-label="Go to review 1"></button>
+      <button class="dot" data-index="1" aria-label="Go to review 2"></button>
+      <button class="dot" data-index="2" aria-label="Go to review 3"></button>
+      <button class="dot" data-index="3" aria-label="Go to review 4"></button>
+      <button class="dot" data-index="4" aria-label="Go to review 5"></button>
     </div>
   </div>
 </section>
@@ -1099,17 +1514,52 @@
     setTimeout(() => { teamAnimating = false; }, 420);
   }
 
-  // Product Details Modal
+  // Product Details Modal (Combo Box / Solo) — tab buttons + swipe, same panel
   const productModalOverlay = document.getElementById('productModalOverlay');
+  const pmSwipeport = document.getElementById('pmSwipeport');
+  const pmTrack = document.getElementById('pmTrack');
+  const pmPanels = [document.getElementById('panelCombo'), document.getElementById('panelSolo')];
+  const pmTabEls = { combo: document.getElementById('tabCombo'), solo: document.getElementById('tabSolo') };
+  const PM_ORDER = ['combo', 'solo'];
+  let pmActiveIndex = 0;
+  let pmViewportWidth = 0;
+
+  function pmLayout() {
+    pmViewportWidth = pmSwipeport.clientWidth;
+    if (!pmViewportWidth) return;
+    pmTrack.style.width = (pmViewportWidth * PM_ORDER.length) + 'px';
+    pmPanels.forEach(function (panel) { panel.style.width = pmViewportWidth + 'px'; });
+    pmMoveToIndex(pmActiveIndex, false);
+  }
+
+  function pmMoveToIndex(index, animate) {
+    if (animate === undefined) animate = true;
+    pmActiveIndex = index;
+    const which = PM_ORDER[index];
+
+    pmTrack.style.transition = animate ? 'transform .34s cubic-bezier(.22,.8,.28,1)' : 'none';
+    pmTrack.style.transform = 'translateX(' + (-index * pmViewportWidth) + 'px)';
+
+    pmTabEls.combo.classList.toggle('active', which === 'combo');
+    pmTabEls.solo.classList.toggle('active', which === 'solo');
+    pmPanels.forEach(function (panel, i) { panel.setAttribute('aria-hidden', i === index ? 'false' : 'true'); });
+
+    const activePanel = pmPanels[index];
+    if (activePanel) {
+      pmSwipeport.style.transition = animate ? 'height .3s cubic-bezier(.2,.8,.2,1)' : 'none';
+      pmSwipeport.style.height = activePanel.scrollHeight + 'px';
+    }
+  }
 
   function switchProductTab(which) {
-    document.getElementById('tabCombo').classList.toggle('active', which === 'combo');
-    document.getElementById('tabSolo').classList.toggle('active', which === 'solo');
-    document.getElementById('panelCombo').classList.toggle('active', which === 'combo');
-    document.getElementById('panelSolo').classList.toggle('active', which === 'solo');
+    let index = PM_ORDER.indexOf(which);
+    if (index === -1) index = 0;
+    if (!pmViewportWidth) pmLayout();
+    pmMoveToIndex(index, true);
   }
 
   function openProductModal(which) {
+    pmLayout();
     switchProductTab(which);
     productModalOverlay.classList.add('open');
     document.body.style.overflow = 'hidden';
@@ -1118,6 +1568,8 @@
   function closeProductModal() {
     productModalOverlay.classList.remove('open');
     document.body.style.overflow = '';
+    // On close, Solo is auto-selected so the next open starts there.
+    pmMoveToIndex(1, false);
   }
 
   function closeProductModalOnOverlay(e) {
@@ -1127,6 +1579,69 @@
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') closeProductModal();
   });
+
+  window.addEventListener('resize', function () {
+    if (productModalOverlay.classList.contains('open')) pmLayout();
+  });
+
+  // Swipe gestures: right-to-left → next (Solo), left-to-right → previous (Combo)
+  (function () {
+    let startX = 0, startY = 0, currentX = 0, dragging = false, horizontal = false;
+    const DIRECTION_LOCK_PX = 8; // ignore tiny jitters before deciding swipe direction
+
+    pmSwipeport.addEventListener('touchstart', function (e) {
+      if (e.touches.length !== 1) return;
+      startX = currentX = e.touches[0].clientX;
+      startY = e.touches[0].clientY;
+      dragging = true;
+      horizontal = false;
+      pmTrack.style.transition = 'none';
+    }, { passive: true });
+
+    pmSwipeport.addEventListener('touchmove', function (e) {
+      if (!dragging) return;
+      const x = e.touches[0].clientX, y = e.touches[0].clientY;
+      const dx = x - startX, dy = y - startY;
+      if (!horizontal) {
+        if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > DIRECTION_LOCK_PX) {
+          horizontal = true;
+        } else if (Math.abs(dy) > Math.abs(dx)) {
+          dragging = false;
+          return;
+        } else {
+          return;
+        }
+      }
+      e.preventDefault();
+      currentX = x;
+      let base = -pmActiveIndex * pmViewportWidth;
+      let translate = base + dx;
+      // Light resistance at the ends (first/last section) instead of overshoot.
+      if ((pmActiveIndex === 0 && dx > 0) || (pmActiveIndex === PM_ORDER.length - 1 && dx < 0)) {
+        translate = base + dx * 0.3;
+      }
+      pmTrack.style.transform = 'translateX(' + translate + 'px)';
+    }, { passive: false });
+
+    function pmEndDrag() {
+      if (!dragging) return;
+      dragging = false;
+      if (!horizontal) return;
+      const dx = currentX - startX;
+      const threshold = Math.max(44, pmViewportWidth * 0.18); // avoid tiny-touch accidental switches
+      if (dx <= -threshold && pmActiveIndex < PM_ORDER.length - 1) {
+        pmMoveToIndex(pmActiveIndex + 1, true);
+      } else if (dx >= threshold && pmActiveIndex > 0) {
+        pmMoveToIndex(pmActiveIndex - 1, true);
+      } else {
+        pmMoveToIndex(pmActiveIndex, true);
+      }
+    }
+    pmSwipeport.addEventListener('touchend', pmEndDrag);
+    pmSwipeport.addEventListener('touchcancel', pmEndDrag);
+  })();
+
+  pmLayout();
 
   // Order Choice + Order on Website flow
   const orderChoiceOverlay = document.getElementById('orderChoiceOverlay');
@@ -1302,6 +1817,204 @@
     if (e.key === 'Escape') { closeOrderChoice(); closeOrderForm(); }
   });
 
+  // ========== CAROUSEL AUTO-SLIDE & SWIPE ==========
+  const carousel = {
+    track: document.getElementById('carouselTrack'),
+    grid: document.getElementById('reviewsCarousel'),
+    dotsContainer: document.getElementById('carouselDots'),
+    cards: document.querySelectorAll('#carouselTrack .review-card'),
+    dots: document.querySelectorAll('.dot'),
+    currentIndex: 0,
+    autoSlideInterval: null,
+    isAutoSliding: false,
+    trackWidth: 0,
+    startX: 0,
+    startY: 0,
+    currentX: 0,
+    lastX: 0,
+    lastT: 0,
+    velocity: 0,
+    dragging: false,
+    horizontal: false,
+
+    init: function() {
+      if (!this.track || this.cards.length === 0) return;
+
+      this.trackWidth = this.grid.clientWidth;
+      window.addEventListener('resize', () => {
+        this.trackWidth = this.grid.clientWidth;
+        this.goToIndex(this.currentIndex, false);
+      });
+
+      // Touch/swipe handlers
+      this.grid.addEventListener('touchstart', (e) => this.handleStart(e.touches[0].clientX, e.touches[0].clientY), { passive: true });
+      this.grid.addEventListener('touchmove', (e) => this.handleMove(e, e.touches[0].clientX, e.touches[0].clientY), { passive: false });
+      this.grid.addEventListener('touchend', () => this.handleEnd(), { passive: true });
+      this.grid.addEventListener('touchcancel', () => this.handleEnd(), { passive: true });
+
+      // Mouse drag handlers
+      this.grid.addEventListener('mousedown', (e) => { this.handleStart(e.clientX, e.clientY); e.preventDefault(); });
+      window.addEventListener('mousemove', (e) => this.handleMove(e, e.clientX, e.clientY));
+      window.addEventListener('mouseup', () => this.handleEnd());
+
+      // Dot click handlers
+      this.dots.forEach(dot => {
+        dot.addEventListener('click', (e) => {
+          const index = parseInt(e.target.getAttribute('data-index'), 10);
+          this.pauseAutoSlide();
+          this.goToIndex(index, true);
+          if (this.isAutoSliding) {
+            setTimeout(() => this.resumeAutoSlide(), 3000);
+          }
+        });
+      });
+
+      // Start auto-slide when reviews section comes into view
+      if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting && !this.isAutoSliding) {
+              this.startAutoSlide();
+            }
+          });
+        }, { threshold: 0.3 });
+        observer.observe(this.grid);
+      } else {
+        this.startAutoSlide();
+      }
+    },
+
+    updateDots: function() {
+      this.dots.forEach((dot, index) => {
+        if (index === this.currentIndex) {
+          dot.classList.add('active');
+        } else {
+          dot.classList.remove('active');
+        }
+      });
+    },
+
+    goToIndex: function(index, animate = true) {
+      if (index < 0 || index >= this.cards.length) return;
+      this.currentIndex = index;
+      const offset = -index * this.trackWidth;
+      this.track.style.transition = animate ? 'transform .28s cubic-bezier(.16,1,.3,1)' : 'none';
+      this.track.style.transform = `translateX(${offset}px)`;
+      this.updateDots();
+    },
+
+    nextSlide: function() {
+      const nextIndex = this.currentIndex < this.cards.length - 1 ? this.currentIndex + 1 : 0;
+      this.goToIndex(nextIndex, true);
+    },
+
+    prevSlide: function() {
+      const prevIndex = this.currentIndex > 0 ? this.currentIndex - 1 : this.cards.length - 1;
+      this.goToIndex(prevIndex, true);
+    },
+
+    startAutoSlide: function() {
+      this.isAutoSliding = true;
+      this.autoSlideInterval = setInterval(() => {
+        let nextIndex = this.currentIndex + 1;
+        if (nextIndex >= this.cards.length) {
+          nextIndex = 0;
+        }
+        this.goToIndex(nextIndex, true);
+      }, 2000);
+    },
+
+    pauseAutoSlide: function() {
+      clearInterval(this.autoSlideInterval);
+      this.autoSlideInterval = null;
+    },
+
+    resumeAutoSlide: function() {
+      if (this.isAutoSliding && !this.autoSlideInterval) {
+        this.autoSlideInterval = setInterval(() => {
+          let nextIndex = this.currentIndex + 1;
+          if (nextIndex >= this.cards.length) {
+            nextIndex = 0;
+          }
+          this.goToIndex(nextIndex, true);
+        }, 2000);
+      }
+    },
+
+    handleStart: function(x, y) {
+      this.trackWidth = this.grid.clientWidth;
+      this.startX = this.currentX = this.lastX = x;
+      this.startY = y;
+      this.lastT = performance.now();
+      this.velocity = 0;
+      this.dragging = true;
+      this.horizontal = false;
+      this.pauseAutoSlide();
+      this.track.style.transition = 'none';
+    },
+
+    handleMove: function(e, x, y) {
+      if (!this.dragging) return;
+      const dx = x - this.startX;
+      const dy = y - this.startY;
+
+      if (!this.horizontal) {
+        if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 4) {
+          this.horizontal = true;
+        } else if (Math.abs(dy) > Math.abs(dx)) {
+          this.dragging = false;
+          return;
+        } else {
+          return;
+        }
+      }
+
+      if (e.cancelable) e.preventDefault();
+
+      const now = performance.now();
+      const dt = now - this.lastT;
+      if (dt > 0) this.velocity = (x - this.lastX) / dt;
+      this.lastX = x;
+      this.lastT = now;
+      this.currentX = x;
+
+      let base = -this.currentIndex * this.trackWidth;
+      let translate = base + dx;
+      if ((this.currentIndex === 0 && dx > 0) || (this.currentIndex === this.cards.length - 1 && dx < 0)) {
+        translate = base + dx * 0.45;
+      }
+      if (this.rafId) cancelAnimationFrame(this.rafId);
+      this.rafId = requestAnimationFrame(() => {
+        this.track.style.transform = `translateX(${translate}px)`;
+      });
+    },
+
+    handleEnd: function() {
+      if (!this.dragging) return;
+      this.dragging = false;
+      if (this.rafId) { cancelAnimationFrame(this.rafId); this.rafId = null; }
+
+      if (this.horizontal) {
+        const dx = this.currentX - this.startX;
+        const distanceThreshold = this.trackWidth * 0.12;
+        const flickThreshold = 0.22; // px/ms — a quick flick snaps even on a short drag
+        if (dx <= -distanceThreshold || this.velocity <= -flickThreshold) {
+          this.nextSlide();
+        } else if (dx >= distanceThreshold || this.velocity >= flickThreshold) {
+          this.prevSlide();
+        } else {
+          this.goToIndex(this.currentIndex, true);
+        }
+      }
+
+      if (this.isAutoSliding) {
+        setTimeout(() => this.resumeAutoSlide(), 3000);
+      }
+    }
+  };
+
+  carousel.init();
+
   // Complaints Form Submission
   document.getElementById('complaintsForm').addEventListener('submit', async function(e) {
     e.preventDefault();
@@ -1349,6 +2062,43 @@
       messageDiv.className = 'form-message';
     }, 3000);
   });
+
+  // Falling leaves background animation
+  (function(){
+    const layer = document.getElementById('leafFallLayer');
+    const branch = document.querySelector('.branch-topright');
+    if(!layer || !branch) return;
+    const colors = ['#D9A441', '#C1522E', '#8A5A2E', '#B8873A'];
+    const types = ['straight', 'sway', 'diagonal'];
+    const leafSvg = (color) => `<svg viewBox="0 0 24 24" width="100%" height="100%"><path d="M12 2 C4 6 2 14 12 22 C22 14 20 6 12 2 Z" fill="${color}"/><line x1="12" y1="4" x2="12" y2="20" stroke="rgba(0,0,0,0.18)" stroke-width="1"/></svg>`;
+
+    function spawnLeaf(){
+      const rect = branch.getBoundingClientRect();
+      const marginX = rect.width*0.12;
+      const spawnLeft = rect.left + marginX + Math.random()*(rect.width - marginX*2);
+      const spawnTop = rect.top + rect.height*0.04 + Math.random()*(rect.height*0.62);
+
+      const leaf = document.createElement('div');
+      const type = types[Math.floor(Math.random()*types.length)];
+      leaf.className = 'fall-leaf type-' + type;
+      const size = 12 + Math.random()*14;
+      const duration = type === 'straight' ? (7 + Math.random()*4) : (10 + Math.random()*8);
+      const color = colors[Math.floor(Math.random()*colors.length)];
+      leaf.style.left = spawnLeft + 'px';
+      leaf.style.top = spawnTop + 'px';
+      leaf.style.width = size + 'px';
+      leaf.style.height = size + 'px';
+      leaf.style.animationDuration = duration + 's';
+      leaf.innerHTML = leafSvg(color);
+      layer.appendChild(leaf);
+      setTimeout(() => leaf.remove(), duration*1000 + 500);
+    }
+
+    for(let i=0;i<7;i++){
+      setTimeout(spawnLeaf, i*550);
+    }
+    setInterval(spawnLeaf, 1000);
+  })();
 
   // Contact Form (WhatsApp)
   document.getElementById('contactForm').addEventListener('submit', function(e){
