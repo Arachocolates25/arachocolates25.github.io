@@ -567,7 +567,47 @@
     border:2px solid var(--line);
     background:var(--cream);
     box-shadow:0 2px 6px rgba(36,18,9,0.1);
+    cursor:pointer;
+    transition:transform .2s ease;
   }
+  .review-card .avatar:hover{transform:scale(1.08);}
+  .review-card .avatar:active{transform:scale(0.96);}
+
+  /* ---------- AVATAR ZOOM MODAL ---------- */
+  .avatar-modal-overlay{
+    position:fixed;inset:0;
+    background:rgba(36,18,9,0.65);
+    display:flex;align-items:center;justify-content:center;
+    padding:24px;z-index:400;
+    opacity:0;visibility:hidden;
+    transition:opacity .28s ease, visibility .28s ease;
+  }
+  .avatar-modal-overlay.open{opacity:1;visibility:visible;}
+  .avatar-modal-circle{
+    width:min(78vw,320px);height:min(78vw,320px);
+    border-radius:50%;
+    overflow:hidden;
+    border:4px solid var(--cream-2);
+    box-shadow:0 24px 60px rgba(36,18,9,0.4);
+    transform:scale(0.4);
+    opacity:0;
+    transition:transform .38s cubic-bezier(.2,.8,.2,1), opacity .3s ease;
+    background:var(--cream);
+  }
+  .avatar-modal-overlay.open .avatar-modal-circle{transform:scale(1);opacity:1;}
+  .avatar-modal-circle img{
+    width:100%;height:100%;object-fit:cover;display:block;
+  }
+  .avatar-modal-close{
+    position:absolute;top:20px;right:20px;
+    width:40px;height:40px;border-radius:50%;
+    background:rgba(255,255,255,0.15);
+    border:none;color:var(--white);
+    font-size:1.3rem;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    transition:background .2s ease;
+  }
+  .avatar-modal-close:hover{background:rgba(255,255,255,0.3);}
   .review-card .avatar-fallback{
     display:flex;align-items:center;justify-content:center;
     font-family:'Archivo',sans-serif;font-weight:700;font-size:0.85rem;
@@ -937,6 +977,13 @@
 <body>
 
 <div class="leaf-fall-layer" id="leafFallLayer" aria-hidden="true"></div>
+
+<div class="avatar-modal-overlay" id="avatarModalOverlay" onclick="if(event.target===this) closeAvatarModal()">
+  <button class="avatar-modal-close" onclick="closeAvatarModal()" aria-label="Close">✕</button>
+  <div class="avatar-modal-circle">
+    <img id="avatarModalImg" src="" alt="">
+  </div>
+</div>
 <svg class="branch-topright" viewBox="0 0 230 210" aria-hidden="true">
   <defs>
     <linearGradient id="woodGrad" x1="0" y1="1" x2="0.3" y2="0">
@@ -1246,7 +1293,7 @@
           <div class="stars">★★★★★</div>
           <p class="quote" lang="bn">চকলেটটা হাতে পাওয়ার পর সত্যিই ভালো লেগেছে। স্বাদটা বেশ সুন্দর এবং খাওয়ার সময় একটা homemade ও premium feeling পাওয়া যায়। আবার অর্ডার করার ইচ্ছা আছে।</p>
           <div class="profile">
-            <img class="avatar" src="rani-mukharji.jpg" alt="Rani Mukharji" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'avatar avatar-fallback',textContent:'RM'}))">
+            <img class="avatar" src="rani-mukharji.jpg" alt="Rani Mukharji" onclick="openAvatarModal(this)" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'avatar avatar-fallback',textContent:'RM'}))">
             <div>
               <div class="profile-name">Rani Mukharji</div>
               <div class="profile-role">Student</div>
@@ -1259,7 +1306,7 @@
           <div class="stars">★★★★★</div>
           <p class="quote">"Chocolate was really enjoyable and felt worth the order. I loved the taste and the overall presentation. It was a simple purchase that genuinely made my day a little better."</p>
           <div class="profile">
-            <img class="avatar" src="mymuna-binte-mohammad.jpg" alt="Mymuna Binte Mohammad" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'avatar avatar-fallback',textContent:'MB'}))">
+            <img class="avatar" src="mymuna-binte-mohammad.jpg" alt="Mymuna Binte Mohammad" onclick="openAvatarModal(this)" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'avatar avatar-fallback',textContent:'MB'}))">
             <div>
               <div class="profile-name">Mymuna Binte Mohammad</div>
               <div class="profile-role">Student</div>
@@ -1272,7 +1319,7 @@
           <div class="stars">★★★★★</div>
           <p class="quote" lang="bn">চকলেটের স্বাদ ও মান দুটোই বেশ ভালো লেগেছে। বিশেষ করে এর presentation এবং overall quality আলাদা একটা ভালো অনুভূতি দিয়েছে। দামের তুলনায় experience-টা বেশ সন্তোষজনক।</p>
           <div class="profile">
-            <img class="avatar" src="sm-salim-munna.jpg" alt="SM Salim Munna" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'avatar avatar-fallback',textContent:'SM'}))">
+            <img class="avatar" src="sm-salim-munna.jpg" alt="SM Salim Munna" onclick="openAvatarModal(this)" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'avatar avatar-fallback',textContent:'SM'}))">
             <div>
               <div class="profile-name">SM Salim Munna</div>
               <div class="profile-role">Businessman</div>
@@ -1285,7 +1332,7 @@
           <div class="stars">★★★★★</div>
           <p class="quote">"I really liked the chocolate, especially the taste and premium presentation. I ordered it after seeing the options, and the overall experience was lovely. I would happily order my favorite chocolate again."</p>
           <div class="profile">
-            <img class="avatar" src="israt-jahan-momo.jpg" alt="Israt Jahan Momo" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'avatar avatar-fallback',textContent:'IM'}))">
+            <img class="avatar" src="israt-jahan-momo.jpg" alt="Israt Jahan Momo" onclick="openAvatarModal(this)" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'avatar avatar-fallback',textContent:'IM'}))">
             <div>
               <div class="profile-name">Israt Jahan Momo</div>
               <div class="profile-role">Housewife</div>
@@ -1298,7 +1345,7 @@
           <div class="stars">★★★★★</div>
           <p class="quote" lang="bn">চকলেটটির premium presentation এবং স্বাদের মধ্যে সুন্দর একটি balance আছে। দেখতে যেমন আকর্ষণীয়, খেতেও তেমন ভালো লেগেছে। পুরো experience-টাই বেশ পরিপাটি ও মানসম্মত মনে হয়েছে।</p>
           <div class="profile">
-            <img class="avatar" src="asma-akter.jpg" alt="Asma Akter" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'avatar avatar-fallback',textContent:'AA'}))">
+            <img class="avatar" src="asma-akter.jpg" alt="Asma Akter" onclick="openAvatarModal(this)" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'avatar avatar-fallback',textContent:'AA'}))">
             <div>
               <div class="profile-name">Asma Akter</div>
               <div class="profile-role">Job Holder</div>
@@ -2099,6 +2146,24 @@
     }
     setInterval(spawnLeaf, 1000);
   })();
+
+  // Avatar Zoom Modal
+  function openAvatarModal(imgEl) {
+    const overlay = document.getElementById('avatarModalOverlay');
+    const modalImg = document.getElementById('avatarModalImg');
+    modalImg.src = imgEl.src;
+    modalImg.alt = imgEl.alt;
+    overlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeAvatarModal() {
+    const overlay = document.getElementById('avatarModalOverlay');
+    overlay.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeAvatarModal();
+  });
 
   // Contact Form (WhatsApp)
   document.getElementById('contactForm').addEventListener('submit', function(e){
