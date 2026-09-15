@@ -471,7 +471,7 @@
   .carousel-track{
     display:flex;
     width:100%;gap:3px;
-    transition:transform .6s cubic-bezier(.22,1,.36,1);
+    transition:transform .6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     will-change:transform;
   }
   .review-card{
@@ -637,7 +637,7 @@
     background:rgba(36,18,9,0.15);
     border:1.5px solid rgba(36,18,9,0.2);
     cursor:pointer;
-    transition:all .35s cubic-bezier(.2,.8,.2,1);
+    transition:background .35s cubic-bezier(.2,.8,.2,1), border-color .35s cubic-bezier(.2,.8,.2,1), transform .35s cubic-bezier(.2,.8,.2,1), box-shadow .35s cubic-bezier(.2,.8,.2,1), width .35s cubic-bezier(.2,.8,.2,1), height .35s cubic-bezier(.2,.8,.2,1);
     position:relative;
   }
   .dot:hover{
@@ -1000,40 +1000,54 @@
   }
   .ambient-glow.tone-cool{
     background:
-      radial-gradient(ellipse at 80% 38%, rgba(58,164,196,0.68) 0%, rgba(58,164,196,0.42) 22%, rgba(58,164,196,0.22) 44%, rgba(58,164,196,0.08) 64%, transparent 82%);
+      radial-gradient(ellipse at 80% 38%, rgba(61,171,203,0.68) 0%, rgba(61,171,203,0.42) 22%, rgba(61,171,203,0.22) 44%, rgba(61,171,203,0.08) 64%, transparent 82%);
     animation-name:ambientGlowFade;
     animation-duration:6.5s;
     animation-delay:3s;
   }
   .ambient-glow.tone-violet{
     background:
-      radial-gradient(ellipse at 82% 44%, rgba(139,88,214,0.65) 0%, rgba(139,88,214,0.4) 24%, rgba(139,88,214,0.2) 46%, rgba(139,88,214,0.07) 66%, transparent 84%);
+      radial-gradient(ellipse at 82% 44%, rgba(144,91,222,0.65) 0%, rgba(144,91,222,0.4) 24%, rgba(144,91,222,0.2) 46%, rgba(144,91,222,0.07) 66%, transparent 84%);
     animation-name:ambientGlowFade;
     animation-duration:7s;
     animation-delay:10s;
   }
   .ambient-glow.tone-violetblue{
     background:
-      radial-gradient(ellipse at 74% 30%, rgba(130,74,212,0.55) 0%, rgba(130,74,212,0.24) 40%, transparent 72%),
-      radial-gradient(ellipse at 88% 62%, rgba(56,120,222,0.55) 0%, rgba(56,120,222,0.24) 42%, transparent 74%);
+      radial-gradient(ellipse at 74% 30%, rgba(135,77,220,0.55) 0%, rgba(135,77,220,0.24) 40%, transparent 72%),
+      radial-gradient(ellipse at 88% 62%, rgba(58,124,230,0.55) 0%, rgba(58,124,230,0.24) 42%, transparent 74%);
     animation-name:ambientGlowFade;
     animation-duration:8s;
     animation-delay:17.5s;
   }
   .ambient-glow.tone-emerald{
     background:
-      radial-gradient(ellipse at 80% 40%, rgba(42,163,120,0.62) 0%, rgba(42,163,120,0.36) 24%, rgba(42,163,120,0.16) 46%, rgba(42,163,120,0.06) 66%, transparent 84%);
+      radial-gradient(ellipse at 80% 40%, rgba(44,169,124,0.62) 0%, rgba(44,169,124,0.36) 24%, rgba(44,169,124,0.16) 46%, rgba(44,169,124,0.06) 66%, transparent 84%);
     animation-name:ambientGlowFade;
     animation-duration:7.5s;
     animation-delay:26s;
   }
   .ambient-glow.tone-rosegold{
     background:
-      radial-gradient(ellipse at 76% 32%, rgba(214,120,140,0.5) 0%, rgba(214,120,140,0.22) 42%, transparent 74%),
-      radial-gradient(ellipse at 90% 64%, rgba(196,142,74,0.5) 0%, rgba(196,142,74,0.2) 44%, transparent 76%);
+      radial-gradient(ellipse at 76% 32%, rgba(222,124,145,0.5) 0%, rgba(222,124,145,0.22) 42%, transparent 74%),
+      radial-gradient(ellipse at 90% 64%, rgba(203,147,77,0.5) 0%, rgba(203,147,77,0.2) 44%, transparent 76%);
     animation-name:ambientGlowFade;
     animation-duration:8s;
     animation-delay:34s;
+  }
+  .ambient-glow.tone-caramel{
+    background:
+      radial-gradient(ellipse at 78% 36%, rgba(203,139,61,0.6) 0%, rgba(203,139,61,0.32) 26%, rgba(203,139,61,0.12) 48%, transparent 78%);
+    animation-name:ambientGlowFade;
+    animation-duration:7s;
+    animation-delay:42s;
+  }
+  .ambient-glow.tone-wine{
+    background:
+      radial-gradient(ellipse at 84% 42%, rgba(174,61,77,0.55) 0%, rgba(174,61,77,0.28) 30%, rgba(174,61,77,0.1) 52%, transparent 80%);
+    animation-name:ambientGlowFade;
+    animation-duration:7.5s;
+    animation-delay:50s;
   }
   @keyframes ambientGlowFade{
     0%{opacity:0; transform:translateX(6%) scale(0.94);}
@@ -1059,6 +1073,8 @@
   <div class="ambient-glow tone-violetblue"></div>
   <div class="ambient-glow tone-emerald"></div>
   <div class="ambient-glow tone-rosegold"></div>
+  <div class="ambient-glow tone-caramel"></div>
+  <div class="ambient-glow tone-wine"></div>
 </div>
 
 <div class="avatar-modal-overlay" id="avatarModalOverlay" onclick="if(event.target===this) closeAvatarModal()">
@@ -1165,7 +1181,7 @@
         <p class="desc">A larger collection made for sharing — ideal for gifting or a family occasion. Includes 3 flavors.</p>
         <button type="button" class="view-details">View flavors &amp; details <span class="arrow">→</span></button>
         <div class="row">
-          <div class="price">৳ 1500</div>
+          <div class="price">৳ 1499</div>
           <button type="button" class="order" onclick="event.stopPropagation(); openProductModal('combo')">Order</button>
         </div>
       </div>
@@ -1200,7 +1216,7 @@
         <div class="product-modal-panel" id="panelCombo">
           <div class="pm-head">
             <h3 id="productModalTitle">Combo Box</h3>
-            <div class="pm-price">৳ 1500</div>
+            <div class="pm-price">৳ 1499</div>
           </div>
           <p class="pm-intro">One box, three rich experiences — made for sharing, gifting, or a family occasion. Every Combo Box includes all three flavors below.</p>
           <div class="pm-flavors">
@@ -1226,7 +1242,7 @@
               </div>
             </div>
           </div>
-          <button type="button" class="pm-order" onclick="openOrderChoice('Combo Box','৳ 1500')">Order</button>
+          <button type="button" class="pm-order" onclick="openOrderChoice('Combo Box','৳ 1499')">Order</button>
         </div>
 
         <div class="product-modal-panel" id="panelSolo">
@@ -1481,7 +1497,7 @@
             </div>
             <div class="team-item">
               <span class="team-label">WhatsApp</span>
-              <span class="team-value"><a href="https://wa.me/8801764491395" target="_blank">01764491395</a></span>
+              <span class="team-value"><a href="https://wa.me/8801764491395" target="_blank" rel="noopener">01764491395</a></span>
             </div>
           </div>
         </div>
@@ -1491,7 +1507,7 @@
       <div class="team-member reveal">
         <div class="team-header" onclick="toggleTeam(this)">
           <div>
-            <h3>Jannatul Ferdaus Ananna</h3>
+            <h3>Jannatul Ferdous Ananna</h3>
             <div class="role">Co-Founder & CEO</div>
           </div>
           <button class="team-toggle" type="button" aria-label="Toggle details">▼</button>
@@ -1717,6 +1733,7 @@
   // Swipe gestures: right-to-left → next (Solo), left-to-right → previous (Combo)
   (function () {
     let startX = 0, startY = 0, currentX = 0, dragging = false, horizontal = false;
+    let pmRafId = null;
     const DIRECTION_LOCK_PX = 8; // ignore tiny jitters before deciding swipe direction
 
     pmSwipeport.addEventListener('touchstart', function (e) {
@@ -1750,12 +1767,16 @@
       if ((pmActiveIndex === 0 && dx > 0) || (pmActiveIndex === PM_ORDER.length - 1 && dx < 0)) {
         translate = base + dx * 0.3;
       }
-      pmTrack.style.transform = 'translateX(' + translate + 'px)';
+      if (pmRafId) cancelAnimationFrame(pmRafId);
+      pmRafId = requestAnimationFrame(() => {
+        pmTrack.style.transform = 'translateX(' + translate + 'px)';
+      });
     }, { passive: false });
 
     function pmEndDrag() {
       if (!dragging) return;
       dragging = false;
+      if (pmRafId) { cancelAnimationFrame(pmRafId); pmRafId = null; }
       if (!horizontal) return;
       const dx = currentX - startX;
       const threshold = Math.max(44, pmViewportWidth * 0.18); // avoid tiny-touch accidental switches
@@ -1778,6 +1799,13 @@
   const orderFormOverlay = document.getElementById('orderFormOverlay');
   let currentOrderProduct = { name: '', price: '' };
   const WHATSAPP_NUMBER = '8801764491395';
+
+  // Cached once: these are looked up on every tap of the qty +/- buttons and
+  // every keystroke in the qty field, so avoiding a fresh getElementById()
+  // each time keeps that hot interaction path responsive.
+  const oQtyInputEl = document.getElementById('oQty');
+  const oQtyTotalEl = document.getElementById('oQtyTotal');
+  const oAdvanceAmountEl = document.getElementById('oAdvanceAmount');
 
   const BD_DIVISIONS = {
     'Dhaka': ['Dhaka', 'Faridpur', 'Gazipur', 'Gopalganj', 'Kishoreganj', 'Madaripur', 'Manikganj', 'Munshiganj', 'Narayanganj', 'Narsingdi', 'Rajbari', 'Shariatpur', 'Tangail'],
@@ -1830,18 +1858,17 @@
   }
 
   function updateOrderTotal() {
-    const qty = parseInt(document.getElementById('oQty').value, 10) || 0;
+    const qty = parseInt(oQtyInputEl.value, 10) || 0;
     const unit = getUnitPrice();
     const total = qty * unit;
-    document.getElementById('oQtyTotal').textContent = '৳ ' + total;
-    document.getElementById('oAdvanceAmount').textContent = '৳ ' + Math.round(total * 0.2);
+    oQtyTotalEl.textContent = '৳ ' + total;
+    oAdvanceAmountEl.textContent = '৳ ' + Math.round(total * 0.2);
   }
 
   function changeQty(delta) {
-    const input = document.getElementById('oQty');
-    let val = (parseInt(input.value, 10) || 1) + delta;
+    let val = (parseInt(oQtyInputEl.value, 10) || 1) + delta;
     if (val < 1) val = 1;
-    input.value = val;
+    oQtyInputEl.value = val;
     updateOrderTotal();
   }
 
@@ -1852,13 +1879,13 @@
 
   function continueToWhatsApp() {
     const text = encodeURIComponent('I would like to order the Ara Chocolates ' + currentOrderProduct.name);
-    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${text}`, '_blank');
+    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${text}`, '_blank', 'noopener,noreferrer');
     closeOrderChoice();
   }
 
   function openOrderForm() {
     closeOrderChoice();
-    document.getElementById('oQty').value = 1;
+    oQtyInputEl.value = 1;
     updateOrderTotal();
     orderFormOverlay.classList.add('open');
     document.body.style.overflow = 'hidden';
@@ -1910,11 +1937,15 @@
     submitBtn.textContent = 'Sending...';
 
     try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 15000);
       const response = await fetch(GOOGLE_SCRIPT_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(formData),
+        signal: controller.signal
       });
+      clearTimeout(timeoutId);
       const result = await response.json();
       if (result.success) {
         msgDiv.className = 'form-message success';
@@ -1956,7 +1987,8 @@
     dots: document.querySelectorAll('.dot'),
     currentIndex: 0,
     autoSlideInterval: null,
-    isAutoSliding: false,
+    isAutoSliding: true,
+    resumeTimer: null,
     trackWidth: 0,
     startX: 0,
     startY: 0,
@@ -1982,36 +2014,39 @@
       this.grid.addEventListener('touchend', () => this.handleEnd(), { passive: true });
       this.grid.addEventListener('touchcancel', () => this.handleEnd(), { passive: true });
 
-      // Mouse drag handlers
-      this.grid.addEventListener('mousedown', (e) => { this.handleStart(e.clientX, e.clientY); e.preventDefault(); });
-      window.addEventListener('mousemove', (e) => this.handleMove(e, e.clientX, e.clientY));
-      window.addEventListener('mouseup', () => this.handleEnd());
+      // Mouse drag handlers — mousemove/mouseup are attached to window only
+      // while a drag is in progress (and removed on mouseup), rather than
+      // listening globally at all times. handleMove/handleEnd already no-op
+      // when not dragging, so behavior is unchanged; this just avoids idle
+      // listener overhead on desktop when the user isn't dragging.
+      const onCarouselMouseMove = (e) => this.handleMove(e, e.clientX, e.clientY);
+      const onCarouselMouseUp = () => {
+        this.handleEnd();
+        window.removeEventListener('mousemove', onCarouselMouseMove);
+        window.removeEventListener('mouseup', onCarouselMouseUp);
+      };
+      this.grid.addEventListener('mousedown', (e) => {
+        this.handleStart(e.clientX, e.clientY);
+        e.preventDefault();
+        window.addEventListener('mousemove', onCarouselMouseMove);
+        window.addEventListener('mouseup', onCarouselMouseUp);
+      });
 
       // Dot click handlers
       this.dots.forEach(dot => {
         dot.addEventListener('click', (e) => {
           const index = parseInt(e.target.getAttribute('data-index'), 10);
+          if (this.resumeTimer) { clearTimeout(this.resumeTimer); this.resumeTimer = null; }
           this.pauseAutoSlide();
           this.goToIndex(index, true);
           if (this.isAutoSliding) {
-            setTimeout(() => this.resumeAutoSlide(), 3000);
+            this.resumeTimer = setTimeout(() => { this.resumeTimer = null; this.resumeAutoSlide(); }, 3000);
           }
         });
       });
 
-      // Start auto-slide when reviews section comes into view
-      if ('IntersectionObserver' in window) {
-        const observer = new IntersectionObserver((entries) => {
-          entries.forEach(entry => {
-            if (entry.isIntersecting && !this.isAutoSliding) {
-              this.startAutoSlide();
-            }
-          });
-        }, { threshold: 0.3 });
-        observer.observe(this.grid);
-      } else {
-        this.startAutoSlide();
-      }
+      // Start auto-slide immediately
+      this.startAutoSlide();
     },
 
     updateDots: function() {
@@ -2028,14 +2063,27 @@
       if (index < 0 || index >= this.cards.length) return;
       this.currentIndex = index;
       const offset = -index * this.trackWidth;
-      this.track.style.transition = animate ? 'transform .6s cubic-bezier(.22,1,.36,1)' : 'none';
+      this.track.style.transition = animate ? 'transform .6s cubic-bezier(0.25, 0.46, 0.45, 0.94)' : 'none';
       this.track.style.transform = `translateX(${offset}px)`;
       this.updateDots();
     },
 
-    nextSlide: function() {
-      const nextIndex = this.currentIndex < this.cards.length - 1 ? this.currentIndex + 1 : 0;
-      this.goToIndex(nextIndex, true);
+    nextSlide: function(fromSwipe) {
+      if (this.currentIndex === this.cards.length - 1) {
+        if (fromSwipe) {
+          // Rubber bounce: nudge left then snap back
+          const base = -this.currentIndex * this.trackWidth;
+          const bounceOffset = base - 60;
+          this.track.style.transition = 'transform .18s cubic-bezier(0.34, 1.56, 0.64, 1)';
+          this.track.style.transform = `translateX(${bounceOffset}px)`;
+          setTimeout(() => {
+            this.track.style.transition = 'transform .4s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+            this.track.style.transform = `translateX(${base}px)`;
+          }, 180);
+        }
+        return; // do NOT loop immediately
+      }
+      this.goToIndex(this.currentIndex + 1, true);
     },
 
     prevSlide: function() {
@@ -2079,6 +2127,8 @@
       this.velocity = 0;
       this.dragging = true;
       this.horizontal = false;
+      // Cancel any pending resume timer so auto-slide can't restart while the user is holding
+      if (this.resumeTimer) { clearTimeout(this.resumeTimer); this.resumeTimer = null; }
       this.pauseAutoSlide();
       this.track.style.transition = 'none';
     },
@@ -2124,12 +2174,14 @@
       this.dragging = false;
       if (this.rafId) { cancelAnimationFrame(this.rafId); this.rafId = null; }
 
+      const atLastCard = this.currentIndex === this.cards.length - 1;
+
       if (this.horizontal) {
         const dx = this.currentX - this.startX;
         const distanceThreshold = this.trackWidth * 0.12;
         const flickThreshold = 0.22; // px/ms — a quick flick snaps even on a short drag
         if (dx <= -distanceThreshold || this.velocity <= -flickThreshold) {
-          this.nextSlide();
+          this.nextSlide(true); // pass fromSwipe=true
         } else if (dx >= distanceThreshold || this.velocity >= flickThreshold) {
           this.prevSlide();
         } else {
@@ -2138,7 +2190,23 @@
       }
 
       if (this.isAutoSliding) {
-        setTimeout(() => this.resumeAutoSlide(), 3000);
+        if (atLastCard) {
+          // After bounce at last card: wait 2.5s, jump to #1, then resume auto-sliding
+          this.resumeTimer = setTimeout(() => {
+            this.resumeTimer = null;
+            this.goToIndex(0, true);
+            this.resumeTimer = setTimeout(() => {
+              this.resumeTimer = null;
+              this.resumeAutoSlide();
+            }, 600);
+          }, 2500);
+        } else {
+          // Resume 1.5s after finger lifts
+          this.resumeTimer = setTimeout(() => {
+            this.resumeTimer = null;
+            this.resumeAutoSlide();
+          }, 1500);
+        }
       }
     }
   };
@@ -2166,11 +2234,15 @@
     submitBtn.textContent = 'Sending...';
 
     try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 15000);
       const response = await fetch(GOOGLE_SCRIPT_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(formData),
+        signal: controller.signal
       });
+      clearTimeout(timeoutId);
 
       const result = await response.json();
 
@@ -2201,9 +2273,22 @@
     const colors = ['#D9A441', '#C1522E', '#8A5A2E', '#B8873A'];
     const types = ['straight', 'sway', 'diagonal'];
     const leafSvg = (color) => `<svg viewBox="0 0 24 24" width="100%" height="100%"><path d="M12 2 C4 6 2 14 12 22 C22 14 20 6 12 2 Z" fill="${color}"/><line x1="12" y1="4" x2="12" y2="20" stroke="rgba(0,0,0,0.18)" stroke-width="1"/></svg>`;
+    const MAX_LEAVES = 24; // safety cap so leaves can never silently pile up in the DOM
+
+    // .branch-topright is position:fixed, so its rect relative to the viewport
+    // never changes on scroll — only on resize (e.g. the 720px breakpoint).
+    // Cache it instead of forcing a layout read on every spawnLeaf() call.
+    let branchRect = branch.getBoundingClientRect();
+    let branchRectResizeTimer = null;
+    window.addEventListener('resize', () => {
+      clearTimeout(branchRectResizeTimer);
+      branchRectResizeTimer = setTimeout(() => { branchRect = branch.getBoundingClientRect(); }, 150);
+    });
 
     function spawnLeaf(){
-      const rect = branch.getBoundingClientRect();
+      if (document.hidden) return; // don't do work while the tab isn't visible anyway
+      if (layer.childElementCount >= MAX_LEAVES) return;
+      const rect = branchRect;
       const marginX = rect.width*0.12;
       const spawnLeft = rect.left + marginX + Math.random()*(rect.width - marginX*2);
       const spawnTop = rect.top + rect.height*0.04 + Math.random()*(rect.height*0.62);
@@ -2224,10 +2309,25 @@
       setTimeout(() => leaf.remove(), duration*1000 + 500);
     }
 
+    let leafInterval = null;
+    function startLeafInterval(){
+      if (leafInterval) return;
+      leafInterval = setInterval(spawnLeaf, 1000);
+    }
+    function stopLeafInterval(){
+      clearInterval(leafInterval);
+      leafInterval = null;
+    }
+    // Pause spawning while the tab is in the background — resumes exactly as before when the tab is visible again.
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) stopLeafInterval();
+      else startLeafInterval();
+    });
+
     for(let i=0;i<7;i++){
       setTimeout(spawnLeaf, i*550);
     }
-    setInterval(spawnLeaf, 1000);
+    startLeafInterval();
   })();
 
   // Avatar Zoom Modal
@@ -2256,7 +2356,7 @@
     const message = this.querySelector('textarea').value.trim();
     if(name && email && message){
       const text = `New website message%0AName: ${encodeURIComponent(name)}%0AEmail: ${encodeURIComponent(email)}%0AMessage: ${encodeURIComponent(message)}`;
-      window.open(`https://wa.me/8801764491395?text=${text}`, '_blank');
+      window.open(`https://wa.me/8801764491395?text=${text}`, '_blank', 'noopener,noreferrer');
       this.reset();
     }
   });
