@@ -471,13 +471,13 @@
   .carousel-track{
     display:flex;
     width:100%;gap:3px;
-    transition:transform .8s cubic-bezier(.15,.85,.35,1.1);
+    transition:transform .6s cubic-bezier(.22,1,.36,1);
     will-change:transform;
   }
   .review-card{
     flex:0 0 100%;
     padding:18px 20px 14px;
-    border-radius:18px 18px 10px 10px;
+    border-radius:20px;
     border:1px solid var(--line);
     box-shadow:0 4px 12px rgba(36,18,9,0.06), 0 20px 40px rgba(36,18,9,0.08);
     display:flex;flex-direction:column;gap:9px;
@@ -492,7 +492,7 @@
   }
   .review-card::after{
     content:"";position:absolute;inset:0;
-    border-radius:22px 22px 12px 12px;
+    border-radius:20px;
     box-shadow:inset 0 1px 2px rgba(255,255,255,0.8);
     pointer-events:none;
   }
@@ -654,9 +654,9 @@
   @media(max-width:720px){
     .reviews-grid{padding:0;border-radius:0;box-shadow:none;}
     .carousel-track{gap:0;}
-    .review-card{border-radius:0;padding:16px 16px 14px;gap:9px;border:none;border-bottom:1px solid var(--line);}
+    .review-card{border-radius:16px;padding:16px 16px 14px;gap:9px;border:none;border-bottom:1px solid var(--line);}
     .review-card::before{display:none;}
-    .review-card::after{border-radius:0;box-shadow:none;}
+    .review-card::after{border-radius:16px;box-shadow:none;}
     .carousel-dots{margin-top:18px;gap:6px;padding:12px 0;}
     .dot{width:8px;height:8px;}
     .dot.active{width:10px;height:10px;}
@@ -972,11 +972,94 @@
     92%{opacity:0.8;}
     100%{transform:translate(-118vw,118vh) rotate(360deg); opacity:0;}
   }
+
+  /* ---------- AMBIENT ENTRANCE GLOW (right edge, plays once on load) ---------- */
+  .ambient-glow-layer{
+    position:fixed;inset:0;
+    pointer-events:none;
+    overflow:hidden;
+    z-index:58;
+  }
+  .ambient-glow{
+    position:absolute;
+    top:2%;
+    right:-6%;
+    width:78vw;
+    height:82vh;
+    min-width:460px;
+    min-height:460px;
+    border-radius:50%;
+    filter:blur(130px);
+    opacity:0;
+    mix-blend-mode:multiply;
+    transform:translateX(6%) scale(0.94);
+    will-change:opacity, transform;
+    animation-timing-function:cubic-bezier(.3,.6,.35,1);
+    animation-fill-mode:both;
+    animation-iteration-count:1;
+  }
+  .ambient-glow.tone-cool{
+    background:
+      radial-gradient(ellipse at 80% 38%, rgba(58,164,196,0.68) 0%, rgba(58,164,196,0.42) 22%, rgba(58,164,196,0.22) 44%, rgba(58,164,196,0.08) 64%, transparent 82%);
+    animation-name:ambientGlowFade;
+    animation-duration:6.5s;
+    animation-delay:3s;
+  }
+  .ambient-glow.tone-violet{
+    background:
+      radial-gradient(ellipse at 82% 44%, rgba(139,88,214,0.65) 0%, rgba(139,88,214,0.4) 24%, rgba(139,88,214,0.2) 46%, rgba(139,88,214,0.07) 66%, transparent 84%);
+    animation-name:ambientGlowFade;
+    animation-duration:7s;
+    animation-delay:10s;
+  }
+  .ambient-glow.tone-violetblue{
+    background:
+      radial-gradient(ellipse at 74% 30%, rgba(130,74,212,0.55) 0%, rgba(130,74,212,0.24) 40%, transparent 72%),
+      radial-gradient(ellipse at 88% 62%, rgba(56,120,222,0.55) 0%, rgba(56,120,222,0.24) 42%, transparent 74%);
+    animation-name:ambientGlowFade;
+    animation-duration:8s;
+    animation-delay:17.5s;
+  }
+  .ambient-glow.tone-emerald{
+    background:
+      radial-gradient(ellipse at 80% 40%, rgba(42,163,120,0.62) 0%, rgba(42,163,120,0.36) 24%, rgba(42,163,120,0.16) 46%, rgba(42,163,120,0.06) 66%, transparent 84%);
+    animation-name:ambientGlowFade;
+    animation-duration:7.5s;
+    animation-delay:26s;
+  }
+  .ambient-glow.tone-rosegold{
+    background:
+      radial-gradient(ellipse at 76% 32%, rgba(214,120,140,0.5) 0%, rgba(214,120,140,0.22) 42%, transparent 74%),
+      radial-gradient(ellipse at 90% 64%, rgba(196,142,74,0.5) 0%, rgba(196,142,74,0.2) 44%, transparent 76%);
+    animation-name:ambientGlowFade;
+    animation-duration:8s;
+    animation-delay:34s;
+  }
+  @keyframes ambientGlowFade{
+    0%{opacity:0; transform:translateX(6%) scale(0.94);}
+    24%{opacity:1; transform:translateX(0) scale(1);}
+    68%{opacity:1; transform:translateX(0) scale(1);}
+    100%{opacity:0; transform:translateX(0) scale(1.02);}
+  }
+  @media(max-width:720px){
+    .ambient-glow{width:120vw;height:58vh;right:-30%;top:2%;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .ambient-glow{animation:none;opacity:0;}
+  }
 </style>
 </head>
 <body>
 
 <div class="leaf-fall-layer" id="leafFallLayer" aria-hidden="true"></div>
+
+<div class="ambient-glow-layer" aria-hidden="true">
+  <div class="ambient-glow tone-cool"></div>
+  <div class="ambient-glow tone-violet"></div>
+  <div class="ambient-glow tone-violetblue"></div>
+  <div class="ambient-glow tone-emerald"></div>
+  <div class="ambient-glow tone-rosegold"></div>
+</div>
 
 <div class="avatar-modal-overlay" id="avatarModalOverlay" onclick="if(event.target===this) closeAvatarModal()">
   <button class="avatar-modal-close" onclick="closeAvatarModal()" aria-label="Close">✕</button>
@@ -1945,7 +2028,7 @@
       if (index < 0 || index >= this.cards.length) return;
       this.currentIndex = index;
       const offset = -index * this.trackWidth;
-      this.track.style.transition = animate ? 'transform .28s cubic-bezier(.16,1,.3,1)' : 'none';
+      this.track.style.transition = animate ? 'transform .6s cubic-bezier(.22,1,.36,1)' : 'none';
       this.track.style.transform = `translateX(${offset}px)`;
       this.updateDots();
     },
@@ -1968,7 +2051,7 @@
           nextIndex = 0;
         }
         this.goToIndex(nextIndex, true);
-      }, 2000);
+      }, 3200);
     },
 
     pauseAutoSlide: function() {
@@ -1984,7 +2067,7 @@
             nextIndex = 0;
           }
           this.goToIndex(nextIndex, true);
-        }, 2000);
+        }, 3200);
       }
     },
 
