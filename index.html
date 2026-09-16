@@ -20,7 +20,12 @@
     --line: rgba(36,18,9,0.16);
   }
   *{margin:0;padding:0;box-sizing:border-box;}
-  html{scroll-behavior:smooth;}
+  /* scrollbar-gutter reserves the scrollbar's width permanently instead of
+     only while content overflows, so toggling body overflow:hidden to lock
+     scroll for a modal no longer changes the page's usable width — that
+     width change was causing the whole page to shift sideways every time
+     a modal opened or closed. */
+  html{scroll-behavior:smooth;scrollbar-gutter:stable;}
   body{
     font-family:'Archivo', sans-serif;
     background:
@@ -950,6 +955,7 @@
   .fall-leaf.type-straight{ animation-name:leafFallStraight; }
   .fall-leaf.type-sway{ animation-name:leafFallSway; }
   .fall-leaf.type-diagonal{ animation-name:leafFallDiagonal; }
+  .leaf-fall-layer.order-paused .fall-leaf{ animation-play-state:paused; }
 
   @keyframes leafFallStraight{
     0%{transform:translate(0,0) rotate(0deg); opacity:0;}
@@ -1003,14 +1009,12 @@
       radial-gradient(ellipse at 80% 38%, rgba(61,171,203,0.68) 0%, rgba(61,171,203,0.42) 22%, rgba(61,171,203,0.22) 44%, rgba(61,171,203,0.08) 64%, transparent 82%);
     animation-name:ambientGlowFade;
     animation-duration:6.5s;
-    animation-delay:3s;
   }
   .ambient-glow.tone-violet{
     background:
       radial-gradient(ellipse at 82% 44%, rgba(144,91,222,0.65) 0%, rgba(144,91,222,0.4) 24%, rgba(144,91,222,0.2) 46%, rgba(144,91,222,0.07) 66%, transparent 84%);
     animation-name:ambientGlowFade;
     animation-duration:7s;
-    animation-delay:10s;
   }
   .ambient-glow.tone-violetblue{
     background:
@@ -1018,14 +1022,12 @@
       radial-gradient(ellipse at 88% 62%, rgba(58,124,230,0.55) 0%, rgba(58,124,230,0.24) 42%, transparent 74%);
     animation-name:ambientGlowFade;
     animation-duration:8s;
-    animation-delay:17.5s;
   }
   .ambient-glow.tone-emerald{
     background:
       radial-gradient(ellipse at 80% 40%, rgba(44,169,124,0.62) 0%, rgba(44,169,124,0.36) 24%, rgba(44,169,124,0.16) 46%, rgba(44,169,124,0.06) 66%, transparent 84%);
     animation-name:ambientGlowFade;
     animation-duration:7.5s;
-    animation-delay:26s;
   }
   .ambient-glow.tone-rosegold{
     background:
@@ -1033,21 +1035,18 @@
       radial-gradient(ellipse at 90% 64%, rgba(203,147,77,0.5) 0%, rgba(203,147,77,0.2) 44%, transparent 76%);
     animation-name:ambientGlowFade;
     animation-duration:8s;
-    animation-delay:34s;
   }
   .ambient-glow.tone-caramel{
     background:
       radial-gradient(ellipse at 78% 36%, rgba(203,139,61,0.6) 0%, rgba(203,139,61,0.32) 26%, rgba(203,139,61,0.12) 48%, transparent 78%);
     animation-name:ambientGlowFade;
     animation-duration:7s;
-    animation-delay:42s;
   }
   .ambient-glow.tone-wine{
     background:
       radial-gradient(ellipse at 84% 42%, rgba(174,61,77,0.55) 0%, rgba(174,61,77,0.28) 30%, rgba(174,61,77,0.1) 52%, transparent 80%);
     animation-name:ambientGlowFade;
     animation-duration:7.5s;
-    animation-delay:50s;
   }
   @keyframes ambientGlowFade{
     0%{opacity:0; transform:translateX(6%) scale(0.94);}
@@ -1067,14 +1066,8 @@
 
 <div class="leaf-fall-layer" id="leafFallLayer" aria-hidden="true"></div>
 
-<div class="ambient-glow-layer" aria-hidden="true">
-  <div class="ambient-glow tone-cool"></div>
-  <div class="ambient-glow tone-violet"></div>
-  <div class="ambient-glow tone-violetblue"></div>
-  <div class="ambient-glow tone-emerald"></div>
-  <div class="ambient-glow tone-rosegold"></div>
-  <div class="ambient-glow tone-caramel"></div>
-  <div class="ambient-glow tone-wine"></div>
+<div class="ambient-glow-layer" id="ambientGlowLayer" aria-hidden="true">
+  <div class="ambient-glow" id="ambientGlow"></div>
 </div>
 
 <div class="avatar-modal-overlay" id="avatarModalOverlay" onclick="if(event.target===this) closeAvatarModal()">
@@ -1611,19 +1604,24 @@
 
 <script>
   // 👉 এখানে আপনার Google Apps Script "Web App" URL বসান (Deploy করার পর যেটা পাবেন)
-  const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxgWrYoPLafO-p-3fSjGeVjJiBmJGeEOiQIDefKZURQcX8bwZPxk9lZx4DBUz4_QdiX/exec';
+  const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzLDXmCabAlyhqK_IB5YtUB_Vn9FvUlBBKI81m5yCeWmrwwEuLqksyUJ7eD8uYm173f9Q/exec';
 
   document.getElementById('year').textContent = new Date().getFullYear();
 
   // Scroll reveal: fade + rise elements every time they enter view, respecting reduced motion
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if (!prefersReducedMotion && 'IntersectionObserver' in window) {
-    const revealObserver = new IntersectionObserver((entries) => {
+    // Reveal once and stop observing: previously the class was also removed
+    // when an element scrolled back out of view, so any pass back and forth
+    // across a section boundary re-triggered the fade/rise transition —
+    // this was the main source of the flicker/shake seen while scrolling.
+    // Unobserving after the first reveal keeps the exact same entrance
+    // animation but only ever plays it once per element.
+    const revealObserver = new IntersectionObserver((entries, observer) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           entry.target.classList.add('in-view');
-        } else {
-          entry.target.classList.remove('in-view');
+          observer.unobserve(entry.target);
         }
       });
     }, { threshold: 0, rootMargin: '0px 0px -12% 0px' });
@@ -1850,6 +1848,8 @@
     document.getElementById('oProduct').value = productName + ' (' + price + ')';
     orderChoiceOverlay.classList.add('open');
     document.body.style.overflow = 'hidden';
+    window.__pauseLeafFall();
+    window.__pauseAmbientGlow();
   }
 
   function getUnitPrice() {
@@ -1875,6 +1875,8 @@
   function closeOrderChoice() {
     orderChoiceOverlay.classList.remove('open');
     document.body.style.overflow = '';
+    window.__resumeLeafFall();
+    window.__resumeAmbientGlow();
   }
 
   function continueToWhatsApp() {
@@ -1889,11 +1891,15 @@
     updateOrderTotal();
     orderFormOverlay.classList.add('open');
     document.body.style.overflow = 'hidden';
+    window.__pauseLeafFall();
+    window.__pauseAmbientGlow();
   }
 
   function closeOrderForm() {
     orderFormOverlay.classList.remove('open');
     document.body.style.overflow = '';
+    window.__resumeLeafFall();
+    window.__resumeAmbientGlow();
   }
 
   document.getElementById('orderForm').addEventListener('submit', async function(e) {
@@ -2047,6 +2053,32 @@
 
       // Start auto-slide immediately
       this.startAutoSlide();
+
+      // Pause the auto-slide interval while the carousel is scrolled out of
+      // view (and while the tab itself is hidden) — same idea already used
+      // for the leaf animation. The interval was previously running non-stop
+      // for the whole time the page was open, even while the reviews section
+      // was nowhere near the viewport, which was unnecessary background work
+      // contributing to the overall sluggishness on lower-end phones.
+      if ('IntersectionObserver' in window) {
+        const carouselVisibilityObserver = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting && !document.hidden) {
+              this.resumeAutoSlide();
+            } else {
+              this.pauseAutoSlide();
+            }
+          });
+        }, { threshold: 0 });
+        carouselVisibilityObserver.observe(this.grid);
+        document.addEventListener('visibilitychange', () => {
+          if (document.hidden) {
+            this.pauseAutoSlide();
+          } else if (this.grid.getBoundingClientRect().top < window.innerHeight && this.grid.getBoundingClientRect().bottom > 0) {
+            this.resumeAutoSlide();
+          }
+        });
+      }
     },
 
     updateDots: function() {
@@ -2266,10 +2298,13 @@
   });
 
   // Falling leaves background animation
+  window.__pauseLeafFall = function(){};
+  window.__resumeLeafFall = function(){};
   (function(){
     const layer = document.getElementById('leafFallLayer');
     const branch = document.querySelector('.branch-topright');
     if(!layer || !branch) return;
+    let orderSectionPaused = false;
     const colors = ['#D9A441', '#C1522E', '#8A5A2E', '#B8873A'];
     const types = ['straight', 'sway', 'diagonal'];
     const leafSvg = (color) => `<svg viewBox="0 0 24 24" width="100%" height="100%"><path d="M12 2 C4 6 2 14 12 22 C22 14 20 6 12 2 Z" fill="${color}"/><line x1="12" y1="4" x2="12" y2="20" stroke="rgba(0,0,0,0.18)" stroke-width="1"/></svg>`;
@@ -2286,7 +2321,7 @@
     });
 
     function spawnLeaf(){
-      if (document.hidden) return; // don't do work while the tab isn't visible anyway
+      if (document.hidden || orderSectionPaused) return; // don't do work while the tab isn't visible, or the order section is open
       if (layer.childElementCount >= MAX_LEAVES) return;
       const rect = branchRect;
       const marginX = rect.width*0.12;
@@ -2328,6 +2363,90 @@
       setTimeout(spawnLeaf, i*550);
     }
     startLeafInterval();
+
+    window.__pauseLeafFall = function(){
+      if (orderSectionPaused) return;
+      orderSectionPaused = true;
+      layer.classList.add('order-paused');
+      stopLeafInterval();
+    };
+    window.__resumeLeafFall = function(){
+      if (!orderSectionPaused) return;
+      orderSectionPaused = false;
+      layer.classList.remove('order-paused');
+      startLeafInterval();
+    };
+  })();
+
+  // Ambient entrance glow: drive tone changes on a single recycled element
+  // instead of keeping 7 full-screen blurred layers mounted at once — same
+  // visual sequence, far less GPU/memory overhead on low-RAM phones.
+  window.__pauseAmbientGlow = function(){};
+  window.__resumeAmbientGlow = function(){};
+  (function(){
+    const layer = document.getElementById('ambientGlowLayer');
+    const el = document.getElementById('ambientGlow');
+    if(!layer || !el) return;
+
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      layer.remove();
+      return;
+    }
+
+    // Absolute times (ms from page load) at which the glow switches tone,
+    // plus a final entry (tone:null) marking when the whole layer is removed.
+    const events = [
+      { t:3000,  tone:'tone-cool' },
+      { t:10000, tone:'tone-violet' },
+      { t:17500, tone:'tone-violetblue' },
+      { t:26000, tone:'tone-emerald' },
+      { t:34000, tone:'tone-rosegold' },
+      { t:42000, tone:'tone-caramel' },
+      { t:50000, tone:'tone-wine' },
+      { t:58000, tone:null }
+    ];
+
+    let idx = 0;
+    let timerId = null;
+    let paused = false;
+    let stepStart = 0;
+    let stepRemaining = events[0].t;
+
+    function fireEvent(){
+      const ev = events[idx];
+      if (ev.tone === null) { layer.remove(); return; }
+      el.className = 'ambient-glow';
+      void el.offsetWidth; // force reflow so the (same-named) animation restarts
+      el.classList.add(ev.tone);
+      const prevT = ev.t;
+      idx++;
+      if (idx < events.length) {
+        stepRemaining = events[idx].t - prevT;
+        armTimer();
+      }
+    }
+
+    function armTimer(){
+      stepStart = performance.now();
+      timerId = setTimeout(fireEvent, stepRemaining);
+    }
+
+    armTimer();
+
+    window.__pauseAmbientGlow = function(){
+      if (paused || timerId === null) return;
+      paused = true;
+      clearTimeout(timerId);
+      timerId = null;
+      stepRemaining = Math.max(0, stepRemaining - (performance.now() - stepStart));
+      el.style.animationPlayState = 'paused';
+    };
+    window.__resumeAmbientGlow = function(){
+      if (!paused) return;
+      paused = false;
+      el.style.animationPlayState = 'running';
+      armTimer();
+    };
   })();
 
   // Avatar Zoom Modal
