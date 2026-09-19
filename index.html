@@ -303,6 +303,7 @@
     padding:24px;z-index:200;
     opacity:0;visibility:hidden;
     transition:opacity .25s ease, visibility .25s ease;
+    backface-visibility:hidden;
   }
   .product-modal-overlay.open{opacity:1;visibility:visible;}
   .product-modal{
@@ -313,6 +314,8 @@
     padding:44px;
     transform:translateY(18px) scale(.97);
     transition:transform .35s cubic-bezier(.2,.8,.2,1);
+    will-change:transform;
+    backface-visibility:hidden;
   }
   .product-modal-overlay.open .product-modal{transform:translateY(0) scale(1);}
   .product-modal-close{
@@ -341,11 +344,13 @@
     position:relative;overflow:hidden;
     touch-action:pan-y;
     transition:height .3s cubic-bezier(.2,.8,.2,1);
+    backface-visibility:hidden;
   }
   .pm-track{
     display:flex;
     transition:transform .34s cubic-bezier(.22,.8,.28,1);
     will-change:transform;
+    backface-visibility:hidden;
   }
   .product-modal-panel{flex:none;width:100%;box-sizing:border-box;}
   .pm-head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:12px;}
@@ -384,6 +389,7 @@
     padding:24px;z-index:300;
     opacity:0;visibility:hidden;
     transition:opacity .25s ease, visibility .25s ease;
+    backface-visibility:hidden;
   }
   .order-choice-overlay.open, .order-form-overlay.open{opacity:1;visibility:visible;}
   .order-choice-box{
@@ -396,6 +402,8 @@
     border-top:4px solid var(--gold);
     transform:translateY(18px) scale(.97);
     transition:transform .35s cubic-bezier(.2,.8,.2,1);
+    will-change:transform;
+    backface-visibility:hidden;
   }
   .order-choice-overlay.open .order-choice-box{transform:translateY(0) scale(1);}
   .order-choice-box h3{
@@ -435,6 +443,8 @@
     border-top:4px solid var(--gold);
     transform:translateY(18px) scale(.97);
     transition:transform .35s cubic-bezier(.2,.8,.2,1);
+    will-change:transform;
+    backface-visibility:hidden;
   }
   .order-form-overlay.open .order-form-box{transform:translateY(0) scale(1);}
   .order-form-box h3{
@@ -761,6 +771,69 @@
 
   @media(max-width:720px){
     .team-container{grid-template-columns:1fr;}
+  }
+
+  /* ---------- CHOCOLATE COLLECTION ---------- */
+  .choco-list{display:flex;flex-direction:column;gap:16px;}
+  .choco-row{
+    display:flex;align-items:center;gap:16px;
+    background:linear-gradient(165deg, var(--cream-2) 0%, var(--cream) 100%);
+    padding:20px 24px;
+    border-radius:10px;
+    border:1px solid var(--line);
+    cursor:pointer;
+    box-shadow:0 2px 6px rgba(36,18,9,0.06), 0 10px 28px rgba(36,18,9,0.07);
+    transition:box-shadow .35s cubic-bezier(.2,.8,.2,1), transform .35s cubic-bezier(.2,.8,.2,1), border-color .35s;
+  }
+  .choco-row:hover{
+    box-shadow:0 6px 14px rgba(36,18,9,0.08), 0 20px 40px rgba(36,18,9,0.12);
+    transform:translateY(-2px);
+    border-color:rgba(184,135,58,0.4);
+  }
+  .choco-num{
+    font-family:'Archivo Expanded',sans-serif;
+    font-weight:700;font-size:1.2rem;
+    color:var(--cocoa-dark);
+    min-width:24px;text-align:center;
+  }
+  .choco-box{
+    width:60px;height:60px;
+    border-radius:8px;
+    display:flex;align-items:center;justify-content:center;
+    flex:none;
+    box-shadow:0 2px 8px rgba(36,18,9,0.1);
+    overflow:hidden;
+    background:#f9f9f9;
+  }
+  .choco-box img{
+    width:100%;height:100%;object-fit:contain;display:block;background:#f9f9f9;
+  }
+  .choco-box svg{
+    width:100%;height:100%;display:block;
+  }
+  .choco-info{flex:1;}
+  .choco-info h4{
+    font-family:'Archivo Expanded',sans-serif;font-weight:700;
+    font-size:1.05rem;color:var(--cocoa-dark);margin-bottom:4px;
+  }
+  .choco-info p{color:var(--cocoa);font-size:0.9rem;line-height:1.4;}
+  .choco-weight{
+    font-size:0.8rem;color:var(--cocoa);text-align:center;
+    min-width:50px;font-weight:500;
+  }
+  .choco-price{
+    font-family:'Archivo Expanded',sans-serif;font-weight:700;
+    font-size:1.2rem;color:var(--swiss-red);
+    min-width:70px;text-align:right;
+  }
+
+  @media(max-width:720px){
+    .choco-row{gap:12px;padding:16px 16px;}
+    .choco-box{width:50px;height:50px;}
+    .choco-box img{width:100%;height:100%;object-fit:contain;display:block;}
+    .choco-box svg{width:100%;height:100%;display:block;}
+    .choco-info h4{font-size:0.95rem;}
+    .choco-info p{font-size:0.85rem;}
   }
 
   /* ---------- COMPLAINTS ---------- */
@@ -1203,6 +1276,61 @@
           <div class="price">৳ 390</div>
           <button type="button" class="order" onclick="event.stopPropagation(); openProductModal('solo')">Order</button>
         </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== CHOCOLATE COLLECTION SECTION ========== -->
+<section class="section">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="label">Collections</div>
+      <h2>Discover Our Chocolate Varieties</h2>
+    </div>
+    <div class="choco-list">
+      <div class="choco-row" onclick="openOrderChoice('Almond Chocolate', '৳ 390')">
+        <div class="choco-num">1</div>
+        <div class="choco-box"><img src="almond.png" alt="Almond Chocolate"></div>
+        <div class="choco-info">
+          <h4>Almond Chocolate</h4>
+          <p>Smooth milk chocolate with premium almonds</p>
+        </div>
+        <div class="choco-weight">125–130<br>g</div>
+        <div class="choco-price">৳ 390</div>
+      </div>
+
+      <div class="choco-row" onclick="openOrderChoice('Cashew Chocolate', '৳ 390')">
+        <div class="choco-num">2</div>
+        <div class="choco-box"><img src="cashew.png" alt="Cashew Chocolate"></div>
+        <div class="choco-info">
+          <h4>Cashew Chocolate</h4>
+          <p>Creamy chocolate filled with whole cashews</p>
+        </div>
+        <div class="choco-weight">125–130<br>g</div>
+        <div class="choco-price">৳ 390</div>
+      </div>
+
+      <div class="choco-row" onclick="openOrderChoice('Mixed Nut Chocolate', '৳ 370')">
+        <div class="choco-num">3</div>
+        <div class="choco-box"><img src="mixed-nut.png" alt="Mixed Nut Chocolate"></div>
+        <div class="choco-info">
+          <h4>Mixed Nut Chocolate</h4>
+          <p>A blend of assorted premium nuts in chocolate</p>
+        </div>
+        <div class="choco-weight">125–130<br>g</div>
+        <div class="choco-price">৳ 370</div>
+      </div>
+
+      <div class="choco-row" onclick="openOrderChoice('Pure Dark Chocolate', '৳ 350')">
+        <div class="choco-num">4</div>
+        <div class="choco-box"><svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg"><defs><linearGradient id="darkGrad" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#4A2C1A;stop-opacity:1" /><stop offset="100%" style="stop-color:#2D1810;stop-opacity:1" /></linearGradient></defs><rect width="120" height="120" fill="url(#darkGrad)" rx="8"/><rect x="20" y="25" width="18" height="18" fill="#5C3D2E" rx="2"/><rect x="50" y="20" width="20" height="20" fill="#6B4423" rx="2"/><rect x="75" y="35" width="18" height="18" fill="#5C3D2E" rx="2"/><rect x="30" y="60" width="20" height="20" fill="#6B4423" rx="2"/><rect x="65" y="65" width="18" height="18" fill="#5C3D2E" rx="2"/><rect x="85" y="75" width="16" height="16" fill="#6B4423" rx="2"/><circle cx="35" cy="30" r="3" fill="#8B6F47" opacity="0.6"/><circle cx="60" cy="25" r="3" fill="#8B6F47" opacity="0.6"/><circle cx="80" cy="45" r="2.5" fill="#8B6F47" opacity="0.6"/></svg></div>
+        <div class="choco-info">
+          <h4>Pure Dark Chocolate</h4>
+          <p>100% pure, rich and intense dark chocolate</p>
+        </div>
+        <div class="choco-weight">125–130<br>g</div>
+        <div class="choco-price">৳ 350</div>
       </div>
     </div>
   </div>
@@ -1732,17 +1860,27 @@
   }
 
   function openProductModal(which) {
-    pmLayout();
-    switchProductTab(which);
-    productModalOverlay.classList.add('open');
-    document.body.style.overflow = 'hidden';
+    // Use requestAnimationFrame for smooth modal opening
+    requestAnimationFrame(() => {
+      pmLayout();
+      switchProductTab(which);
+      productModalOverlay.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      window.__pauseLeafFall();
+      window.__pauseAmbientGlow();
+    });
   }
 
   function closeProductModal() {
     productModalOverlay.classList.remove('open');
-    document.body.style.overflow = '';
-    // On close, Solo is auto-selected so the next open starts there.
-    pmMoveToIndex(1, false);
+    // Resume animations after modal closes smoothly
+    setTimeout(() => {
+      document.body.style.overflow = '';
+      window.__resumeLeafFall();
+      window.__resumeAmbientGlow();
+      // On close, Solo is auto-selected so the next open starts there.
+      pmMoveToIndex(1, false);
+    }, 350);
   }
 
   function closeProductModalOnOverlay(e) {
@@ -1750,80 +1888,21 @@
   }
 
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') closeProductModal();
-  });
-
-  window.addEventListener('resize', function () {
-    if (productModalOverlay.classList.contains('open')) pmLayout();
-  });
-
-  // Swipe gestures: right-to-left → next (Solo), left-to-right → previous (Combo)
-  (function () {
-    let startX = 0, startY = 0, currentX = 0, dragging = false, horizontal = false;
-    let pmRafId = null;
-    const DIRECTION_LOCK_PX = 8; // ignore tiny jitters before deciding swipe direction
-
-    pmSwipeport.addEventListener('touchstart', function (e) {
-      if (e.touches.length !== 1) return;
-      startX = currentX = e.touches[0].clientX;
-      startY = e.touches[0].clientY;
-      dragging = true;
-      horizontal = false;
-      pmTrack.style.transition = 'none';
-    }, { passive: true });
-
-    pmSwipeport.addEventListener('touchmove', function (e) {
-      if (!dragging) return;
-      const x = e.touches[0].clientX, y = e.touches[0].clientY;
-      const dx = x - startX, dy = y - startY;
-      if (!horizontal) {
-        if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > DIRECTION_LOCK_PX) {
-          horizontal = true;
-        } else if (Math.abs(dy) > Math.abs(dx)) {
-          dragging = false;
-          return;
-        } else {
-          return;
-        }
-      }
-      e.preventDefault();
-      currentX = x;
-      let base = -pmActiveIndex * pmViewportWidth;
-      let translate = base + dx;
-      // Light resistance at the ends (first/last section) instead of overshoot.
-      if ((pmActiveIndex === 0 && dx > 0) || (pmActiveIndex === PM_ORDER.length - 1 && dx < 0)) {
-        translate = base + dx * 0.3;
-      }
-      if (pmRafId) cancelAnimationFrame(pmRafId);
-      pmRafId = requestAnimationFrame(() => {
-        pmTrack.style.transform = 'translateX(' + translate + 'px)';
+    if (e.key === 'Escape') {
+      requestAnimationFrame(() => {
+        closeProductModal();
       });
-    }, { passive: false });
-
-    function pmEndDrag() {
-      if (!dragging) return;
-      dragging = false;
-      if (pmRafId) { cancelAnimationFrame(pmRafId); pmRafId = null; }
-      if (!horizontal) return;
-      const dx = currentX - startX;
-      const threshold = Math.max(44, pmViewportWidth * 0.18); // avoid tiny-touch accidental switches
-      if (dx <= -threshold && pmActiveIndex < PM_ORDER.length - 1) {
-        pmMoveToIndex(pmActiveIndex + 1, true);
-      } else if (dx >= threshold && pmActiveIndex > 0) {
-        pmMoveToIndex(pmActiveIndex - 1, true);
-      } else {
-        pmMoveToIndex(pmActiveIndex, true);
-      }
     }
-    pmSwipeport.addEventListener('touchend', pmEndDrag);
-    pmSwipeport.addEventListener('touchcancel', pmEndDrag);
-  })();
+  });
 
-  pmLayout();
-
-  // Order Choice + Order on Website flow
-  const orderChoiceOverlay = document.getElementById('orderChoiceOverlay');
-  const orderFormOverlay = document.getElementById('orderFormOverlay');
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') { 
+      requestAnimationFrame(() => {
+        closeOrderChoice(); 
+        closeOrderForm(); 
+      });
+    }
+  });
   let currentOrderProduct = { name: '', price: '' };
   const WHATSAPP_NUMBER = '8801764491395';
 
@@ -1875,10 +1954,13 @@
     currentOrderProduct = { name: productName, price: price };
     document.getElementById('ocProductTitle').textContent = 'Order — ' + productName;
     document.getElementById('oProduct').value = productName + ' (' + price + ')';
-    orderChoiceOverlay.classList.add('open');
-    document.body.style.overflow = 'hidden';
-    window.__pauseLeafFall();
-    window.__pauseAmbientGlow();
+    // Pause animations before modal appears
+    requestAnimationFrame(() => {
+      window.__pauseLeafFall();
+      window.__pauseAmbientGlow();
+      document.body.style.overflow = 'hidden';
+      orderChoiceOverlay.classList.add('open');
+    });
   }
 
   function getUnitPrice() {
@@ -1903,9 +1985,12 @@
 
   function closeOrderChoice() {
     orderChoiceOverlay.classList.remove('open');
-    document.body.style.overflow = '';
-    window.__resumeLeafFall();
-    window.__resumeAmbientGlow();
+    // Resume animations after modal closes smoothly
+    setTimeout(() => {
+      document.body.style.overflow = '';
+      window.__resumeLeafFall();
+      window.__resumeAmbientGlow();
+    }, 350);
   }
 
   function continueToWhatsApp() {
@@ -1915,20 +2000,26 @@
   }
 
   function openOrderForm() {
-    closeOrderChoice();
-    oQtyInputEl.value = 1;
-    updateOrderTotal();
-    orderFormOverlay.classList.add('open');
-    document.body.style.overflow = 'hidden';
-    window.__pauseLeafFall();
-    window.__pauseAmbientGlow();
+    // Smooth transition: close choice modal, then open form modal
+    orderChoiceOverlay.classList.remove('open');
+    setTimeout(() => {
+      oQtyInputEl.value = 1;
+      updateOrderTotal();
+      requestAnimationFrame(() => {
+        orderFormOverlay.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      });
+    }, 350);
   }
 
   function closeOrderForm() {
     orderFormOverlay.classList.remove('open');
-    document.body.style.overflow = '';
-    window.__resumeLeafFall();
-    window.__resumeAmbientGlow();
+    // Resume animations after form closes smoothly
+    setTimeout(() => {
+      document.body.style.overflow = '';
+      window.__resumeLeafFall();
+      window.__resumeAmbientGlow();
+    }, 350);
   }
 
   document.getElementById('orderForm').addEventListener('submit', async function(e) {
