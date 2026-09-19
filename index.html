@@ -13,6 +13,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ara Chocolates — Absolute Richness Chocolate</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍫</text></svg>">
 <meta name="description" content="Swiss-inspired handmade chocolate & gift boxes in Bangladesh. Perfect for Eid, birthdays & corporate gifting.">
 <meta property="og:title" content="Ara Chocolates — Absolute Richness Chocolate">
 <meta property="og:description" content="Swiss-inspired handmade chocolate & gift boxes in Bangladesh. Perfect for Eid, birthdays & corporate gifting.">
@@ -849,6 +850,13 @@
   .form-group{
     display:flex;flex-direction:column;gap:8px;
   }
+  /* Spam honeypot: kept in the tab order's reach but positioned off-screen,
+     so real visitors never see or focus it while simple bots that auto-fill
+     every field on the page still fill it in and get caught by the JS check. */
+  .hp-field{
+    position:absolute;left:-9999px;top:-9999px;
+    width:1px;height:1px;overflow:hidden;
+  }
   .form-group label{
     font-weight:600;
     color:var(--cocoa-dark);
@@ -1291,7 +1299,7 @@
     <div class="choco-list">
       <div class="choco-row" onclick="openOrderChoice('Almond Chocolate', '৳ 390')">
         <div class="choco-num">1</div>
-        <div class="choco-box"><img src="almond.png" alt="Almond Chocolate"></div>
+        <div class="choco-box"><img src="images/almond.png" alt="Almond Chocolate" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'img-fallback',textContent:'Almond'}))"></div>
         <div class="choco-info">
           <h4>Almond Chocolate</h4>
           <p>Smooth milk chocolate with premium almonds</p>
@@ -1302,7 +1310,7 @@
 
       <div class="choco-row" onclick="openOrderChoice('Cashew Chocolate', '৳ 390')">
         <div class="choco-num">2</div>
-        <div class="choco-box"><img src="cashew.png" alt="Cashew Chocolate"></div>
+        <div class="choco-box"><img src="images/cashew.png" alt="Cashew Chocolate" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'img-fallback',textContent:'Cashew'}))"></div>
         <div class="choco-info">
           <h4>Cashew Chocolate</h4>
           <p>Creamy chocolate filled with whole cashews</p>
@@ -1313,7 +1321,7 @@
 
       <div class="choco-row" onclick="openOrderChoice('Mixed Nut Chocolate', '৳ 370')">
         <div class="choco-num">3</div>
-        <div class="choco-box"><img src="mixed-nut.png" alt="Mixed Nut Chocolate"></div>
+        <div class="choco-box"><img src="images/mixed-nut.png" alt="Mixed Nut Chocolate" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'img-fallback',textContent:'Mixed Nut'}))"></div>
         <div class="choco-info">
           <h4>Mixed Nut Chocolate</h4>
           <p>A blend of assorted premium nuts in chocolate</p>
@@ -1420,6 +1428,10 @@
     <h3>Order on Website</h3>
     <p class="oform-sub">Fill in your details below — we'll confirm your order shortly.</p>
     <form id="orderForm">
+      <div class="hp-field" aria-hidden="true">
+        <label for="oWebsite">Website</label>
+        <input type="text" id="oWebsite" name="website" tabindex="-1" autocomplete="off">
+      </div>
       <div class="form-group">
         <label for="oProduct"><span class="lbl-en">Product</span><span class="lbl-sep">/</span><span class="lbl-bn" lang="bn">পণ্য</span></label>
         <input type="text" id="oProduct" name="product" readonly>
@@ -1674,6 +1686,10 @@
     </div>
     <div class="complaints-wrapper reveal">
       <form class="complaints-form" id="complaintsForm">
+        <div class="hp-field" aria-hidden="true">
+          <label for="cWebsite">Website</label>
+          <input type="text" id="cWebsite" name="website" tabindex="-1" autocomplete="off">
+        </div>
         <div class="form-group">
           <label for="cname"><span class="lbl-en">Your Name</span><span class="lbl-sep">/</span><span class="lbl-bn" lang="bn">আপনার নাম</span></label>
           <input type="text" id="cname" name="name" placeholder="Enter your full name" required>
@@ -1762,6 +1778,13 @@
 <script>
   // 👉 এখানে আপনার Google Apps Script "Web App" URL বসান (Deploy করার পর যেটা পাবেন)
   const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzLDXmCabAlyhqK_IB5YtUB_Vn9FvUlBBKI81m5yCeWmrwwEuLqksyUJ7eD8uYm173f9Q/exec';
+
+  // Spam protection: a bot that fills every field in one go will fill the hidden
+  // honeypot field, and will typically submit within a second or two of the page
+  // loading — a real visitor takes noticeably longer to read and type. Neither
+  // check touches page content, so it has no effect on SEO or search indexing.
+  const pageLoadTime = Date.now();
+  let orderFormOpenTime = 0;
 
   document.getElementById('year').textContent = new Date().getFullYear();
 
@@ -1895,16 +1918,10 @@
     }
   });
 
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') { 
-      requestAnimationFrame(() => {
-        closeOrderChoice(); 
-        closeOrderForm(); 
-      });
-    }
-  });
   let currentOrderProduct = { name: '', price: '' };
   const WHATSAPP_NUMBER = '8801764491395';
+  const orderChoiceOverlay = document.getElementById('orderChoiceOverlay');
+  const orderFormOverlay = document.getElementById('orderFormOverlay');
 
   // Cached once: these are looked up on every tap of the qty +/- buttons and
   // every keystroke in the qty field, so avoiding a fresh getElementById()
@@ -2005,6 +2022,7 @@
     setTimeout(() => {
       oQtyInputEl.value = 1;
       updateOrderTotal();
+      orderFormOpenTime = Date.now();
       requestAnimationFrame(() => {
         orderFormOverlay.classList.add('open');
         document.body.style.overflow = 'hidden';
@@ -2031,6 +2049,20 @@
     if (qty < 1) {
       msgDiv.className = 'form-message error';
       msgDiv.textContent = '✗ অনুগ্রহ করে কমপক্ষে ১টি কোয়ান্টিটি সিলেক্ট করুন।';
+      return;
+    }
+
+    // Spam check: honeypot filled in, or submitted implausibly fast after the
+    // form opened → pretend it worked and quietly stop, without tipping off the bot.
+    const isBotO = document.getElementById('oWebsite').value.trim() !== '' || (Date.now() - orderFormOpenTime) < 3000;
+    if (isBotO) {
+      msgDiv.className = 'form-message success';
+      msgDiv.textContent = '✓ Your order has been submitted. We will contact you shortly to confirm. / আপনার অর্ডার সাবমিট হয়েছে।';
+      this.reset();
+      document.getElementById('oDistrict').innerHTML = '<option value="">--- Select District ---</option>';
+      document.getElementById('oQty').value = 1;
+      updateOrderTotal();
+      setTimeout(() => { msgDiv.className = 'form-message'; }, 3000);
       return;
     }
 
@@ -2368,10 +2400,21 @@
   // Complaints Form Submission
   document.getElementById('complaintsForm').addEventListener('submit', async function(e) {
     e.preventDefault();
-    
+
     const submitBtn = this.querySelector('.complaints-submit');
     const messageDiv = document.getElementById('formMessage');
-    
+
+    // Spam check: honeypot filled in, or submitted implausibly fast → pretend
+    // it worked and quietly stop, without telling the bot why.
+    const isBotC = document.getElementById('cWebsite').value.trim() !== '' || (Date.now() - pageLoadTime) < 3000;
+    if (isBotC) {
+      messageDiv.className = 'form-message success';
+      messageDiv.textContent = '✓ Your complaint has been submitted successfully. We will get in touch with you shortly.';
+      this.reset();
+      setTimeout(() => { messageDiv.className = 'form-message'; }, 3000);
+      return;
+    }
+
     const formData = {
       formType: 'complaint',
       name: document.getElementById('cname').value,
