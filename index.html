@@ -1166,7 +1166,7 @@
 </div>
 
 <div class="avatar-modal-overlay" id="avatarModalOverlay" onclick="if(event.target===this) closeAvatarModal()">
-  <button class="avatar-modal-close" onclick="closeAvatarModal()" aria-label="Close">✕</button>
+  <button type="button" class="avatar-modal-close" onclick="closeAvatarModal()" aria-label="Close">✕</button>
   <div class="avatar-modal-circle">
     <img id="avatarModalImg" src="" alt="">
   </div>
@@ -1206,7 +1206,7 @@
 <header>
   <div class="nav">
     <div class="brand"><img src="images/logo.png" alt="Ara Chocolates Logo" class="logo-img" onerror="this.style.display='none'">Ara Chocolates</div>
-    <button class="nav-toggle" id="navToggle" aria-label="Open menu">☰</button>
+    <button type="button" class="nav-toggle" id="navToggle" aria-label="Open menu">☰</button>
     <nav class="links" id="navLinks">
       <a href="#about">About</a>
       <a href="#products">Products</a>
@@ -1226,7 +1226,7 @@
       </div>
       <div class="hero-side">
         <p>Inspired by Swiss chocolate heritage, handcrafted in Bangladesh — Ara Chocolates is an experience in absolute balance.</p>
-        <button class="hero-cta" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">View products <span class="arrow">→</span></button>
+        <button type="button" class="hero-cta" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">View products <span class="arrow">→</span></button>
       </div>
     </div>
   </div>
@@ -1263,7 +1263,7 @@
   </div>
   <div class="products">
     <div class="product combo reveal" onclick="openProductModal('combo')">
-      <div class="ph"><img src="images/combo-box.png" alt="Ara Chocolates Combo Box — Premium Artisan Selection" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'img-fallback',textContent:'Combo Box'}))"></div>
+      <div class="ph"><img src="images/combo-box.png" alt="Ara Chocolates Combo Box — Premium Artisan Selection" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'img-fallback',textContent:'Combo Box'}))"></div>
       <div class="pbody">
         <h3>Combo Box</h3>
         <p class="desc">A larger collection made for sharing — ideal for gifting or a family occasion. Includes 3 flavors.</p>
@@ -1275,7 +1275,7 @@
       </div>
     </div>
     <div class="product solo reveal" onclick="openProductModal('solo')">
-      <div class="ph"><img src="images/solo-bar.png" alt="Ara Chocolates Solo Dark Chocolate Bar" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'img-fallback',textContent:'Solo Bar'}))"></div>
+      <div class="ph"><img src="images/solo-bar.png" alt="Ara Chocolates Solo Dark Chocolate Bar" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'img-fallback',textContent:'Solo Bar'}))"></div>
       <div class="pbody">
         <h3>Solo</h3>
         <p class="desc">Made for a single serving — a small, rich moment just for you.</p>
@@ -1299,7 +1299,7 @@
     <div class="choco-list">
       <div class="choco-row" onclick="openOrderChoice('Almond Chocolate', '৳ 390')">
         <div class="choco-num">1</div>
-        <div class="choco-box"><img src="almond.png" alt="Almond Chocolate" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'img-fallback',textContent:'Almond'}))"></div>
+        <div class="choco-box"><img src="almond.png" alt="Almond Chocolate" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'img-fallback',textContent:'Almond'}))"></div>
         <div class="choco-info">
           <h4>Almond Chocolate</h4>
           <p>Smooth milk chocolate with premium almonds</p>
@@ -1310,7 +1310,7 @@
 
       <div class="choco-row" onclick="openOrderChoice('Cashew Chocolate', '৳ 390')">
         <div class="choco-num">2</div>
-        <div class="choco-box"><img src="cashew.png" alt="Cashew Chocolate" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'img-fallback',textContent:'Cashew'}))"></div>
+        <div class="choco-box"><img src="cashew.png" alt="Cashew Chocolate" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'img-fallback',textContent:'Cashew'}))"></div>
         <div class="choco-info">
           <h4>Cashew Chocolate</h4>
           <p>Creamy chocolate filled with whole cashews</p>
@@ -1321,7 +1321,7 @@
 
       <div class="choco-row" onclick="openOrderChoice('Mixed Nut Chocolate', '৳ 370')">
         <div class="choco-num">3</div>
-        <div class="choco-box"><img src="mixed-nut.png" alt="Mixed Nut Chocolate" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'img-fallback',textContent:'Mixed Nut'}))"></div>
+        <div class="choco-box"><img src="mixed-nut.png" alt="Mixed Nut Chocolate" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'img-fallback',textContent:'Mixed Nut'}))"></div>
         <div class="choco-info">
           <h4>Mixed Nut Chocolate</h4>
           <p>A blend of assorted premium nuts in chocolate</p>
@@ -1347,7 +1347,7 @@
 <!-- ========== PRODUCT DETAILS MODAL ========== -->
 <div class="product-modal-overlay" id="productModalOverlay" onclick="closeProductModalOnOverlay(event)">
   <div class="product-modal" role="dialog" aria-modal="true" aria-labelledby="productModalTitle">
-    <button class="product-modal-close" onclick="closeProductModal()" aria-label="Close">✕</button>
+    <button type="button" class="product-modal-close" onclick="closeProductModal()" aria-label="Close">✕</button>
 
     <div class="product-modal-tabs">
       <button type="button" class="product-tab" id="tabCombo" onclick="switchProductTab('combo')">Combo Box</button>
@@ -1413,7 +1413,7 @@
 <!-- ========== ORDER CHOICE MODAL ========== -->
 <div class="order-choice-overlay" id="orderChoiceOverlay" onclick="if(event.target===this)closeOrderChoice()">
   <div class="order-choice-box">
-    <button class="order-choice-close" onclick="closeOrderChoice()" aria-label="Close">✕</button>
+    <button type="button" class="order-choice-close" onclick="closeOrderChoice()" aria-label="Close">✕</button>
     <h3 id="ocProductTitle">Order</h3>
     <p>How would you like to place your order?</p>
     <button type="button" class="oc-btn oc-whatsapp" onclick="continueToWhatsApp()">Continue to WhatsApp</button>
@@ -1424,7 +1424,7 @@
 <!-- ========== ORDER ON WEBSITE FORM ========== -->
 <div class="order-form-overlay" id="orderFormOverlay" onclick="if(event.target===this)closeOrderForm()">
   <div class="order-form-box">
-    <button class="order-form-close" onclick="closeOrderForm()" aria-label="Close">✕</button>
+    <button type="button" class="order-form-close" onclick="closeOrderForm()" aria-label="Close">✕</button>
     <h3>Order on Website</h3>
     <p class="oform-sub">Fill in your details below — we'll confirm your order shortly.</p>
     <form id="orderForm">
@@ -1603,11 +1603,11 @@
       </div>
     </div>
     <div class="carousel-dots" id="carouselDots">
-      <button class="dot active" data-index="0" aria-label="Go to review 1"></button>
-      <button class="dot" data-index="1" aria-label="Go to review 2"></button>
-      <button class="dot" data-index="2" aria-label="Go to review 3"></button>
-      <button class="dot" data-index="3" aria-label="Go to review 4"></button>
-      <button class="dot" data-index="4" aria-label="Go to review 5"></button>
+      <button type="button" class="dot active" data-index="0" aria-label="Go to review 1"></button>
+      <button type="button" class="dot" data-index="1" aria-label="Go to review 2"></button>
+      <button type="button" class="dot" data-index="2" aria-label="Go to review 3"></button>
+      <button type="button" class="dot" data-index="3" aria-label="Go to review 4"></button>
+      <button type="button" class="dot" data-index="4" aria-label="Go to review 5"></button>
     </div>
   </div>
 </section>
@@ -1895,6 +1895,7 @@
   }
 
   function closeProductModal() {
+    if (!productModalOverlay.classList.contains('open')) return; // already closed — avoid re-running the close/resume side effects on every Escape press
     productModalOverlay.classList.remove('open');
     // Resume animations after modal closes smoothly
     setTimeout(() => {
@@ -2001,6 +2002,7 @@
   }
 
   function closeOrderChoice() {
+    if (!orderChoiceOverlay.classList.contains('open')) return; // already closed — avoid re-running the close/resume side effects on every Escape press
     orderChoiceOverlay.classList.remove('open');
     // Resume animations after modal closes smoothly
     setTimeout(() => {
@@ -2031,6 +2033,7 @@
   }
 
   function closeOrderForm() {
+    if (!orderFormOverlay.classList.contains('open')) return; // already closed — avoid re-running the close/resume side effects on every Escape press
     orderFormOverlay.classList.remove('open');
     // Resume animations after form closes smoothly
     setTimeout(() => {
@@ -2623,6 +2626,7 @@
   }
   function closeAvatarModal() {
     const overlay = document.getElementById('avatarModalOverlay');
+    if (!overlay.classList.contains('open')) return; // already closed — avoid clobbering body scroll state set by another open modal
     overlay.classList.remove('open');
     document.body.style.overflow = '';
   }
