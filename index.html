@@ -22,8 +22,1140 @@
 <meta property="og:image" content="https://arachocolates25.github.io/images/combo-box.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Archivo+Expanded:wght@700&family=Noto+Sans+Bengali:wght@400;600;700&display=swap" rel="stylesheet">
-<style>:root{--cocoa-dark:#241209;--cocoa:#4A2C1A;--cream:#EDE4D0;--cream-2:#F6F1E6;--gold:#B8873A;--swiss-red:#C8102E;--white:#FFFFFF;--line:rgba(36,18,9,0.16);}*{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;scrollbar-gutter:stable;}body{font-family:'Archivo',sans-serif;background:radial-gradient(ellipse 1200px 600px at 50% 0%,rgba(184,135,58,0.05) 0%,transparent 60%),var(--cream-2);color:var(--cocoa-dark);font-weight:400;-webkit-font-smoothing:antialiased;}img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}.wrap{max-width:1120px;margin:0 auto;padding:0 24px;}header{position:sticky;top:0;z-index:50;background:var(--cream-2);border-bottom:1px solid var(--line);}.nav{display:flex;align-items:center;justify-content:space-between;padding:18px 24px;max-width:1120px;margin:0 auto;}.brand{font-family:'Archivo Expanded',sans-serif;font-weight:700;font-size:1.3rem;letter-spacing:0.01em;display:flex;align-items:center;gap:10px;}.brand .logo-img{width:34px;height:34px;object-fit:contain;flex:none;}nav.links{display:flex;gap:28px;font-size:0.95rem;}nav.links a{text-decoration:none;padding-bottom:3px;position:relative;}nav.links a::after{content:"";position:absolute;left:0;bottom:0;width:100%;height:1px;background:var(--cocoa-dark);transform:scaleX(0);transform-origin:left;transition:transform .3s cubic-bezier(.2,.8,.2,1);}nav.links a:hover::after{transform:scaleX(1);}.nav-toggle{display:none;background:none;border:none;font-size:1.6rem;cursor:pointer;color:var(--cocoa-dark);}@media(max-width:720px){nav.links{position:fixed;top:64px;left:0;right:0;background:var(--cream-2);flex-direction:column;gap:0;border-bottom:1px solid var(--line);max-height:0;overflow:hidden;transition:max-height .3s ease;}nav.links.open{max-height:400px;}nav.links a{padding:16px 24px;border-bottom:1px solid var(--line);}.nav-toggle{display:block;}}.hero{border-bottom:1px solid var(--line);padding:64px 0 0;}.hero-grid{display:grid;grid-template-columns:1.5fr 1fr;gap:40px;align-items:end;padding-bottom:48px;}.hero-tag{font-size:0.85rem;color:var(--gold);letter-spacing:0.02em;margin-bottom:18px;font-weight:600;}.hero h1{font-family:'Archivo Expanded',sans-serif;font-weight:700;font-size:clamp(2.4rem,6vw,4.6rem);line-height:0.98;letter-spacing:-0.01em;}.hero-title-mask{overflow:hidden;padding-bottom:0.08em;}.hero h1 em{font-style:normal;color:var(--swiss-red);}.hero-side{border-left:1px solid var(--line);padding-left:28px;display:flex;flex-direction:column;gap:18px;}.hero-side p{font-size:1rem;line-height:1.6;color:var(--cocoa);}.hero-cta{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,var(--cocoa) 0%,var(--cocoa-dark) 100%);color:var(--white);padding:14px 24px;font-weight:600;font-size:0.95rem;letter-spacing:0.01em;width:fit-content;box-shadow:0 8px 20px rgba(36,18,9,0.22);transition:background .25s ease,transform .15s ease,box-shadow .25s ease;border:none;cursor:pointer;}.hero-cta span.arrow{display:inline-block;transition:transform .25s cubic-bezier(.2,.8,.2,1);}.hero-cta:hover{background:linear-gradient(135deg,var(--swiss-red) 0%,#8f0c22 100%);box-shadow:0 10px 24px rgba(200,16,46,0.28);}.hero-cta:hover span.arrow{transform:translateX(4px);}.hero-cta:active{transform:scale(.97);}.hero-strip{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);}.hero-strip div{padding:20px 20px;border-right:1px solid var(--line);text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:78px;transition:background .25s ease;}.hero-strip div:hover{background:rgba(184,135,58,0.07);}.hero-strip div:last-child{border-right:none;}.hero-strip .num{font-family:'Archivo Expanded',sans-serif;font-weight:700;font-size:1.4rem;color:var(--cocoa-dark);font-variant-numeric:tabular-nums;}.hero-strip .lbl{font-size:0.8rem;color:var(--cocoa);margin-top:4px;}@media(max-width:720px){.hero-grid{grid-template-columns:1fr;gap:28px;}.hero-side{border-left:none;padding-left:0;border-top:1px solid var(--line);padding-top:20px;}.hero-strip{grid-template-columns:repeat(2,1fr);}.hero-strip div:nth-child(2){border-right:none;}.hero-strip div:nth-child(3),.hero-strip div:nth-child(4){border-top:1px solid var(--line);}}.section{padding:72px 0;border-bottom:1px solid var(--line);}.section-head{display:grid;grid-template-columns:1fr 2fr;gap:24px;margin-bottom:44px;}.section-head .label{font-weight:600;color:var(--gold);font-size:0.9rem;}.section-head h2{font-family:'Archivo Expanded',sans-serif;font-weight:700;font-size:clamp(1.8rem,4vw,2.6rem);line-height:1.08;}@media(max-width:720px){.section-head{grid-template-columns:1fr;gap:10px;}}.about-body{display:grid;grid-template-columns:1fr 1fr;gap:48px;}.about-body p{font-size:1.05rem;line-height:1.75;color:var(--cocoa);margin-bottom:18px;}.about-visual{aspect-ratio:4/5;background:linear-gradient(135deg,var(--cocoa-dark) 0%,var(--cocoa) 55%,var(--gold) 100%);position:relative;overflow:hidden;}.about-visual::after{content:"";position:absolute;inset:0;background-image:repeating-linear-gradient(45deg,rgba(255,255,255,0.04) 0 2px,transparent 2px 18px);}.about-visual .cross{position:absolute;bottom:28px;right:28px;width:34px;height:34px;}.about-visual .cross::before,.about-visual .cross::after{content:"";position:absolute;background:var(--cream-2);}.about-visual .cross::before{left:50%;top:0;width:6px;height:100%;transform:translateX(-50%);}.about-visual .cross::after{top:50%;left:0;height:6px;width:100%;transform:translateY(-50%);}@media(max-width:720px){.about-body{grid-template-columns:1fr;}.about-visual{order:-1;aspect-ratio:16/9;}}.products{display:flex;flex-direction:column;gap:40px;}.product{background:linear-gradient(165deg,var(--cream-2) 0%,var(--cream) 100%);padding:40px 32px;display:flex;flex-direction:column;gap:16px;cursor:pointer;border-radius:12px;border:1px solid var(--line);box-shadow:0 2px 6px rgba(36,18,9,0.06),0 10px 28px rgba(36,18,9,0.07);transition:box-shadow .35s cubic-bezier(.2,.8,.2,1),transform .35s cubic-bezier(.2,.8,.2,1),border-color .35s;}.product:hover{box-shadow:0 6px 14px rgba(36,18,9,0.08),0 20px 40px rgba(36,18,9,0.12);transform:translateY(-4px);border-color:rgba(184,135,58,0.4);}.view-details{align-self:flex-start;background:none;border:none;padding:0;font-family:'Archivo',sans-serif;font-weight:600;font-size:0.88rem;color:var(--gold);cursor:pointer;transition:color .2s;}.view-details:hover{color:var(--swiss-red);}.view-details span.arrow{display:inline-block;transition:transform .25s cubic-bezier(.2,.8,.2,1);}.view-details:hover span.arrow{transform:translateX(3px);}.product .ph{aspect-ratio:1/1;background:var(--cocoa-dark);position:relative;overflow:hidden;border-radius:8px;box-shadow:inset 0 0 0 1px rgba(184,135,58,0.22);}.product .ph::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(160deg,rgba(184,135,58,0.08) 0%,transparent 40%,rgba(36,18,9,0.14) 100%);}.product .ph img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s cubic-bezier(.2,.8,.2,1);}.product:hover .ph img{transform:scale(1.06);}.product h3{font-family:'Archivo Expanded',sans-serif;font-weight:700;font-size:1.5rem;margin-top:8px;}.product .desc{color:var(--cocoa);font-size:0.98rem;line-height:1.6;}.product .row{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--line);padding-top:16px;margin-top:auto;}.product .price{font-family:'Archivo Expanded',sans-serif;font-weight:700;font-size:1.3rem;}.product .order{font-weight:600;font-size:0.85rem;background:linear-gradient(135deg,var(--cocoa) 0%,var(--cocoa-dark) 100%);border:none;color:var(--white);padding:10px 20px;border-radius:6px;cursor:pointer;font-family:'Archivo',sans-serif;box-shadow:0 4px 12px rgba(36,18,9,0.18);transition:background .25s ease,transform .15s ease,box-shadow .25s ease;}.product .order:hover{background:linear-gradient(135deg,var(--swiss-red) 0%,#8f0c22 100%);box-shadow:0 6px 16px rgba(200,16,46,0.24);}.product .order:active{transform:scale(.95);}@media(min-width:721px){.product{flex-direction:row;align-items:stretch;gap:32px;}.product .ph{width:280px;flex:none;aspect-ratio:1/1;}.product>div.pbody{flex:1;display:flex;flex-direction:column;gap:16px;}}.product-modal-overlay{position:fixed;inset:0;background:rgba(36,18,9,0.55);display:flex;align-items:center;justify-content:center;padding:24px;z-index:200;opacity:0;visibility:hidden;transition:opacity .25s ease,visibility .25s ease;backface-visibility:hidden;}.product-modal-overlay.open{opacity:1;visibility:visible;}.product-modal{background:var(--cream-2);max-width:680px;width:100%;max-height:90vh;overflow-y:auto;border-radius:10px;position:relative;padding:44px;transform:translateY(18px) scale(.97);transition:transform .35s cubic-bezier(.2,.8,.2,1);will-change:transform;backface-visibility:hidden;}.product-modal-overlay.open .product-modal{transform:translateY(0) scale(1);}.product-modal-close{position:absolute;top:16px;right:16px;width:36px;height:36px;background:none;border:none;font-size:1.2rem;color:var(--cocoa);cursor:pointer;transition:color .2s;z-index:2;}.product-modal-close:hover{color:var(--swiss-red);}.product-modal-tabs{display:flex;gap:1px;background:var(--line);margin-bottom:24px;border-radius:6px;overflow:hidden;}.product-tab{flex:1;background:var(--cream);border:none;padding:14px;font-family:'Archivo',sans-serif;font-weight:600;font-size:0.95rem;color:var(--cocoa);cursor:pointer;transition:background .2s,color .2s;}.product-tab.active{background:var(--cocoa-dark);color:var(--white);}.pm-swipeport{position:relative;overflow:hidden;touch-action:pan-y;transition:height .3s cubic-bezier(.2,.8,.2,1);backface-visibility:hidden;}.pm-track{display:flex;transition:transform .34s cubic-bezier(.22,.8,.28,1);will-change:transform;backface-visibility:hidden;}.product-modal-panel{flex:none;width:100%;box-sizing:border-box;}.pm-head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:12px;}.pm-head h3{font-family:'Archivo Expanded',sans-serif;font-weight:700;font-size:1.6rem;}.pm-price{font-family:'Archivo Expanded',sans-serif;font-weight:700;font-size:1.3rem;color:var(--swiss-red);}.pm-intro{color:var(--cocoa);line-height:1.6;margin-bottom:24px;}.pm-flavors{display:flex;flex-direction:column;gap:16px;margin-bottom:28px;}.pm-flavor{display:flex;gap:16px;padding:16px;background:var(--cream);border-radius:8px;}.pm-flavor-tag{font-family:'Archivo Expanded',sans-serif;font-weight:700;color:var(--gold);font-size:1.1rem;flex:none;width:26px;}.pm-flavor h4{font-size:1.05rem;font-weight:600;margin-bottom:4px;}.pm-flavor p{font-size:0.92rem;color:var(--cocoa);line-height:1.5;}.pm-order{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--cocoa) 0%,var(--cocoa-dark) 100%);color:var(--white);padding:14px 24px;font-weight:600;font-size:0.95rem;border:none;cursor:pointer;transition:background .25s ease,transform .15s ease,box-shadow .25s ease;box-shadow:0 8px 18px rgba(36,18,9,0.2);}.pm-order:hover{background:linear-gradient(135deg,var(--swiss-red) 0%,#8f0c22 100%);box-shadow:0 10px 22px rgba(200,16,46,0.26);}.pm-order:active{transform:scale(.97);}@media(max-width:720px){.product-modal-overlay{padding:12px;}.product-modal{padding:26px 18px 30px;max-height:92vh;border-radius:14px;}.pm-head{flex-direction:column;align-items:flex-start;gap:6px;}}.order-choice-overlay,.order-form-overlay{position:fixed;inset:0;background:rgba(36,18,9,0.55);display:flex;align-items:center;justify-content:center;padding:24px;z-index:300;opacity:0;visibility:hidden;transition:opacity .25s ease,visibility .25s ease;backface-visibility:hidden;}.order-choice-overlay.open,.order-form-overlay.open{opacity:1;visibility:visible;}.order-choice-box{background:linear-gradient(165deg,var(--cream-2) 0%,var(--cream) 100%);max-width:380px;width:100%;border-radius:14px;position:relative;padding:40px 30px 34px;text-align:center;box-shadow:0 24px 60px rgba(36,18,9,0.28);border-top:4px solid var(--gold);transform:translateY(18px) scale(.97);transition:transform .35s cubic-bezier(.2,.8,.2,1);will-change:transform;backface-visibility:hidden;}.order-choice-overlay.open .order-choice-box{transform:translateY(0) scale(1);}.order-choice-box h3{font-family:'Archivo Expanded',sans-serif;font-weight:700;font-size:1.3rem;margin-bottom:8px;}.order-choice-box p{color:var(--cocoa);font-size:0.92rem;margin-bottom:24px;}.order-choice-box .oc-btn{display:block;width:100%;padding:14px 20px;margin-bottom:12px;font-weight:600;font-size:0.95rem;border-radius:6px;border:none;cursor:pointer;font-family:'Archivo',sans-serif;transition:opacity .2s,transform .15s ease;}.order-choice-box .oc-btn:hover{opacity:0.88;}.order-choice-box .oc-btn:active{transform:scale(.97);}.oc-whatsapp{background:#25D366;color:#fff;box-shadow:0 6px 16px rgba(37,211,102,0.25);}.oc-website{background:linear-gradient(135deg,var(--cocoa) 0%,var(--cocoa-dark) 100%);color:#fff;box-shadow:0 6px 16px rgba(36,18,9,0.22);}.order-choice-close,.order-form-close{position:absolute;top:14px;right:14px;width:34px;height:34px;background:none;border:none;border-radius:50%;font-size:1.1rem;color:var(--cocoa);cursor:pointer;transition:background .2s ease,color .2s ease;}.order-choice-close:hover,.order-form-close:hover{background:rgba(36,18,9,0.08);color:var(--swiss-red);}.order-form-box{background:linear-gradient(165deg,var(--cream-2) 0%,var(--cream) 100%);max-width:480px;width:100%;max-height:88vh;overflow-y:auto;border-radius:14px;position:relative;padding:40px 32px 36px;box-shadow:0 24px 60px rgba(36,18,9,0.28);border-top:4px solid var(--gold);transform:translateY(18px) scale(.97);transition:transform .35s cubic-bezier(.2,.8,.2,1);will-change:transform;backface-visibility:hidden;}.order-form-overlay.open .order-form-box{transform:translateY(0) scale(1);}.order-form-box h3{font-family:'Archivo Expanded',sans-serif;font-weight:700;font-size:1.4rem;margin-bottom:6px;}.order-form-box .oform-sub{color:var(--cocoa);font-size:0.88rem;margin-bottom:22px;}#orderForm{display:flex;flex-direction:column;gap:16px;}.qty-btn{width:40px;height:40px;border:1px solid var(--line);background:var(--white);font-size:1.2rem;font-weight:700;cursor:pointer;border-radius:8px;color:var(--cocoa-dark);transition:transform .15s ease,border-color .2s ease,background .2s ease;}.qty-btn:hover{border-color:var(--gold);background:rgba(184,135,58,0.08);}.qty-btn:active{transform:scale(.9);}.order-total-box{margin-top:10px;padding:14px 18px;border-radius:8px;background:linear-gradient(135deg,var(--cocoa) 0%,var(--cocoa-dark) 100%);display:flex;justify-content:space-between;align-items:center;box-shadow:0 8px 18px rgba(36,18,9,0.2);}.order-total-box span:first-child{color:var(--cream-2);font-size:0.95rem;}.order-total-box span#oQtyTotal{color:var(--white);font-weight:700;font-size:1.25rem;font-family:'Archivo Expanded',sans-serif;}.advance-note{background:var(--cream-2);border-left:3px solid var(--gold);border-radius:0 8px 8px 0;padding:14px 18px;}.advance-note p{font-size:0.9rem;line-height:1.6;color:var(--cocoa-dark);margin:0;}#orderForm button[onclick^="changeQty"]:active{transform:scale(.9);}#orderSubmitMsg{font-size:0.9rem;margin-top:4px;}#orderSubmitMsg.success{color:#1a7d3c;}#orderSubmitMsg.error{color:var(--swiss-red);}.values{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);}.value{background:linear-gradient(165deg,var(--cream-2) 0%,var(--cream) 100%);padding:32px 26px;}.value .n{font-family:'Archivo Expanded',sans-serif;color:var(--gold);font-weight:700;font-size:0.95rem;margin-bottom:14px;}.value h4{font-size:1.15rem;font-weight:600;margin-bottom:10px;}.value p{font-size:0.95rem;color:var(--cocoa);line-height:1.6;}@media(max-width:720px){.values{grid-template-columns:1fr;}}.reviews-grid{display:flex;overflow:hidden;position:relative;background:var(--white);border-radius:16px;padding:3px;gap:3px;box-shadow:0 4px 12px rgba(36,18,9,0.08);touch-action:pan-y;}.carousel-track{display:flex;width:100%;gap:3px;transition:transform .6s cubic-bezier(0.25,0.46,0.45,0.94);will-change:transform;}.review-card{flex:0 0 100%;padding:18px 20px 14px;border-radius:20px;border:1px solid var(--line);box-shadow:0 4px 12px rgba(36,18,9,0.06),0 20px 40px rgba(36,18,9,0.08);display:flex;flex-direction:column;gap:9px;transition:box-shadow .35s cubic-bezier(.2,.8,.2,1);position:relative;overflow:hidden;}.review-card::before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,0) 0%,rgba(255,255,255,0.3) 100%);pointer-events:none;opacity:0.4;}.review-card::after{content:"";position:absolute;inset:0;border-radius:20px;box-shadow:inset 0 1px 2px rgba(255,255,255,0.8);pointer-events:none;}.review-card>*{position:relative;z-index:1;}.review-card:nth-child(1){background:linear-gradient(135deg,rgba(229,147,96,0.35) 0%,rgba(255,200,150,0.15) 40%,#FFFFFF 100%);position:relative;}.review-card:nth-child(2){background:linear-gradient(135deg,rgba(76,159,168,0.35) 0%,rgba(150,200,210,0.15) 40%,#FFFFFF 100%);}.review-card:nth-child(3){background:linear-gradient(135deg,rgba(255,193,7,0.40) 0%,rgba(255,220,100,0.18) 40%,#FFFFFF 100%);}.review-card:nth-child(4){background:linear-gradient(135deg,rgba(184,135,58,0.35) 0%,rgba(220,180,120,0.15) 40%,#FFFFFF 100%);}.review-card:nth-child(5){background:linear-gradient(135deg,rgba(196,108,74,0.35) 0%,rgba(230,165,140,0.15) 40%,#FFFFFF 100%);}.review-card:hover{box-shadow:0 8px 24px rgba(36,18,9,0.1),0 28px 56px rgba(36,18,9,0.12);}.review-card .stars{color:var(--gold);font-size:1rem;letter-spacing:3px;font-weight:700;text-shadow:0 2px 3px rgba(184,135,58,0.12);}.review-card .quote{font-size:0.88rem;line-height:1.55;color:var(--cocoa);flex:1;}.review-card .quote[lang="bn"]{font-family:'Noto Sans Bengali',sans-serif;line-height:1.7;}.review-card .profile{display:flex;align-items:center;gap:10px;padding:10px 12px;margin-top:4px;border-radius:16px;background:rgba(255,255,255,0.45);position:relative;width:fit-content;max-width:100%;}.review-card .profile::before{content:"";position:absolute;top:0;left:50%;transform:translateX(-50%);width:44px;height:3px;border-radius:10px;background:rgba(36,18,9,0.1);}.review-card .avatar{width:40px;height:40px;border-radius:50%;object-fit:cover;flex:none;border:2px solid var(--line);background:var(--cream);box-shadow:0 2px 6px rgba(36,18,9,0.1);cursor:pointer;transition:transform .2s ease;}.review-card .avatar:hover{transform:scale(1.08);}.review-card .avatar:active{transform:scale(0.96);}.avatar-modal-overlay{position:fixed;inset:0;background:rgba(36,18,9,0.65);display:flex;align-items:center;justify-content:center;padding:24px;z-index:400;opacity:0;visibility:hidden;transition:opacity .28s ease,visibility .28s ease;}.avatar-modal-overlay.open{opacity:1;visibility:visible;}.avatar-modal-circle{width:min(78vw,320px);height:min(78vw,320px);border-radius:50%;overflow:hidden;border:4px solid var(--cream-2);box-shadow:0 24px 60px rgba(36,18,9,0.4);transform:scale(0.4);opacity:0;transition:transform .38s cubic-bezier(.2,.8,.2,1),opacity .3s ease;background:var(--cream);}.avatar-modal-overlay.open .avatar-modal-circle{transform:scale(1);opacity:1;}.avatar-modal-circle img{width:100%;height:100%;object-fit:cover;display:block;}.avatar-modal-close{position:absolute;top:20px;right:20px;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,0.15);border:none;color:var(--white);font-size:1.3rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s ease;}.avatar-modal-close:hover{background:rgba(255,255,255,0.3);}.review-card .avatar-fallback{display:flex;align-items:center;justify-content:center;font-family:'Archivo',sans-serif;font-weight:700;font-size:0.85rem;color:var(--cocoa-dark);}.review-card .profile-name{font-weight:700;font-size:0.97rem;color:var(--cocoa-dark);}.review-card .profile-role{font-size:0.81rem;color:var(--gold);margin-top:3px;font-weight:500;}.carousel-dots{display:flex;justify-content:center;align-items:center;gap:8px;margin-top:24px;padding:14px 0;}.dot{width:10px;height:10px;border-radius:50%;background:rgba(36,18,9,0.15);border:1.5px solid rgba(36,18,9,0.2);cursor:pointer;transition:background .35s cubic-bezier(.2,.8,.2,1),border-color .35s cubic-bezier(.2,.8,.2,1),transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s cubic-bezier(.2,.8,.2,1),width .35s cubic-bezier(.2,.8,.2,1),height .35s cubic-bezier(.2,.8,.2,1);position:relative;}.dot:hover{background:rgba(36,18,9,0.25);transform:scale(1.15);}.dot.active{background:var(--cocoa-dark);border-color:var(--cocoa-dark);box-shadow:0 0 0 3px rgba(36,18,9,0.12);width:12px;height:12px;}@media(max-width:720px){.reviews-grid{padding:0;border-radius:0;box-shadow:none;}.carousel-track{gap:0;}.review-card{border-radius:16px;padding:16px 16px 14px;gap:9px;border:none;border-bottom:1px solid var(--line);}.review-card::before{display:none;}.review-card::after{border-radius:16px;box-shadow:none;}.carousel-dots{margin-top:18px;gap:6px;padding:12px 0;}.dot{width:8px;height:8px;}.dot.active{width:10px;height:10px;}}.team-container{display:grid;grid-template-columns:1fr 1fr;gap:48px;}.team-member{background:linear-gradient(165deg,var(--cream-2) 0%,var(--cream) 100%);border:1px solid var(--line);padding:0;border-radius:8px;overflow:hidden;}.team-header{background:linear-gradient(135deg,var(--cocoa-dark) 0%,var(--cocoa) 100%);color:var(--white);padding:28px 24px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:background .2s;}.team-header:hover{background:linear-gradient(135deg,var(--swiss-red) 0%,var(--cocoa-dark) 100%);}.team-header h3{font-family:'Archivo Expanded',sans-serif;font-weight:700;font-size:1.3rem;margin:0;}.team-header .role{font-size:0.85rem;color:var(--cream);font-weight:500;margin-top:4px;}.team-toggle{font-size:1.4rem;background:none;border:none;color:var(--white);cursor:pointer;transition:transform .3s;}.team-toggle.open{transform:rotate(180deg);}.team-details{max-height:0;overflow:hidden;transition:max-height .4s cubic-bezier(.4,0,.2,1),opacity .3s ease;background:var(--cream-2);opacity:0;}.team-details.open{max-height:600px;opacity:1;}.team-info{padding:24px;display:flex;flex-direction:column;gap:16px;}.team-item{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--line);}.team-item:last-child{border-bottom:none;}.team-label{font-weight:600;color:var(--cocoa-dark);font-size:0.9rem;}.team-value{color:var(--cocoa);font-size:0.95rem;text-align:right;}.team-value a{color:var(--swiss-red);border-bottom:1px solid var(--swiss-red);transition:color .2s;}.team-value a:hover{color:var(--cocoa-dark);}@media(max-width:720px){.team-container{grid-template-columns:1fr;}}.choco-list{display:flex;flex-direction:column;gap:16px;}.choco-row{display:flex;align-items:center;gap:16px;background:linear-gradient(165deg,var(--cream-2) 0%,var(--cream) 100%);padding:20px 24px;border-radius:10px;border:1px solid var(--line);cursor:pointer;box-shadow:0 2px 6px rgba(36,18,9,0.06),0 10px 28px rgba(36,18,9,0.07);transition:box-shadow .35s cubic-bezier(.2,.8,.2,1),transform .35s cubic-bezier(.2,.8,.2,1),border-color .35s;}.choco-row:hover{box-shadow:0 6px 14px rgba(36,18,9,0.08),0 20px 40px rgba(36,18,9,0.12);transform:translateY(-2px);border-color:rgba(184,135,58,0.4);}.choco-num{font-family:'Archivo Expanded',sans-serif;font-weight:700;font-size:1.2rem;color:var(--cocoa-dark);min-width:24px;text-align:center;}.choco-box{width:60px;height:60px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex:none;box-shadow:0 2px 8px rgba(36,18,9,0.1);overflow:hidden;background:#f9f9f9;}.choco-box img{width:100%;height:100%;object-fit:contain;display:block;background:#f9f9f9;}.choco-box svg{width:100%;height:100%;display:block;}.choco-info{flex:1;}.choco-info h4{font-family:'Archivo Expanded',sans-serif;font-weight:700;font-size:1.05rem;color:var(--cocoa-dark);margin-bottom:4px;}.choco-info p{color:var(--cocoa);font-size:0.9rem;line-height:1.4;}.choco-weight{font-size:0.8rem;color:var(--cocoa);text-align:center;min-width:50px;font-weight:500;}.choco-price{font-family:'Archivo Expanded',sans-serif;font-weight:700;font-size:1.2rem;color:var(--swiss-red);min-width:70px;text-align:right;}@media(max-width:720px){.choco-row{gap:12px;padding:16px 16px;}.choco-box{width:50px;height:50px;}.choco-box img{width:100%;height:100%;object-fit:contain;display:block;}.choco-box svg{width:100%;height:100%;display:block;}.choco-info h4{font-size:0.95rem;}.choco-info p{font-size:0.85rem;}}.complaints-wrapper{background:linear-gradient(165deg,var(--cream) 0%,var(--cream-2) 100%);padding:48px 24px;border-radius:12px;box-shadow:0 4px 14px rgba(36,18,9,0.05);}.complaints-form{display:flex;flex-direction:column;gap:18px;}.form-group{display:flex;flex-direction:column;gap:8px;}.hp-field{position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;overflow:hidden;}.form-group label{font-weight:600;color:var(--cocoa-dark);font-size:0.95rem;display:flex;flex-wrap:wrap;align-items:baseline;gap:6px;}.form-group label .lbl-en{font-weight:700;color:var(--cocoa-dark);}.form-group label .lbl-sep{color:var(--gold);font-weight:400;}.form-group label .lbl-bn{font-weight:600;color:var(--swiss-red);font-family:'Noto Sans Bengali','Archivo',sans-serif;font-size:0.93rem;}.img-fallback{display:flex;align-items:center;justify-content:center;width:100%;height:100%;background:linear-gradient(135deg,var(--cocoa) 0%,var(--cocoa-dark) 100%);color:var(--cream-2);font-family:'Archivo Expanded',sans-serif;font-weight:700;text-align:center;font-size:0.85rem;padding:8px;}.form-group input,.form-group textarea,.form-group select{border:1px solid var(--line);padding:13px 16px;font-family:'Archivo',sans-serif;font-size:0.95rem;color:var(--cocoa-dark);border-radius:8px;background:var(--white);transition:border-color .2s ease,box-shadow .2s ease;}.form-group input:hover,.form-group textarea:hover,.form-group select:hover{border-color:rgba(184,135,58,0.5);}.form-group input:focus,.form-group textarea:focus,.form-group select:focus{outline:none;border-color:var(--swiss-red);box-shadow:0 0 0 3px rgba(200,16,46,0.1);}.form-group textarea{resize:vertical;min-height:120px;}.complaints-submit{background:linear-gradient(135deg,var(--cocoa) 0%,var(--cocoa-dark) 100%);color:var(--white);border:none;padding:14px 28px;font-weight:600;font-size:0.95rem;border-radius:6px;cursor:pointer;box-shadow:0 8px 18px rgba(36,18,9,0.2);transition:background .25s ease,transform .15s ease,box-shadow .25s ease;width:fit-content;}.complaints-submit:hover{background:linear-gradient(135deg,var(--swiss-red) 0%,#8f0c22 100%);box-shadow:0 10px 22px rgba(200,16,46,0.26);}.complaints-submit:active:not(:disabled){transform:scale(.98);}.complaints-submit:disabled{background:var(--cocoa);box-shadow:none;cursor:not-allowed;}.form-message{padding:16px;border-radius:6px;font-weight:600;text-align:center;display:none;}.form-message.success{background:rgba(76,175,80,0.1);color:#2e7d32;display:block;}.form-message.error{background:rgba(244,67,54,0.1);color:#c62828;display:block;}.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;}.contact-list{display:flex;flex-direction:column;}.contact-list a,.contact-list div.item{display:flex;justify-content:space-between;align-items:center;padding:18px 0;border-bottom:1px solid var(--line);font-size:1rem;}.contact-list .k{color:var(--cocoa);font-size:0.85rem;}.contact-list .v{font-weight:600;}.contact-form{display:flex;flex-direction:column;gap:14px;}.contact-form input,.contact-form textarea{border:none;border-bottom:1px solid var(--line);background:transparent;padding:12px 4px;font-family:'Archivo',sans-serif;font-size:1rem;color:var(--cocoa-dark);}.contact-form input:focus,.contact-form textarea:focus{outline:none;border-bottom-color:var(--cocoa-dark);}.contact-form textarea{resize:vertical;min-height:90px;}.contact-form button{margin-top:8px;background:linear-gradient(135deg,var(--cocoa) 0%,var(--cocoa-dark) 100%);color:var(--white);border:none;padding:14px 22px;font-weight:600;font-size:0.95rem;box-shadow:0 8px 18px rgba(36,18,9,0.2);cursor:pointer;width:fit-content;transition:background .25s ease,transform .15s ease,box-shadow .25s ease;}.contact-form button:hover{background:linear-gradient(135deg,var(--swiss-red) 0%,#8f0c22 100%);box-shadow:0 10px 22px rgba(200,16,46,0.26);}.contact-form button:active{transform:scale(.98);}@media(max-width:720px){.contact-grid{grid-template-columns:1fr;}}footer{padding:32px 0;}.foot-row{display:flex;justify-content:space-between;align-items:center;font-size:0.85rem;color:var(--cocoa);flex-wrap:wrap;gap:10px;}a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--swiss-red);outline-offset:2px;}@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto;}*{transition:none !important;}}@keyframes heroRise{from{opacity:0;transform:translateY(22px);}to{opacity:1;transform:translateY(0);}}.hero-tag,.hero-side p,.hero-cta,.hero-strip{animation:heroRise .7s cubic-bezier(.2,.8,.2,1) both;}.hero-tag{animation-delay:.02s;}.hero-side p{animation-delay:.36s;}.hero-cta{animation-delay:.46s;}.hero-strip{animation-delay:.56s;}@keyframes heroTitleRise{from{opacity:0;transform:translateY(60%);}to{opacity:1;transform:translateY(0);}}.hero-title-mask h1{animation:heroTitleRise .9s cubic-bezier(.16,1,.3,1) both;animation-delay:.12s;}.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s cubic-bezier(.2,.8,.2,1),transform .7s cubic-bezier(.2,.8,.2,1);}.reveal.in-view{opacity:1;transform:translateY(0);}@media (prefers-reduced-motion:reduce){.hero-tag,.hero-side p,.hero-cta,.hero-strip{animation:none;}.hero-title-mask h1{animation:none;}.reveal{opacity:1;transform:none;transition:none;}}.leaf-fall-layer{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:60;}.branch-topright{position:fixed;top:-6px;right:-10px;width:230px;height:auto;pointer-events:none;z-index:61;filter:drop-shadow(0 8px 14px rgba(36,18,9,0.22));}@media(max-width:720px){.branch-topright{width:160px;top:0;right:-8px;}}.fall-leaf{position:absolute;opacity:0;will-change:transform,opacity;animation-timing-function:linear;animation-fill-mode:forwards;}.fall-leaf.type-straight{animation-name:leafFallStraight;}.fall-leaf.type-sway{animation-name:leafFallSway;}.fall-leaf.type-diagonal{animation-name:leafFallDiagonal;}.leaf-fall-layer.order-paused .fall-leaf{animation-play-state:paused;}@keyframes leafFallStraight{0%{transform:translate(0,0) rotate(0deg);opacity:0;}10%{opacity:0.9;}100%{transform:translate(-8vw,108vh) rotate(140deg);opacity:0.85;}}@keyframes leafFallSway{0%{transform:translate(0,0) rotate(0deg);opacity:0;}8%{opacity:0.9;}25%{transform:translate(-14vw,25vh) rotate(60deg);}50%{transform:translate(4vw,50vh) rotate(-40deg);}75%{transform:translate(-18vw,75vh) rotate(80deg);}92%{opacity:0.8;}100%{transform:translate(2vw,108vh) rotate(-20deg);opacity:0;}}@keyframes leafFallDiagonal{0%{transform:translate(0,0) rotate(0deg);opacity:0;}8%{opacity:0.85;}50%{transform:translate(-55vw,55vh) rotate(190deg);}92%{opacity:0.8;}100%{transform:translate(-118vw,118vh) rotate(360deg);opacity:0;}}.ambient-glow-layer{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:58;}.ambient-glow{position:absolute;top:2%;right:-6%;width:78vw;height:82vh;min-width:460px;min-height:460px;border-radius:50%;filter:blur(130px);opacity:0;mix-blend-mode:multiply;transform:translateX(6%) scale(0.94);will-change:opacity,transform;animation-timing-function:cubic-bezier(.3,.6,.35,1);animation-fill-mode:both;animation-iteration-count:1;}.ambient-glow.tone-cool{background:radial-gradient(ellipse at 80% 38%,rgba(61,171,203,0.68) 0%,rgba(61,171,203,0.42) 22%,rgba(61,171,203,0.22) 44%,rgba(61,171,203,0.08) 64%,transparent 82%);animation-name:ambientGlowFade;animation-duration:6.5s;}.ambient-glow.tone-violet{background:radial-gradient(ellipse at 82% 44%,rgba(144,91,222,0.65) 0%,rgba(144,91,222,0.4) 24%,rgba(144,91,222,0.2) 46%,rgba(144,91,222,0.07) 66%,transparent 84%);animation-name:ambientGlowFade;animation-duration:7s;}.ambient-glow.tone-violetblue{background:radial-gradient(ellipse at 74% 30%,rgba(135,77,220,0.55) 0%,rgba(135,77,220,0.24) 40%,transparent 72%),radial-gradient(ellipse at 88% 62%,rgba(58,124,230,0.55) 0%,rgba(58,124,230,0.24) 42%,transparent 74%);animation-name:ambientGlowFade;animation-duration:8s;}.ambient-glow.tone-emerald{background:radial-gradient(ellipse at 80% 40%,rgba(44,169,124,0.62) 0%,rgba(44,169,124,0.36) 24%,rgba(44,169,124,0.16) 46%,rgba(44,169,124,0.06) 66%,transparent 84%);animation-name:ambientGlowFade;animation-duration:7.5s;}.ambient-glow.tone-rosegold{background:radial-gradient(ellipse at 76% 32%,rgba(222,124,145,0.5) 0%,rgba(222,124,145,0.22) 42%,transparent 74%),radial-gradient(ellipse at 90% 64%,rgba(203,147,77,0.5) 0%,rgba(203,147,77,0.2) 44%,transparent 76%);animation-name:ambientGlowFade;animation-duration:8s;}.ambient-glow.tone-caramel{background:radial-gradient(ellipse at 78% 36%,rgba(203,139,61,0.6) 0%,rgba(203,139,61,0.32) 26%,rgba(203,139,61,0.12) 48%,transparent 78%);animation-name:ambientGlowFade;animation-duration:7s;}.ambient-glow.tone-wine{background:radial-gradient(ellipse at 84% 42%,rgba(174,61,77,0.55) 0%,rgba(174,61,77,0.28) 30%,rgba(174,61,77,0.1) 52%,transparent 80%);animation-name:ambientGlowFade;animation-duration:7.5s;}@keyframes ambientGlowFade{0%{opacity:0;transform:translateX(6%) scale(0.94);}24%{opacity:1;transform:translateX(0) scale(1);}68%{opacity:1;transform:translateX(0) scale(1);}100%{opacity:0;transform:translateX(0) scale(1.02);}}@media(max-width:720px){.ambient-glow{width:120vw;height:58vh;right:-30%;top:2%;}}@media (prefers-reduced-motion:reduce){.ambient-glow{animation:none;opacity:0;}}</style>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@300;400;500;600;700;900&family=Archivo+Expanded:wght@600;700&family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --cocoa-dark:#241209;
+    --cocoa:#4A2C1A;
+    --cream:#EDE4D0;
+    --cream-2:#F6F1E6;
+    --gold:#B8873A;
+    --swiss-red:#C8102E;
+    --white:#FFFFFF;
+    --line: rgba(36,18,9,0.16);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  /* scrollbar-gutter reserves the scrollbar's width permanently instead of
+     only while content overflows, so toggling body overflow:hidden to lock
+     scroll for a modal no longer changes the page's usable width — that
+     width change was causing the whole page to shift sideways every time
+     a modal opened or closed. */
+  html{scroll-behavior:smooth;scrollbar-gutter:stable;}
+  body{
+    font-family:'Archivo', sans-serif;
+    background:
+      radial-gradient(ellipse 1200px 600px at 50% 0%, rgba(184,135,58,0.05) 0%, transparent 60%),
+      var(--cream-2);
+    color:var(--cocoa-dark);
+    font-weight:400;
+    -webkit-font-smoothing:antialiased;
+  }
+  img{max-width:100%;display:block;}
+  a{color:inherit;text-decoration:none;}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 24px;}
+
+  /* ---------- HEADER ---------- */
+  header{
+    position:sticky;top:0;z-index:50;
+    background:var(--cream-2);
+    border-bottom:1px solid var(--line);
+  }
+  .nav{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:18px 24px;
+    max-width:1120px;margin:0 auto;
+  }
+  .brand{
+    font-family:'Archivo Expanded', sans-serif;
+    font-weight:700;
+    font-size:1.3rem;
+    letter-spacing:0.01em;
+    display:flex;align-items:center;gap:10px;
+  }
+  .brand .logo-img{
+    width:34px;height:34px;object-fit:contain;flex:none;
+  }
+  nav.links{display:flex;gap:28px;font-size:0.95rem;}
+  nav.links a{
+    text-decoration:none;padding-bottom:3px;position:relative;
+  }
+  nav.links a::after{
+    content:"";position:absolute;left:0;bottom:0;
+    width:100%;height:1px;background:var(--cocoa-dark);
+    transform:scaleX(0);transform-origin:left;
+    transition:transform .3s cubic-bezier(.2,.8,.2,1);
+  }
+  nav.links a:hover::after{transform:scaleX(1);}
+  .nav-toggle{display:none;background:none;border:none;font-size:1.6rem;cursor:pointer;color:var(--cocoa-dark);}
+
+  @media(max-width:720px){
+    nav.links{
+      position:fixed;top:64px;left:0;right:0;
+      background:var(--cream-2);
+      flex-direction:column;gap:0;
+      border-bottom:1px solid var(--line);
+      max-height:0;overflow:hidden;
+      transition:max-height .3s ease;
+    }
+    nav.links.open{max-height:400px;}
+    nav.links a{padding:16px 24px;border-bottom:1px solid var(--line);}
+    .nav-toggle{display:block;}
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    border-bottom:1px solid var(--line);
+    padding:64px 0 0;
+  }
+  .hero-grid{
+    display:grid;grid-template-columns:1.5fr 1fr;gap:40px;
+    align-items:end;
+    padding-bottom:48px;
+  }
+  .hero-tag{
+    font-size:0.85rem;color:var(--gold);
+    letter-spacing:0.02em;margin-bottom:18px;
+    font-weight:600;
+  }
+  .hero h1{
+    font-family:'Archivo Expanded', sans-serif;
+    font-weight:700;
+    font-size:clamp(2.4rem, 6vw, 4.6rem);
+    line-height:0.98;
+    letter-spacing:-0.01em;
+  }
+  .hero-title-mask{overflow:hidden;padding-bottom:0.08em;}
+  .hero h1 em{
+    font-style:normal;color:var(--swiss-red);
+  }
+  .hero-side{
+    border-left:1px solid var(--line);
+    padding-left:28px;
+    display:flex;flex-direction:column;gap:18px;
+  }
+  .hero-side p{font-size:1rem;line-height:1.6;color:var(--cocoa);}
+  .hero-cta{
+    display:inline-flex;align-items:center;gap:10px;
+    background:linear-gradient(135deg, var(--cocoa) 0%, var(--cocoa-dark) 100%);
+    color:var(--white);
+    padding:14px 24px;font-weight:600;font-size:0.95rem;letter-spacing:0.01em;
+    width:fit-content;
+    box-shadow:0 8px 20px rgba(36,18,9,0.22);
+    transition:background .25s ease, transform .15s ease, box-shadow .25s ease;
+    border:none;cursor:pointer;
+  }
+  .hero-cta span.arrow{display:inline-block;transition:transform .25s cubic-bezier(.2,.8,.2,1);}
+  .hero-cta:hover{background:linear-gradient(135deg, var(--swiss-red) 0%, #8f0c22 100%);box-shadow:0 10px 24px rgba(200,16,46,0.28);}
+  .hero-cta:hover span.arrow{transform:translateX(4px);}
+  .hero-cta:active{transform:scale(.97);}
+
+  .hero-strip{
+    display:grid;grid-template-columns:repeat(4,1fr);
+    border-top:1px solid var(--line);
+  }
+  .hero-strip div{
+    padding:20px 20px;border-right:1px solid var(--line);
+    text-align:center;
+    display:flex;flex-direction:column;align-items:center;justify-content:center;
+    min-height:78px;
+    transition:background .25s ease;
+  }
+  .hero-strip div:hover{background:rgba(184,135,58,0.07);}
+  .hero-strip div:last-child{border-right:none;}
+  .hero-strip .num{font-family:'Archivo Expanded',sans-serif;font-weight:700;font-size:1.4rem;color:var(--cocoa-dark);font-variant-numeric:tabular-nums;}
+  .hero-strip .lbl{font-size:0.8rem;color:var(--cocoa);margin-top:4px;}
+
+  @media(max-width:720px){
+    .hero-grid{grid-template-columns:1fr;gap:28px;}
+    .hero-side{border-left:none;padding-left:0;border-top:1px solid var(--line);padding-top:20px;}
+    .hero-strip{grid-template-columns:repeat(2,1fr);}
+    .hero-strip div:nth-child(2){border-right:none;}
+    .hero-strip div:nth-child(3),.hero-strip div:nth-child(4){border-top:1px solid var(--line);}
+  }
+
+  /* ---------- SECTION HEADINGS ---------- */
+  .section{padding:72px 0;border-bottom:1px solid var(--line);}
+  .section-head{
+    display:grid;grid-template-columns:1fr 2fr;gap:24px;
+    margin-bottom:44px;
+  }
+  .section-head .label{
+    font-weight:600;color:var(--gold);font-size:0.9rem;
+  }
+  .section-head h2{
+    font-family:'Archivo Expanded',sans-serif;
+    font-weight:700;font-size:clamp(1.8rem,4vw,2.6rem);
+    line-height:1.08;
+  }
+  @media(max-width:720px){
+    .section-head{grid-template-columns:1fr;gap:10px;}
+  }
+
+  /* ---------- ABOUT ---------- */
+  .about-body{
+    display:grid;grid-template-columns:1fr 1fr;gap:48px;
+  }
+  .about-body p{font-size:1.05rem;line-height:1.75;color:var(--cocoa);margin-bottom:18px;}
+  .about-visual{
+    aspect-ratio:4/5;
+    background:
+      linear-gradient(135deg, var(--cocoa-dark) 0%, var(--cocoa) 55%, var(--gold) 100%);
+    position:relative;overflow:hidden;
+  }
+  .about-visual::after{
+    content:"";position:absolute;inset:0;
+    background-image:repeating-linear-gradient(45deg, rgba(255,255,255,0.04) 0 2px, transparent 2px 18px);
+  }
+  .about-visual .cross{
+    position:absolute;bottom:28px;right:28px;width:34px;height:34px;
+  }
+  .about-visual .cross::before,.about-visual .cross::after{
+    content:"";position:absolute;background:var(--cream-2);
+  }
+  .about-visual .cross::before{left:50%;top:0;width:6px;height:100%;transform:translateX(-50%);}
+  .about-visual .cross::after{top:50%;left:0;height:6px;width:100%;transform:translateY(-50%);}
+
+  @media(max-width:720px){
+    .about-body{grid-template-columns:1fr;}
+    .about-visual{order:-1;aspect-ratio:16/9;}
+  }
+
+  /* ---------- PRODUCTS ---------- */
+  .products{display:flex;flex-direction:column;gap:40px;}
+  .product{
+    background:linear-gradient(165deg, var(--cream-2) 0%, var(--cream) 100%);
+    padding:40px 32px;
+    display:flex;flex-direction:column;gap:16px;
+    cursor:pointer;
+    border-radius:12px;
+    border:1px solid var(--line);
+    box-shadow:0 2px 6px rgba(36,18,9,0.06), 0 10px 28px rgba(36,18,9,0.07);
+    transition:box-shadow .35s cubic-bezier(.2,.8,.2,1), transform .35s cubic-bezier(.2,.8,.2,1), border-color .35s;
+  }
+  .product:hover{
+    box-shadow:0 6px 14px rgba(36,18,9,0.08), 0 20px 40px rgba(36,18,9,0.12);
+    transform:translateY(-4px);
+    border-color:rgba(184,135,58,0.4);
+  }
+  .view-details{
+    align-self:flex-start;
+    background:none;border:none;padding:0;
+    font-family:'Archivo',sans-serif;
+    font-weight:600;font-size:0.88rem;
+    color:var(--gold);cursor:pointer;
+    transition:color .2s;
+  }
+  .view-details:hover{color:var(--swiss-red);}
+  .view-details span.arrow{display:inline-block;transition:transform .25s cubic-bezier(.2,.8,.2,1);}
+  .view-details:hover span.arrow{transform:translateX(3px);}
+  .product .ph{
+    aspect-ratio:1/1;
+    background:var(--cocoa-dark);
+    position:relative;
+    overflow:hidden;
+    border-radius:8px;
+    box-shadow:inset 0 0 0 1px rgba(184,135,58,0.22);
+  }
+  .product .ph::after{
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background:linear-gradient(160deg, rgba(184,135,58,0.08) 0%, transparent 40%, rgba(36,18,9,0.14) 100%);
+  }
+  .product .ph img{
+    width:100%;height:100%;object-fit:cover;display:block;
+    transition:transform .5s cubic-bezier(.2,.8,.2,1);
+  }
+  .product:hover .ph img{transform:scale(1.06);}
+  .product h3{
+    font-family:'Archivo Expanded',sans-serif;font-weight:700;
+    font-size:1.5rem;margin-top:8px;
+  }
+  .product .desc{color:var(--cocoa);font-size:0.98rem;line-height:1.6;}
+  .product .row{
+    display:flex;align-items:center;justify-content:space-between;
+    border-top:1px solid var(--line);padding-top:16px;margin-top:auto;
+  }
+  .product .price{font-family:'Archivo Expanded',sans-serif;font-weight:700;font-size:1.3rem;}
+  .product .order{
+    font-weight:600;font-size:0.85rem;
+    background:linear-gradient(135deg, var(--cocoa) 0%, var(--cocoa-dark) 100%);
+    border:none;color:var(--white);
+    padding:10px 20px;border-radius:6px;
+    cursor:pointer;
+    font-family:'Archivo',sans-serif;
+    box-shadow:0 4px 12px rgba(36,18,9,0.18);
+    transition:background .25s ease, transform .15s ease, box-shadow .25s ease;
+  }
+  .product .order:hover{
+    background:linear-gradient(135deg, var(--swiss-red) 0%, #8f0c22 100%);
+    box-shadow:0 6px 16px rgba(200,16,46,0.24);
+  }
+  .product .order:active{transform:scale(.95);}
+  @media(min-width:721px){
+    .product{flex-direction:row;align-items:stretch;gap:32px;}
+    .product .ph{width:280px;flex:none;aspect-ratio:1/1;}
+    .product > div.pbody{flex:1;display:flex;flex-direction:column;gap:16px;}
+  }
+
+  /* ---------- PRODUCT DETAILS MODAL ---------- */
+  .product-modal-overlay{
+    position:fixed;inset:0;
+    background:rgba(36,18,9,0.55);
+    display:flex;align-items:center;justify-content:center;
+    padding:24px;z-index:200;
+    opacity:0;visibility:hidden;
+    transition:opacity .25s ease, visibility .25s ease;
+    backface-visibility:hidden;
+  }
+  .product-modal-overlay.open{opacity:1;visibility:visible;}
+  .product-modal{
+    background:var(--cream-2);
+    max-width:680px;width:100%;
+    max-height:90vh;overflow-y:auto;
+    border-radius:10px;position:relative;
+    padding:44px;
+    transform:translateY(18px) scale(.97);
+    transition:transform .35s cubic-bezier(.2,.8,.2,1);
+    will-change:transform;
+    backface-visibility:hidden;
+  }
+  .product-modal-overlay.open .product-modal{transform:translateY(0) scale(1);}
+  .product-modal-close{
+    position:absolute;top:16px;right:16px;
+    width:36px;height:36px;
+    background:none;border:none;
+    font-size:1.2rem;color:var(--cocoa);
+    cursor:pointer;transition:color .2s;
+    z-index:2;
+  }
+  .product-modal-close:hover{color:var(--swiss-red);}
+  .product-modal-tabs{
+    display:flex;gap:1px;background:var(--line);
+    margin-bottom:24px;border-radius:6px;overflow:hidden;
+  }
+  .product-tab{
+    flex:1;background:var(--cream);border:none;
+    padding:14px;font-family:'Archivo',sans-serif;
+    font-weight:600;font-size:0.95rem;color:var(--cocoa);
+    cursor:pointer;transition:background .2s,color .2s;
+  }
+  .product-tab.active{background:var(--cocoa-dark);color:var(--white);}
+
+  /* Swipeable Combo/Solo track */
+  .pm-swipeport{
+    position:relative;overflow:hidden;
+    touch-action:pan-y;
+    transition:height .3s cubic-bezier(.2,.8,.2,1);
+    backface-visibility:hidden;
+  }
+  .pm-track{
+    display:flex;
+    transition:transform .34s cubic-bezier(.22,.8,.28,1);
+    will-change:transform;
+    backface-visibility:hidden;
+  }
+  .product-modal-panel{flex:none;width:100%;box-sizing:border-box;}
+  .pm-head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:12px;}
+  .pm-head h3{font-family:'Archivo Expanded',sans-serif;font-weight:700;font-size:1.6rem;}
+  .pm-price{font-family:'Archivo Expanded',sans-serif;font-weight:700;font-size:1.3rem;color:var(--swiss-red);}
+  .pm-intro{color:var(--cocoa);line-height:1.6;margin-bottom:24px;}
+  .pm-flavors{display:flex;flex-direction:column;gap:16px;margin-bottom:28px;}
+  .pm-flavor{display:flex;gap:16px;padding:16px;background:var(--cream);border-radius:8px;}
+  .pm-flavor-tag{
+    font-family:'Archivo Expanded',sans-serif;font-weight:700;
+    color:var(--gold);font-size:1.1rem;flex:none;width:26px;
+  }
+  .pm-flavor h4{font-size:1.05rem;font-weight:600;margin-bottom:4px;}
+  .pm-flavor p{font-size:0.92rem;color:var(--cocoa);line-height:1.5;}
+  .pm-order{
+    display:inline-flex;align-items:center;gap:8px;
+    background:linear-gradient(135deg, var(--cocoa) 0%, var(--cocoa-dark) 100%);
+    color:var(--white);
+    padding:14px 24px;font-weight:600;font-size:0.95rem;
+    border:none;cursor:pointer;transition:background .25s ease, transform .15s ease, box-shadow .25s ease;
+    box-shadow:0 8px 18px rgba(36,18,9,0.2);
+  }
+  .pm-order:hover{background:linear-gradient(135deg, var(--swiss-red) 0%, #8f0c22 100%);box-shadow:0 10px 22px rgba(200,16,46,0.26);}
+  .pm-order:active{transform:scale(.97);}
+  @media(max-width:720px){
+    .product-modal-overlay{padding:12px;}
+    .product-modal{padding:26px 18px 30px;max-height:92vh;border-radius:14px;}
+    .pm-head{flex-direction:column;align-items:flex-start;gap:6px;}
+  }
+
+  /* ---------- ORDER CHOICE / ORDER FORM ---------- */
+  .order-choice-overlay, .order-form-overlay{
+    position:fixed;inset:0;
+    background:rgba(36,18,9,0.55);
+    display:flex;align-items:center;justify-content:center;
+    padding:24px;z-index:300;
+    opacity:0;visibility:hidden;
+    transition:opacity .25s ease, visibility .25s ease;
+    backface-visibility:hidden;
+  }
+  .order-choice-overlay.open, .order-form-overlay.open{opacity:1;visibility:visible;}
+  .order-choice-box{
+    background:linear-gradient(165deg, var(--cream-2) 0%, var(--cream) 100%);
+    max-width:380px;width:100%;
+    border-radius:14px;position:relative;
+    padding:40px 30px 34px;
+    text-align:center;
+    box-shadow:0 24px 60px rgba(36,18,9,0.28);
+    border-top:4px solid var(--gold);
+    transform:translateY(18px) scale(.97);
+    transition:transform .35s cubic-bezier(.2,.8,.2,1);
+    will-change:transform;
+    backface-visibility:hidden;
+  }
+  .order-choice-overlay.open .order-choice-box{transform:translateY(0) scale(1);}
+  .order-choice-box h3{
+    font-family:'Archivo Expanded',sans-serif;font-weight:700;
+    font-size:1.3rem;margin-bottom:8px;
+  }
+  .order-choice-box p{color:var(--cocoa);font-size:0.92rem;margin-bottom:24px;}
+  .order-choice-box .oc-btn{
+    display:block;width:100%;
+    padding:14px 20px;margin-bottom:12px;
+    font-weight:600;font-size:0.95rem;
+    border-radius:6px;border:none;cursor:pointer;
+    font-family:'Archivo',sans-serif;
+    transition:opacity .2s, transform .15s ease;
+  }
+  .order-choice-box .oc-btn:hover{opacity:0.88;}
+  .order-choice-box .oc-btn:active{transform:scale(.97);}
+  .oc-whatsapp{background:#25D366;color:#fff;box-shadow:0 6px 16px rgba(37,211,102,0.25);}
+  .oc-website{background:linear-gradient(135deg, var(--cocoa) 0%, var(--cocoa-dark) 100%);color:#fff;box-shadow:0 6px 16px rgba(36,18,9,0.22);}
+  .order-choice-close, .order-form-close{
+    position:absolute;top:14px;right:14px;
+    width:34px;height:34px;background:none;border:none;
+    border-radius:50%;
+    font-size:1.1rem;color:var(--cocoa);cursor:pointer;
+    transition:background .2s ease, color .2s ease;
+  }
+  .order-choice-close:hover, .order-form-close:hover{
+    background:rgba(36,18,9,0.08);color:var(--swiss-red);
+  }
+  .order-form-box{
+    background:linear-gradient(165deg, var(--cream-2) 0%, var(--cream) 100%);
+    max-width:480px;width:100%;
+    max-height:88vh;overflow-y:auto;
+    border-radius:14px;position:relative;
+    padding:40px 32px 36px;
+    box-shadow:0 24px 60px rgba(36,18,9,0.28);
+    border-top:4px solid var(--gold);
+    transform:translateY(18px) scale(.97);
+    transition:transform .35s cubic-bezier(.2,.8,.2,1);
+    will-change:transform;
+    backface-visibility:hidden;
+  }
+  .order-form-overlay.open .order-form-box{transform:translateY(0) scale(1);}
+  .order-form-box h3{
+    font-family:'Archivo Expanded',sans-serif;font-weight:700;
+    font-size:1.4rem;margin-bottom:6px;
+  }
+  .order-form-box .oform-sub{
+    color:var(--cocoa);font-size:0.88rem;margin-bottom:22px;
+  }
+  #orderForm{display:flex;flex-direction:column;gap:16px;}
+  .qty-btn{
+    width:40px;height:40px;border:1px solid var(--line);
+    background:var(--white);font-size:1.2rem;font-weight:700;
+    cursor:pointer;border-radius:8px;color:var(--cocoa-dark);
+    transition:transform .15s ease, border-color .2s ease, background .2s ease;
+  }
+  .qty-btn:hover{border-color:var(--gold);background:rgba(184,135,58,0.08);}
+  .qty-btn:active{transform:scale(.9);}
+  .order-total-box{
+    margin-top:10px;padding:14px 18px;border-radius:8px;
+    background:linear-gradient(135deg, var(--cocoa) 0%, var(--cocoa-dark) 100%);
+    display:flex;justify-content:space-between;align-items:center;
+    box-shadow:0 8px 18px rgba(36,18,9,0.2);
+  }
+  .order-total-box span:first-child{color:var(--cream-2);font-size:0.95rem;}
+  .order-total-box span#oQtyTotal{color:var(--white);font-weight:700;font-size:1.25rem;font-family:'Archivo Expanded',sans-serif;}
+  .advance-note{
+    background:var(--cream-2);border-left:3px solid var(--gold);
+    border-radius:0 8px 8px 0;padding:14px 18px;
+  }
+  .advance-note p{font-size:0.9rem;line-height:1.6;color:var(--cocoa-dark);margin:0;}
+  #orderForm button[onclick^="changeQty"]:active{transform:scale(.9);}
+  #orderSubmitMsg{font-size:0.9rem;margin-top:4px;}
+  #orderSubmitMsg.success{color:#1a7d3c;}
+  #orderSubmitMsg.error{color:var(--swiss-red);}
+
+  /* ---------- WHY / VALUES ---------- */
+  .values{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);}
+  .value{background:linear-gradient(165deg, var(--cream-2) 0%, var(--cream) 100%);padding:32px 26px;}
+  .value .n{font-family:'Archivo Expanded',sans-serif;color:var(--gold);font-weight:700;font-size:0.95rem;margin-bottom:14px;}
+  .value h4{font-size:1.15rem;font-weight:600;margin-bottom:10px;}
+  .value p{font-size:0.95rem;color:var(--cocoa);line-height:1.6;}
+  @media(max-width:720px){.values{grid-template-columns:1fr;}}
+
+  /* ---------- CUSTOMER REVIEWS ---------- */
+  .reviews-grid{
+    display:flex;overflow:hidden;position:relative;
+    background:var(--white);border-radius:16px;
+    padding:3px;gap:3px;
+    box-shadow:0 4px 12px rgba(36,18,9,0.08);
+    touch-action:pan-y;
+  }
+  .carousel-track{
+    display:flex;
+    width:100%;gap:3px;
+    transition:transform .6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    will-change:transform;
+  }
+  .review-card{
+    flex:0 0 100%;
+    padding:18px 20px 14px;
+    border-radius:20px;
+    border:1px solid var(--line);
+    box-shadow:0 4px 12px rgba(36,18,9,0.06), 0 20px 40px rgba(36,18,9,0.08);
+    display:flex;flex-direction:column;gap:9px;
+    transition:box-shadow .35s cubic-bezier(.2,.8,.2,1);
+    position:relative;
+    overflow:hidden;
+  }
+  .review-card::before{
+    content:"";position:absolute;inset:0;
+    background:linear-gradient(135deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.3) 100%);
+    pointer-events:none;opacity:0.4;
+  }
+  .review-card::after{
+    content:"";position:absolute;inset:0;
+    border-radius:20px;
+    box-shadow:inset 0 1px 2px rgba(255,255,255,0.8);
+    pointer-events:none;
+  }
+  .review-card > *{position:relative;z-index:1;}
+  
+  /* Unique vibrant color gradients for each card - directly visible */
+  .review-card:nth-child(1){
+    background:linear-gradient(135deg, rgba(229,147,96,0.35) 0%, rgba(255,200,150,0.15) 40%, #FFFFFF 100%);
+    position:relative;
+  }
+  
+  .review-card:nth-child(2){
+    background:linear-gradient(135deg, rgba(76,159,168,0.35) 0%, rgba(150,200,210,0.15) 40%, #FFFFFF 100%);
+  }
+  
+  .review-card:nth-child(3){
+    background:linear-gradient(135deg, rgba(255,193,7,0.40) 0%, rgba(255,220,100,0.18) 40%, #FFFFFF 100%);
+  }
+  
+  .review-card:nth-child(4){
+    background:linear-gradient(135deg, rgba(184,135,58,0.35) 0%, rgba(220,180,120,0.15) 40%, #FFFFFF 100%);
+  }
+  
+  .review-card:nth-child(5){
+    background:linear-gradient(135deg, rgba(196,108,74,0.35) 0%, rgba(230,165,140,0.15) 40%, #FFFFFF 100%);
+  }
+
+  .review-card:hover{
+    box-shadow:0 8px 24px rgba(36,18,9,0.1), 0 28px 56px rgba(36,18,9,0.12);
+  }
+  .review-card .stars{
+    color:var(--gold);
+    font-size:1rem;
+    letter-spacing:3px;
+    font-weight:700;
+    text-shadow:0 2px 3px rgba(184,135,58,0.12);
+  }
+  .review-card .quote{
+    font-size:0.88rem;
+    line-height:1.55;
+    color:var(--cocoa);
+    flex:1;
+  }
+  .review-card .quote[lang="bn"]{
+    font-family:'Noto Sans Bengali', sans-serif;
+    line-height:1.7;
+  }
+  .review-card .profile{
+    display:flex;align-items:center;gap:10px;
+    padding:10px 12px;
+    margin-top:4px;
+    border-radius:16px;
+    background:rgba(255,255,255,0.45);
+    position:relative;
+    width:fit-content;
+    max-width:100%;
+  }
+  .review-card .profile::before{
+    content:"";
+    position:absolute;
+    top:0;left:50%;
+    transform:translateX(-50%);
+    width:44px;height:3px;
+    border-radius:10px;
+    background:rgba(36,18,9,0.1);
+  }
+  .review-card .avatar{
+    width:40px;height:40px;
+    border-radius:50%;
+    object-fit:cover;
+    flex:none;
+    border:2px solid var(--line);
+    background:var(--cream);
+    box-shadow:0 2px 6px rgba(36,18,9,0.1);
+    cursor:pointer;
+    transition:transform .2s ease;
+  }
+  .review-card .avatar:hover{transform:scale(1.08);}
+  .review-card .avatar:active{transform:scale(0.96);}
+
+  /* ---------- AVATAR ZOOM MODAL ---------- */
+  .avatar-modal-overlay{
+    position:fixed;inset:0;
+    background:rgba(36,18,9,0.65);
+    display:flex;align-items:center;justify-content:center;
+    padding:24px;z-index:400;
+    opacity:0;visibility:hidden;
+    transition:opacity .28s ease, visibility .28s ease;
+  }
+  .avatar-modal-overlay.open{opacity:1;visibility:visible;}
+  .avatar-modal-circle{
+    width:min(78vw,320px);height:min(78vw,320px);
+    border-radius:50%;
+    overflow:hidden;
+    border:4px solid var(--cream-2);
+    box-shadow:0 24px 60px rgba(36,18,9,0.4);
+    transform:scale(0.4);
+    opacity:0;
+    transition:transform .38s cubic-bezier(.2,.8,.2,1), opacity .3s ease;
+    background:var(--cream);
+  }
+  .avatar-modal-overlay.open .avatar-modal-circle{transform:scale(1);opacity:1;}
+  .avatar-modal-circle img{
+    width:100%;height:100%;object-fit:cover;display:block;
+  }
+  .avatar-modal-close{
+    position:absolute;top:20px;right:20px;
+    width:40px;height:40px;border-radius:50%;
+    background:rgba(255,255,255,0.15);
+    border:none;color:var(--white);
+    font-size:1.3rem;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;
+    transition:background .2s ease;
+  }
+  .avatar-modal-close:hover{background:rgba(255,255,255,0.3);}
+  .review-card .avatar-fallback{
+    display:flex;align-items:center;justify-content:center;
+    font-family:'Archivo',sans-serif;font-weight:700;font-size:0.85rem;
+    color:var(--cocoa-dark);
+  }
+  .review-card .profile-name{
+    font-weight:700;
+    font-size:0.97rem;
+    color:var(--cocoa-dark);
+  }
+  .review-card .profile-role{
+    font-size:0.81rem;
+    color:var(--gold);
+    margin-top:3px;
+    font-weight:500;
+  }
+
+  /* Carousel Navigation Dots */
+  .carousel-dots{
+    display:flex;justify-content:center;align-items:center;gap:8px;
+    margin-top:24px;
+    padding:14px 0;
+  }
+  .dot{
+    width:10px;height:10px;
+    border-radius:50%;
+    background:rgba(36,18,9,0.15);
+    border:1.5px solid rgba(36,18,9,0.2);
+    cursor:pointer;
+    transition:background .35s cubic-bezier(.2,.8,.2,1), border-color .35s cubic-bezier(.2,.8,.2,1), transform .35s cubic-bezier(.2,.8,.2,1), box-shadow .35s cubic-bezier(.2,.8,.2,1), width .35s cubic-bezier(.2,.8,.2,1), height .35s cubic-bezier(.2,.8,.2,1);
+    position:relative;
+  }
+  .dot:hover{
+    background:rgba(36,18,9,0.25);
+    transform:scale(1.15);
+  }
+  .dot.active{
+    background:var(--cocoa-dark);
+    border-color:var(--cocoa-dark);
+    box-shadow:0 0 0 3px rgba(36,18,9,0.12);
+    width:12px;height:12px;
+  }
+
+  @media(max-width:720px){
+    .reviews-grid{padding:0;border-radius:0;box-shadow:none;}
+    .carousel-track{gap:0;}
+    .review-card{border-radius:16px;padding:16px 16px 14px;gap:9px;border:none;border-bottom:1px solid var(--line);}
+    .review-card::before{display:none;}
+    .review-card::after{border-radius:16px;box-shadow:none;}
+    .carousel-dots{margin-top:18px;gap:6px;padding:12px 0;}
+    .dot{width:8px;height:8px;}
+    .dot.active{width:10px;height:10px;}
+  }
+
+  /* ---------- TEAM ---------- */
+  .team-container{display:grid;grid-template-columns:1fr 1fr;gap:48px;}
+  .team-member{
+    background:linear-gradient(165deg, var(--cream-2) 0%, var(--cream) 100%);
+    border:1px solid var(--line);
+    padding:0;
+    border-radius:8px;
+    overflow:hidden;
+  }
+  .team-header{
+    background:linear-gradient(135deg, var(--cocoa-dark) 0%, var(--cocoa) 100%);
+    color:var(--white);
+    padding:28px 24px;
+    cursor:pointer;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    transition:background .2s;
+  }
+  .team-header:hover{background:linear-gradient(135deg, var(--swiss-red) 0%, var(--cocoa-dark) 100%);}
+  .team-header h3{
+    font-family:'Archivo Expanded',sans-serif;
+    font-weight:700;
+    font-size:1.3rem;
+    margin:0;
+  }
+  .team-header .role{
+    font-size:0.85rem;
+    color:var(--cream);
+    font-weight:500;
+    margin-top:4px;
+  }
+  .team-toggle{
+    font-size:1.4rem;
+    background:none;
+    border:none;
+    color:var(--white);
+    cursor:pointer;
+    transition:transform .3s;
+  }
+  .team-toggle.open{transform:rotate(180deg);}
+  .team-details{
+    max-height:0;
+    overflow:hidden;
+    transition:max-height .4s cubic-bezier(.4,0,.2,1), opacity .3s ease;
+    background:var(--cream-2);
+    opacity:0;
+  }
+  .team-details.open{max-height:600px;opacity:1;}
+  .team-info{
+    padding:24px;
+    display:flex;flex-direction:column;gap:16px;
+  }
+  .team-item{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:12px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .team-item:last-child{border-bottom:none;}
+  .team-label{
+    font-weight:600;
+    color:var(--cocoa-dark);
+    font-size:0.9rem;
+  }
+  .team-value{
+    color:var(--cocoa);
+    font-size:0.95rem;
+    text-align:right;
+  }
+  .team-value a{
+    color:var(--swiss-red);
+    border-bottom:1px solid var(--swiss-red);
+    transition:color .2s;
+  }
+  .team-value a:hover{color:var(--cocoa-dark);}
+
+  @media(max-width:720px){
+    .team-container{grid-template-columns:1fr;}
+  }
+
+  /* ---------- CHOCOLATE COLLECTION ---------- */
+  .choco-list{display:flex;flex-direction:column;gap:16px;}
+  .choco-row{
+    display:flex;align-items:center;gap:16px;
+    background:linear-gradient(165deg, var(--cream-2) 0%, var(--cream) 100%);
+    padding:20px 24px;
+    border-radius:10px;
+    border:1px solid var(--line);
+    cursor:pointer;
+    box-shadow:0 2px 6px rgba(36,18,9,0.06), 0 10px 28px rgba(36,18,9,0.07);
+    transition:box-shadow .35s cubic-bezier(.2,.8,.2,1), transform .35s cubic-bezier(.2,.8,.2,1), border-color .35s;
+  }
+  .choco-row:hover{
+    box-shadow:0 6px 14px rgba(36,18,9,0.08), 0 20px 40px rgba(36,18,9,0.12);
+    transform:translateY(-2px);
+    border-color:rgba(184,135,58,0.4);
+  }
+  .choco-num{
+    font-family:'Archivo Expanded',sans-serif;
+    font-weight:700;font-size:1.2rem;
+    color:var(--cocoa-dark);
+    min-width:24px;text-align:center;
+  }
+  .choco-box{
+    width:60px;height:60px;
+    border-radius:8px;
+    display:flex;align-items:center;justify-content:center;
+    flex:none;
+    box-shadow:0 2px 8px rgba(36,18,9,0.1);
+    overflow:hidden;
+    background:#f9f9f9;
+  }
+  .choco-box img{
+    width:100%;height:100%;object-fit:contain;display:block;background:#f9f9f9;
+  }
+  .choco-box svg{
+    width:100%;height:100%;display:block;
+  }
+  .choco-info{flex:1;}
+  .choco-info h4{
+    font-family:'Archivo Expanded',sans-serif;font-weight:700;
+    font-size:1.05rem;color:var(--cocoa-dark);margin-bottom:4px;
+  }
+  .choco-info p{color:var(--cocoa);font-size:0.9rem;line-height:1.4;}
+  .choco-weight{
+    font-size:0.8rem;color:var(--cocoa);text-align:center;
+    min-width:50px;font-weight:500;
+  }
+  .choco-price{
+    font-family:'Archivo Expanded',sans-serif;font-weight:700;
+    font-size:1.2rem;color:var(--swiss-red);
+    min-width:70px;text-align:right;
+  }
+
+  @media(max-width:720px){
+    .choco-row{gap:12px;padding:16px 16px;}
+    .choco-box{width:50px;height:50px;}
+    .choco-box img{width:100%;height:100%;object-fit:contain;display:block;}
+    .choco-box svg{width:100%;height:100%;display:block;}
+    .choco-info h4{font-size:0.95rem;}
+    .choco-info p{font-size:0.85rem;}
+  }
+
+  /* ---------- COMPLAINTS ---------- */
+  .complaints-wrapper{
+    background:linear-gradient(165deg, var(--cream) 0%, var(--cream-2) 100%);
+    padding:48px 24px;
+    border-radius:12px;
+    box-shadow:0 4px 14px rgba(36,18,9,0.05);
+  }
+  .complaints-form{
+    display:flex;flex-direction:column;gap:18px;
+  }
+  .form-group{
+    display:flex;flex-direction:column;gap:8px;
+  }
+  /* Spam honeypot: kept in the tab order's reach but positioned off-screen,
+     so real visitors never see or focus it while simple bots that auto-fill
+     every field on the page still fill it in and get caught by the JS check. */
+  .hp-field{
+    position:absolute;left:-9999px;top:-9999px;
+    width:1px;height:1px;overflow:hidden;
+  }
+  .form-group label{
+    font-weight:600;
+    color:var(--cocoa-dark);
+    font-size:0.95rem;
+    display:flex;flex-wrap:wrap;align-items:baseline;gap:6px;
+  }
+  .form-group label .lbl-en{
+    font-weight:700;color:var(--cocoa-dark);
+  }
+  .form-group label .lbl-sep{
+    color:var(--gold);font-weight:400;
+  }
+  .form-group label .lbl-bn{
+    font-weight:600;color:var(--swiss-red);
+    font-family:'Noto Sans Bengali','Archivo',sans-serif;
+    font-size:0.93rem;
+  }
+  /* image fallback if a product/logo image fails to load */
+  .img-fallback{
+    display:flex;align-items:center;justify-content:center;
+    width:100%;height:100%;
+    background:linear-gradient(135deg, var(--cocoa) 0%, var(--cocoa-dark) 100%);
+    color:var(--cream-2);font-family:'Archivo Expanded',sans-serif;
+    font-weight:700;text-align:center;font-size:0.85rem;padding:8px;
+  }
+  .form-group input, .form-group textarea, .form-group select{
+    border:1px solid var(--line);
+    padding:13px 16px;
+    font-family:'Archivo', sans-serif;
+    font-size:0.95rem;
+    color:var(--cocoa-dark);
+    border-radius:8px;
+    background:var(--white);
+    transition:border-color .2s ease, box-shadow .2s ease;
+  }
+  .form-group input:hover, .form-group textarea:hover, .form-group select:hover{
+    border-color:rgba(184,135,58,0.5);
+  }
+  .form-group input:focus, .form-group textarea:focus, .form-group select:focus{
+    outline:none;
+    border-color:var(--swiss-red);
+    box-shadow:0 0 0 3px rgba(200,16,46,0.1);
+  }
+  .form-group textarea{
+    resize:vertical;
+    min-height:120px;
+  }
+  .complaints-submit{
+    background:linear-gradient(135deg, var(--cocoa) 0%, var(--cocoa-dark) 100%);
+    color:var(--white);
+    border:none;
+    padding:14px 28px;
+    font-weight:600;
+    font-size:0.95rem;
+    border-radius:6px;
+    cursor:pointer;
+    box-shadow:0 8px 18px rgba(36,18,9,0.2);
+    transition:background .25s ease, transform .15s ease, box-shadow .25s ease;
+    width:fit-content;
+  }
+  .complaints-submit:hover{background:linear-gradient(135deg, var(--swiss-red) 0%, #8f0c22 100%);box-shadow:0 10px 22px rgba(200,16,46,0.26);}
+  .complaints-submit:active:not(:disabled){transform:scale(.98);}
+  .complaints-submit:disabled{
+    background:var(--cocoa);
+    box-shadow:none;
+    cursor:not-allowed;
+  }
+  .form-message{
+    padding:16px;
+    border-radius:6px;
+    font-weight:600;
+    text-align:center;
+    display:none;
+  }
+  .form-message.success{
+    background:rgba(76,175,80,0.1);
+    color:#2e7d32;
+    display:block;
+  }
+  .form-message.error{
+    background:rgba(244,67,54,0.1);
+    color:#c62828;
+    display:block;
+  }
+
+  /* ---------- CONTACT ---------- */
+  .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;}
+  .contact-list{display:flex;flex-direction:column;}
+  .contact-list a, .contact-list div.item{
+    display:flex;justify-content:space-between;align-items:center;
+    padding:18px 0;border-bottom:1px solid var(--line);
+    font-size:1rem;
+  }
+  .contact-list .k{color:var(--cocoa);font-size:0.85rem;}
+  .contact-list .v{font-weight:600;}
+  .contact-form{display:flex;flex-direction:column;gap:14px;}
+  .contact-form input,.contact-form textarea{
+    border:none;border-bottom:1px solid var(--line);
+    background:transparent;padding:12px 4px;font-family:'Archivo',sans-serif;
+    font-size:1rem;color:var(--cocoa-dark);
+  }
+  .contact-form input:focus,.contact-form textarea:focus{
+    outline:none;border-bottom-color:var(--cocoa-dark);
+  }
+  .contact-form textarea{resize:vertical;min-height:90px;}
+  .contact-form button{
+    margin-top:8px;background:linear-gradient(135deg, var(--cocoa) 0%, var(--cocoa-dark) 100%);color:var(--white);
+    border:none;padding:14px 22px;font-weight:600;font-size:0.95rem;
+    box-shadow:0 8px 18px rgba(36,18,9,0.2);
+    cursor:pointer;width:fit-content;transition:background .25s ease, transform .15s ease, box-shadow .25s ease;
+  }
+  .contact-form button:hover{background:linear-gradient(135deg, var(--swiss-red) 0%, #8f0c22 100%);box-shadow:0 10px 22px rgba(200,16,46,0.26);}
+  .contact-form button:active{transform:scale(.98);}
+  @media(max-width:720px){.contact-grid{grid-template-columns:1fr;}}
+
+  /* ---------- FOOTER ---------- */
+  footer{padding:32px 0;}
+  .foot-row{
+    display:flex;justify-content:space-between;align-items:center;
+    font-size:0.85rem;color:var(--cocoa);flex-wrap:wrap;gap:10px;
+  }
+
+  /* focus visibility */
+  a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible{
+    outline:2px solid var(--swiss-red);outline-offset:2px;
+  }
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{transition:none !important;}
+  }
+
+  /* ---------- ENTRANCE / SCROLL ANIMATIONS ---------- */
+  @keyframes heroRise{
+    from{opacity:0;transform:translateY(22px);}
+    to{opacity:1;transform:translateY(0);}
+  }
+  .hero-tag,.hero-side p,.hero-cta,.hero-strip{
+    animation:heroRise .7s cubic-bezier(.2,.8,.2,1) both;
+  }
+  .hero-tag{animation-delay:.02s;}
+  .hero-side p{animation-delay:.36s;}
+  .hero-cta{animation-delay:.46s;}
+  .hero-strip{animation-delay:.56s;}
+
+  /* Headline: rises smoothly up from below its own mask, the hero's one signature entrance moment */
+  @keyframes heroTitleRise{
+    from{opacity:0;transform:translateY(60%);}
+    to{opacity:1;transform:translateY(0);}
+  }
+  .hero-title-mask h1{
+    animation:heroTitleRise .9s cubic-bezier(.16,1,.3,1) both;
+    animation-delay:.12s;
+  }
+
+  .reveal{
+    opacity:0;transform:translateY(24px);
+    transition:opacity .7s cubic-bezier(.2,.8,.2,1), transform .7s cubic-bezier(.2,.8,.2,1);
+  }
+  .reveal.in-view{opacity:1;transform:translateY(0);}
+
+  @media (prefers-reduced-motion: reduce){
+    .hero-tag,.hero-side p,.hero-cta,.hero-strip{animation:none;}
+    .hero-title-mask h1{animation:none;}
+    .reveal{opacity:1;transform:none;transition:none;}
+  }
+
+  /* ---------- FALLING LEAVES OVERLAY ---------- */
+  .leaf-fall-layer{
+    position:fixed;inset:0;
+    pointer-events:none;
+    overflow:hidden;
+    z-index:60;
+  }
+  .branch-topright{
+    position:fixed;top:-6px;right:-10px;
+    width:230px;height:auto;
+    pointer-events:none;
+    z-index:61;
+    filter:drop-shadow(0 8px 14px rgba(36,18,9,0.22));
+  }
+  @media(max-width:720px){
+    .branch-topright{width:160px;top:0;right:-8px;}
+  }
+  .fall-leaf{
+    position:absolute;
+    opacity:0;
+    will-change:transform, opacity;
+    animation-timing-function:linear;
+    animation-fill-mode:forwards;
+  }
+  .fall-leaf.type-straight{ animation-name:leafFallStraight; }
+  .fall-leaf.type-sway{ animation-name:leafFallSway; }
+  .fall-leaf.type-diagonal{ animation-name:leafFallDiagonal; }
+  .leaf-fall-layer.order-paused .fall-leaf{ animation-play-state:paused; }
+
+  @keyframes leafFallStraight{
+    0%{transform:translate(0,0) rotate(0deg); opacity:0;}
+    10%{opacity:0.9;}
+    100%{transform:translate(-8vw,108vh) rotate(140deg); opacity:0.85;}
+  }
+  @keyframes leafFallSway{
+    0%{transform:translate(0,0) rotate(0deg); opacity:0;}
+    8%{opacity:0.9;}
+    25%{transform:translate(-14vw,25vh) rotate(60deg);}
+    50%{transform:translate(4vw,50vh) rotate(-40deg);}
+    75%{transform:translate(-18vw,75vh) rotate(80deg);}
+    92%{opacity:0.8;}
+    100%{transform:translate(2vw,108vh) rotate(-20deg); opacity:0;}
+  }
+  @keyframes leafFallDiagonal{
+    0%{transform:translate(0,0) rotate(0deg); opacity:0;}
+    8%{opacity:0.85;}
+    50%{transform:translate(-55vw,55vh) rotate(190deg);}
+    92%{opacity:0.8;}
+    100%{transform:translate(-118vw,118vh) rotate(360deg); opacity:0;}
+  }
+
+  /* ---------- AMBIENT ENTRANCE GLOW (right edge, plays once on load) ---------- */
+  .ambient-glow-layer{
+    position:fixed;inset:0;
+    pointer-events:none;
+    overflow:hidden;
+    z-index:58;
+  }
+  .ambient-glow{
+    position:absolute;
+    top:2%;
+    right:-6%;
+    width:78vw;
+    height:82vh;
+    min-width:460px;
+    min-height:460px;
+    border-radius:50%;
+    filter:blur(130px);
+    opacity:0;
+    mix-blend-mode:multiply;
+    transform:translateX(6%) scale(0.94);
+    will-change:opacity, transform;
+    animation-timing-function:cubic-bezier(.3,.6,.35,1);
+    animation-fill-mode:both;
+    animation-iteration-count:1;
+  }
+  .ambient-glow.tone-cool{
+    background:
+      radial-gradient(ellipse at 80% 38%, rgba(61,171,203,0.68) 0%, rgba(61,171,203,0.42) 22%, rgba(61,171,203,0.22) 44%, rgba(61,171,203,0.08) 64%, transparent 82%);
+    animation-name:ambientGlowFade;
+    animation-duration:6.5s;
+  }
+  .ambient-glow.tone-violet{
+    background:
+      radial-gradient(ellipse at 82% 44%, rgba(144,91,222,0.65) 0%, rgba(144,91,222,0.4) 24%, rgba(144,91,222,0.2) 46%, rgba(144,91,222,0.07) 66%, transparent 84%);
+    animation-name:ambientGlowFade;
+    animation-duration:7s;
+  }
+  .ambient-glow.tone-violetblue{
+    background:
+      radial-gradient(ellipse at 74% 30%, rgba(135,77,220,0.55) 0%, rgba(135,77,220,0.24) 40%, transparent 72%),
+      radial-gradient(ellipse at 88% 62%, rgba(58,124,230,0.55) 0%, rgba(58,124,230,0.24) 42%, transparent 74%);
+    animation-name:ambientGlowFade;
+    animation-duration:8s;
+  }
+  .ambient-glow.tone-emerald{
+    background:
+      radial-gradient(ellipse at 80% 40%, rgba(44,169,124,0.62) 0%, rgba(44,169,124,0.36) 24%, rgba(44,169,124,0.16) 46%, rgba(44,169,124,0.06) 66%, transparent 84%);
+    animation-name:ambientGlowFade;
+    animation-duration:7.5s;
+  }
+  .ambient-glow.tone-rosegold{
+    background:
+      radial-gradient(ellipse at 76% 32%, rgba(222,124,145,0.5) 0%, rgba(222,124,145,0.22) 42%, transparent 74%),
+      radial-gradient(ellipse at 90% 64%, rgba(203,147,77,0.5) 0%, rgba(203,147,77,0.2) 44%, transparent 76%);
+    animation-name:ambientGlowFade;
+    animation-duration:8s;
+  }
+  .ambient-glow.tone-caramel{
+    background:
+      radial-gradient(ellipse at 78% 36%, rgba(203,139,61,0.6) 0%, rgba(203,139,61,0.32) 26%, rgba(203,139,61,0.12) 48%, transparent 78%);
+    animation-name:ambientGlowFade;
+    animation-duration:7s;
+  }
+  .ambient-glow.tone-wine{
+    background:
+      radial-gradient(ellipse at 84% 42%, rgba(174,61,77,0.55) 0%, rgba(174,61,77,0.28) 30%, rgba(174,61,77,0.1) 52%, transparent 80%);
+    animation-name:ambientGlowFade;
+    animation-duration:7.5s;
+  }
+  @keyframes ambientGlowFade{
+    0%{opacity:0; transform:translateX(6%) scale(0.94);}
+    24%{opacity:1; transform:translateX(0) scale(1);}
+    68%{opacity:1; transform:translateX(0) scale(1);}
+    100%{opacity:0; transform:translateX(0) scale(1.02);}
+  }
+  @media(max-width:720px){
+    .ambient-glow{width:120vw;height:58vh;right:-30%;top:2%;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .ambient-glow{animation:none;opacity:0;}
+  }
+</style>
 </head>
 <body>
 
@@ -36,7 +1168,7 @@
 <div class="avatar-modal-overlay" id="avatarModalOverlay" onclick="if(event.target===this) closeAvatarModal()">
   <button type="button" class="avatar-modal-close" onclick="closeAvatarModal()" aria-label="Close">✕</button>
   <div class="avatar-modal-circle">
-    <img id="avatarModalImg" src="" alt="" width="320" height="320">
+    <img id="avatarModalImg" src="" alt="">
   </div>
 </div>
 <svg class="branch-topright" viewBox="0 0 230 210" aria-hidden="true">
@@ -73,7 +1205,7 @@
 
 <header>
   <div class="nav">
-    <div class="brand"><img src="images/logo.png" alt="Ara Chocolates Logo" class="logo-img" onerror="this.style.display='none'" width="34" height="34" fetchpriority="high">Ara Chocolates</div>
+    <div class="brand"><img src="images/logo.png" alt="Ara Chocolates Logo" class="logo-img" onerror="this.style.display='none'">Ara Chocolates</div>
     <button type="button" class="nav-toggle" id="navToggle" aria-label="Open menu">☰</button>
     <nav class="links" id="navLinks">
       <a href="#about">About</a>
@@ -131,7 +1263,7 @@
   </div>
   <div class="products">
     <div class="product combo reveal" onclick="openProductModal('combo')">
-      <div class="ph"><img src="images/combo-box.png" alt="Ara Chocolates Combo Box — Premium Artisan Selection" loading="lazy" decoding="async" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'img-fallback',textContent:'Combo Box'}))" width="280" height="280"></div>
+      <div class="ph"><img src="images/combo-box.png" alt="Ara Chocolates Combo Box — Premium Artisan Selection" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'img-fallback',textContent:'Combo Box'}))"></div>
       <div class="pbody">
         <h3>Combo Box</h3>
         <p class="desc">A larger collection made for sharing — ideal for gifting or a family occasion. Includes 3 flavors.</p>
@@ -143,7 +1275,7 @@
       </div>
     </div>
     <div class="product solo reveal" onclick="openProductModal('solo')">
-      <div class="ph"><img src="images/solo-bar.png" alt="Ara Chocolates Solo Dark Chocolate Bar" loading="lazy" decoding="async" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'img-fallback',textContent:'Solo Bar'}))" width="280" height="280"></div>
+      <div class="ph"><img src="images/solo-bar.png" alt="Ara Chocolates Solo Dark Chocolate Bar" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'img-fallback',textContent:'Solo Bar'}))"></div>
       <div class="pbody">
         <h3>Solo</h3>
         <p class="desc">Made for a single serving — a small, rich moment just for you.</p>
@@ -167,7 +1299,7 @@
     <div class="choco-list">
       <div class="choco-row" onclick="openOrderChoice('Almond Chocolate', '৳ 390')">
         <div class="choco-num">1</div>
-        <div class="choco-box"><img src="almond.png" alt="Almond Chocolate" loading="lazy" decoding="async" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'img-fallback',textContent:'Almond'}))" width="60" height="60"></div>
+        <div class="choco-box"><img src="almond.png" alt="Almond Chocolate" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'img-fallback',textContent:'Almond'}))"></div>
         <div class="choco-info">
           <h4>Almond Chocolate</h4>
           <p>Smooth milk chocolate with premium almonds</p>
@@ -178,7 +1310,7 @@
 
       <div class="choco-row" onclick="openOrderChoice('Cashew Chocolate', '৳ 390')">
         <div class="choco-num">2</div>
-        <div class="choco-box"><img src="cashew.png" alt="Cashew Chocolate" loading="lazy" decoding="async" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'img-fallback',textContent:'Cashew'}))" width="60" height="60"></div>
+        <div class="choco-box"><img src="cashew.png" alt="Cashew Chocolate" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'img-fallback',textContent:'Cashew'}))"></div>
         <div class="choco-info">
           <h4>Cashew Chocolate</h4>
           <p>Creamy chocolate filled with whole cashews</p>
@@ -189,7 +1321,7 @@
 
       <div class="choco-row" onclick="openOrderChoice('Mixed Nut Chocolate', '৳ 370')">
         <div class="choco-num">3</div>
-        <div class="choco-box"><img src="mixed-nut.png" alt="Mixed Nut Chocolate" loading="lazy" decoding="async" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'img-fallback',textContent:'Mixed Nut'}))" width="60" height="60"></div>
+        <div class="choco-box"><img src="mixed-nut.png" alt="Mixed Nut Chocolate" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'img-fallback',textContent:'Mixed Nut'}))"></div>
         <div class="choco-info">
           <h4>Mixed Nut Chocolate</h4>
           <p>A blend of assorted premium nuts in chocolate</p>
@@ -408,7 +1540,7 @@
           <div class="stars">★★★★★</div>
           <p class="quote" lang="bn">চকলেটটা হাতে পাওয়ার পর সত্যিই ভালো লেগেছে। স্বাদটা বেশ সুন্দর এবং খাওয়ার সময় একটা homemade ও premium feeling পাওয়া যায়। আবার অর্ডার করার ইচ্ছা আছে।</p>
           <div class="profile">
-            <img class="avatar" src="rani-mukharji.jpg" alt="Rani Mukharji" onclick="openAvatarModal(this)" loading="lazy" decoding="async" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'avatar avatar-fallback',textContent:'RM'}))" width="40" height="40">
+            <img class="avatar" src="rani-mukharji.jpg" alt="Rani Mukharji" onclick="openAvatarModal(this)" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'avatar avatar-fallback',textContent:'RM'}))">
             <div>
               <div class="profile-name">Rani Mukharji</div>
               <div class="profile-role">Student</div>
@@ -421,7 +1553,7 @@
           <div class="stars">★★★★★</div>
           <p class="quote">"Chocolate was really enjoyable and felt worth the order. I loved the taste and the overall presentation. It was a simple purchase that genuinely made my day a little better."</p>
           <div class="profile">
-            <img class="avatar" src="mymuna-binte-mohammad.jpg" alt="Mymuna Binte Mohammad" onclick="openAvatarModal(this)" loading="lazy" decoding="async" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'avatar avatar-fallback',textContent:'MB'}))" width="40" height="40">
+            <img class="avatar" src="mymuna-binte-mohammad.jpg" alt="Mymuna Binte Mohammad" onclick="openAvatarModal(this)" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'avatar avatar-fallback',textContent:'MB'}))">
             <div>
               <div class="profile-name">Mymuna Binte Mohammad</div>
               <div class="profile-role">Student</div>
@@ -434,7 +1566,7 @@
           <div class="stars">★★★★★</div>
           <p class="quote" lang="bn">চকলেটের স্বাদ ও মান দুটোই বেশ ভালো লেগেছে। বিশেষ করে এর presentation এবং overall quality আলাদা একটা ভালো অনুভূতি দিয়েছে। দামের তুলনায় experience-টা বেশ সন্তোষজনক।</p>
           <div class="profile">
-            <img class="avatar" src="sm-salim-munna.jpg" alt="SM Salim Munna" onclick="openAvatarModal(this)" loading="lazy" decoding="async" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'avatar avatar-fallback',textContent:'SM'}))" width="40" height="40">
+            <img class="avatar" src="sm-salim-munna.jpg" alt="SM Salim Munna" onclick="openAvatarModal(this)" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'avatar avatar-fallback',textContent:'SM'}))">
             <div>
               <div class="profile-name">SM Salim Munna</div>
               <div class="profile-role">Businessman</div>
@@ -447,7 +1579,7 @@
           <div class="stars">★★★★★</div>
           <p class="quote">"I really liked the chocolate, especially the taste and premium presentation. I ordered it after seeing the options, and the overall experience was lovely. I would happily order my favorite chocolate again."</p>
           <div class="profile">
-            <img class="avatar" src="israt-jahan-momo.jpg" alt="Israt Jahan Momo" onclick="openAvatarModal(this)" loading="lazy" decoding="async" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'avatar avatar-fallback',textContent:'IM'}))" width="40" height="40">
+            <img class="avatar" src="israt-jahan-momo.jpg" alt="Israt Jahan Momo" onclick="openAvatarModal(this)" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'avatar avatar-fallback',textContent:'IM'}))">
             <div>
               <div class="profile-name">Israt Jahan Momo</div>
               <div class="profile-role">Housewife</div>
@@ -460,7 +1592,7 @@
           <div class="stars">★★★★★</div>
           <p class="quote" lang="bn">চকলেটটির premium presentation এবং স্বাদের মধ্যে সুন্দর একটি balance আছে। দেখতে যেমন আকর্ষণীয়, খেতেও তেমন ভালো লেগেছে। পুরো experience-টাই বেশ পরিপাটি ও মানসম্মত মনে হয়েছে।</p>
           <div class="profile">
-            <img class="avatar" src="asma-akter.jpg" alt="Asma Akter" onclick="openAvatarModal(this)" loading="lazy" decoding="async" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'avatar avatar-fallback',textContent:'AA'}))" width="40" height="40">
+            <img class="avatar" src="asma-akter.jpg" alt="Asma Akter" onclick="openAvatarModal(this)" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'avatar avatar-fallback',textContent:'AA'}))">
             <div>
               <div class="profile-name">Asma Akter</div>
               <div class="profile-role">Job Holder</div>
@@ -643,7 +1775,878 @@
   </div>
 </footer>
 
-<script>const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzLDXmCabAlyhqK_IB5YtUB_Vn9FvUlBBKI81m5yCeWmrwwEuLqksyUJ7eD8uYm173f9Q/exec';const pageLoadTime = Date.now();let orderFormOpenTime = 0;document.getElementById('year').textContent = new Date().getFullYear();const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;if (!prefersReducedMotion && 'IntersectionObserver' in window){const revealObserver = new IntersectionObserver((entries,observer) =>{entries.forEach(entry =>{if (entry.isIntersecting){entry.target.classList.add('in-view');observer.unobserve(entry.target);}});},{threshold: 0,rootMargin: '0px 0px -12% 0px'});document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));}else{document.querySelectorAll('.reveal').forEach(el => el.classList.add('in-view'));}const navToggle = document.getElementById('navToggle');const navLinks = document.getElementById('navLinks');navToggle.addEventListener('click',() => navLinks.classList.toggle('open'));navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click',() => navLinks.classList.remove('open')));let teamAnimating = false;function toggleTeam(header){if (teamAnimating) return;teamAnimating = true;const details = header.nextElementSibling;const toggle = header.querySelector('.team-toggle');document.querySelectorAll('.team-details').forEach(d =>{if (d !== details){d.classList.remove('open');d.previousElementSibling.querySelector('.team-toggle').classList.remove('open');}});details.classList.toggle('open');toggle.classList.toggle('open');setTimeout(() =>{teamAnimating = false;},420);}const productModalOverlay = document.getElementById('productModalOverlay');const pmSwipeport = document.getElementById('pmSwipeport');const pmTrack = document.getElementById('pmTrack');const pmPanels = [document.getElementById('panelCombo'),document.getElementById('panelSolo')];const pmTabEls ={combo: document.getElementById('tabCombo'),solo: document.getElementById('tabSolo')};const PM_ORDER = ['combo','solo'];let pmActiveIndex = 0;let pmViewportWidth = 0;function pmLayout(){pmViewportWidth = pmSwipeport.clientWidth;if (!pmViewportWidth) return;pmTrack.style.width = (pmViewportWidth * PM_ORDER.length) + 'px';pmPanels.forEach(function (panel){panel.style.width = pmViewportWidth + 'px';});pmMoveToIndex(pmActiveIndex,false);}function pmMoveToIndex(index,animate){if (animate === undefined) animate = true;pmActiveIndex = index;const which = PM_ORDER[index];pmTrack.style.transition = animate ? 'transform .34s cubic-bezier(.22,.8,.28,1)' : 'none';pmTrack.style.transform = 'translateX(' + (-index * pmViewportWidth) + 'px)';pmTabEls.combo.classList.toggle('active',which === 'combo');pmTabEls.solo.classList.toggle('active',which === 'solo');pmPanels.forEach(function (panel,i){panel.setAttribute('aria-hidden',i === index ? 'false' : 'true');});const activePanel = pmPanels[index];if (activePanel){pmSwipeport.style.transition = animate ? 'height .3s cubic-bezier(.2,.8,.2,1)' : 'none';pmSwipeport.style.height = activePanel.scrollHeight + 'px';}}function switchProductTab(which){let index = PM_ORDER.indexOf(which);if (index === -1) index = 0;if (!pmViewportWidth) pmLayout();pmMoveToIndex(index,true);}function openProductModal(which){requestAnimationFrame(() =>{pmLayout();switchProductTab(which);productModalOverlay.classList.add('open');document.body.style.overflow = 'hidden';window.__pauseLeafFall();window.__pauseAmbientGlow();});}function closeProductModal(){if (!productModalOverlay.classList.contains('open')) return;productModalOverlay.classList.remove('open');setTimeout(() =>{document.body.style.overflow = '';window.__resumeLeafFall();window.__resumeAmbientGlow();pmMoveToIndex(1,false);},350);}function closeProductModalOnOverlay(e){if (e.target === productModalOverlay) closeProductModal();}document.addEventListener('keydown',(e) =>{if (e.key === 'Escape'){requestAnimationFrame(() =>{closeProductModal();});}});let currentOrderProduct ={name: '',price: ''};const WHATSAPP_NUMBER = '8801764491395';const orderChoiceOverlay = document.getElementById('orderChoiceOverlay');const orderFormOverlay = document.getElementById('orderFormOverlay');const oQtyInputEl = document.getElementById('oQty');const oQtyTotalEl = document.getElementById('oQtyTotal');const oAdvanceAmountEl = document.getElementById('oAdvanceAmount');const BD_DIVISIONS ={'Dhaka': ['Dhaka','Faridpur','Gazipur','Gopalganj','Kishoreganj','Madaripur','Manikganj','Munshiganj','Narayanganj','Narsingdi','Rajbari','Shariatpur','Tangail'],'Chattogram': ['Bandarban','Brahmanbaria','Chandpur','Chattogram','Cumilla','Cox\'s Bazar','Feni','Khagrachhari','Lakshmipur','Noakhali','Rangamati'],'Rajshahi': ['Bogura','Joypurhat','Naogaon','Natore','Chapainawabganj','Pabna','Rajshahi','Sirajganj'],'Khulna': ['Bagerhat','Chuadanga','Jashore','Jhenaidah','Khulna','Kushtia','Magura','Meherpur','Narail','Satkhira'],'Barishal': ['Barguna','Barishal','Bhola','Jhalokathi','Patuakhali','Pirojpur'],'Sylhet': ['Habiganj','Moulvibazar','Sunamganj','Sylhet'],'Rangpur': ['Dinajpur','Gaibandha','Kurigram','Lalmonirhat','Nilphamari','Panchagarh','Rangpur','Thakurgaon'],'Mymensingh': ['Jamalpur','Mymensingh','Netrokona','Sherpur']};function populateDivisions(){const divisionSelect = document.getElementById('oDivision');Object.keys(BD_DIVISIONS).forEach(function(div){const opt = document.createElement('option');opt.value = div;opt.textContent = div;divisionSelect.appendChild(opt);});}function populateDistricts(){const division = document.getElementById('oDivision').value;const districtSelect = document.getElementById('oDistrict');districtSelect.innerHTML = '<option value="">--- Select District ---</option>';if (BD_DIVISIONS[division]){BD_DIVISIONS[division].forEach(function(dist){const opt = document.createElement('option');opt.value = dist;opt.textContent = dist;districtSelect.appendChild(opt);});}}populateDivisions();function openOrderChoice(productName,price){currentOrderProduct ={name: productName,price: price};document.getElementById('ocProductTitle').textContent = 'Order — ' + productName;document.getElementById('oProduct').value = productName + ' (' + price + ')';requestAnimationFrame(() =>{window.__pauseLeafFall();window.__pauseAmbientGlow();document.body.style.overflow = 'hidden';orderChoiceOverlay.classList.add('open');});}function getUnitPrice(){const digits = (currentOrderProduct.price || '').replace(/[^0-9]/g,'');return digits ? parseInt(digits,10) : 0;}function updateOrderTotal(){const qty = parseInt(oQtyInputEl.value,10) || 0;const unit = getUnitPrice();const total = qty * unit;oQtyTotalEl.textContent = '৳ ' + total;oAdvanceAmountEl.textContent = '৳ ' + Math.round(total * 0.2);}function changeQty(delta){let val = (parseInt(oQtyInputEl.value,10) || 1) + delta;if (val < 1) val = 1;oQtyInputEl.value = val;updateOrderTotal();}function closeOrderChoice(){if (!orderChoiceOverlay.classList.contains('open')) return;orderChoiceOverlay.classList.remove('open');setTimeout(() =>{document.body.style.overflow = '';window.__resumeLeafFall();window.__resumeAmbientGlow();},350);}function continueToWhatsApp(){const text = encodeURIComponent('I would like to order the Ara Chocolates ' + currentOrderProduct.name);window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${text}`,'_blank','noopener,noreferrer');closeOrderChoice();}function openOrderForm(){orderChoiceOverlay.classList.remove('open');setTimeout(() =>{oQtyInputEl.value = 1;updateOrderTotal();orderFormOpenTime = Date.now();requestAnimationFrame(() =>{orderFormOverlay.classList.add('open');document.body.style.overflow = 'hidden';});},350);}function closeOrderForm(){if (!orderFormOverlay.classList.contains('open')) return;orderFormOverlay.classList.remove('open');setTimeout(() =>{document.body.style.overflow = '';window.__resumeLeafFall();window.__resumeAmbientGlow();},350);}document.getElementById('orderForm').addEventListener('submit',async function(e){e.preventDefault();const submitBtn = this.querySelector('.complaints-submit');const msgDiv = document.getElementById('orderSubmitMsg');const qty = parseInt(document.getElementById('oQty').value,10) || 0;if (qty < 1){msgDiv.className = 'form-message error';msgDiv.textContent = '✗ অনুগ্রহ করে কমপক্ষে ১টি কোয়ান্টিটি সিলেক্ট করুন।';return;}const isBotO = document.getElementById('oWebsite').value.trim() !== '' || (Date.now() - orderFormOpenTime) < 3000;if (isBotO){msgDiv.className = 'form-message success';msgDiv.textContent = '✓ Your order has been submitted. We will contact you shortly to confirm. / আপনার অর্ডার সাবমিট হয়েছে।';this.reset();document.getElementById('oDistrict').innerHTML = '<option value="">--- Select District ---</option>';document.getElementById('oQty').value = 1;updateOrderTotal();setTimeout(() =>{msgDiv.className = 'form-message';},3000);return;}const unit = getUnitPrice();const total = qty * unit;const area = document.getElementById('oArea').value;const detailedAddress = document.getElementById('oDetailedAddress').value;const district = document.getElementById('oDistrict').value;const division = document.getElementById('oDivision').value;const formData ={formType: 'order',product: document.getElementById('oProduct').value,name: document.getElementById('oName').value,phone: document.getElementById('oPhone').value,division: division,district: district,area: area,detailedAddress: detailedAddress,quantity: qty,totalPrice: total,advanceAmount: Math.round(total * 0.2),paymentLast4: document.getElementById('oPaymentLast4').value,notes: document.getElementById('oNotes').value};submitBtn.disabled = true;const orderBtnOriginalHTML = submitBtn.innerHTML;submitBtn.textContent = 'Sending...';try{const controller = new AbortController();const timeoutId = setTimeout(() => controller.abort(),15000);const response = await fetch(GOOGLE_SCRIPT_URL,{method: 'POST',headers:{'Content-Type': 'text/plain;charset=utf-8'},body: JSON.stringify(formData),signal: controller.signal});clearTimeout(timeoutId);const result = await response.json();if (result.success){msgDiv.className = 'form-message success';msgDiv.textContent = '✓ Your order has been submitted. We will contact you shortly to confirm. / আপনার অর্ডার সাবমিট হয়েছে।';this.reset();document.getElementById('oDistrict').innerHTML = '<option value="">--- Select District ---</option>';document.getElementById('oQty').value = 1;updateOrderTotal();}else{throw new Error('Server error');}}catch (err){msgDiv.className = 'form-message error';msgDiv.textContent = '✗ Error: Please try again,or use the WhatsApp option.';}setTimeout(() =>{submitBtn.disabled = false;submitBtn.innerHTML = orderBtnOriginalHTML;msgDiv.className = 'form-message';},3000);});document.addEventListener('keydown',(e) =>{if (e.key === 'Escape'){closeOrderChoice();closeOrderForm();}});const carousel ={track: document.getElementById('carouselTrack'),grid: document.getElementById('reviewsCarousel'),dotsContainer: document.getElementById('carouselDots'),cards: document.querySelectorAll('#carouselTrack .review-card'),dots: document.querySelectorAll('.dot'),currentIndex: 0,autoSlideInterval: null,isAutoSliding: true,resumeTimer: null,trackWidth: 0,startX: 0,startY: 0,currentX: 0,lastX: 0,lastT: 0,velocity: 0,dragging: false,horizontal: false,init: function(){if (!this.track || this.cards.length === 0) return;this.trackWidth = this.grid.clientWidth;window.addEventListener('resize',() =>{this.trackWidth = this.grid.clientWidth;this.goToIndex(this.currentIndex,false);});this.grid.addEventListener('touchstart',(e) => this.handleStart(e.touches[0].clientX,e.touches[0].clientY),{passive: true});this.grid.addEventListener('touchmove',(e) => this.handleMove(e,e.touches[0].clientX,e.touches[0].clientY),{passive: false});this.grid.addEventListener('touchend',() => this.handleEnd(),{passive: true});this.grid.addEventListener('touchcancel',() => this.handleEnd(),{passive: true});const onCarouselMouseMove = (e) => this.handleMove(e,e.clientX,e.clientY);const onCarouselMouseUp = () =>{this.handleEnd();window.removeEventListener('mousemove',onCarouselMouseMove);window.removeEventListener('mouseup',onCarouselMouseUp);};this.grid.addEventListener('mousedown',(e) =>{this.handleStart(e.clientX,e.clientY);e.preventDefault();window.addEventListener('mousemove',onCarouselMouseMove);window.addEventListener('mouseup',onCarouselMouseUp);});this.dots.forEach(dot =>{dot.addEventListener('click',(e) =>{const index = parseInt(e.target.getAttribute('data-index'),10);if (this.resumeTimer){clearTimeout(this.resumeTimer);this.resumeTimer = null;}this.pauseAutoSlide();this.goToIndex(index,true);if (this.isAutoSliding){this.resumeTimer = setTimeout(() =>{this.resumeTimer = null;this.resumeAutoSlide();},3000);}});});this.startAutoSlide();if ('IntersectionObserver' in window){const carouselVisibilityObserver = new IntersectionObserver((entries) =>{entries.forEach((entry) =>{if (entry.isIntersecting && !document.hidden){this.resumeAutoSlide();}else{this.pauseAutoSlide();}});},{threshold: 0});carouselVisibilityObserver.observe(this.grid);document.addEventListener('visibilitychange',() =>{if (document.hidden){this.pauseAutoSlide();}else if (this.grid.getBoundingClientRect().top < window.innerHeight && this.grid.getBoundingClientRect().bottom > 0){this.resumeAutoSlide();}});}},updateDots: function(){this.dots.forEach((dot,index) =>{if (index === this.currentIndex){dot.classList.add('active');}else{dot.classList.remove('active');}});},goToIndex: function(index,animate = true){if (index < 0 || index >= this.cards.length) return;this.currentIndex = index;const offset = -index * this.trackWidth;this.track.style.transition = animate ? 'transform .6s cubic-bezier(0.25,0.46,0.45,0.94)' : 'none';this.track.style.transform = `translateX(${offset}px)`;this.updateDots();},nextSlide: function(fromSwipe){if (this.currentIndex === this.cards.length - 1){if (fromSwipe){const base = -this.currentIndex * this.trackWidth;const bounceOffset = base - 60;this.track.style.transition = 'transform .18s cubic-bezier(0.34,1.56,0.64,1)';this.track.style.transform = `translateX(${bounceOffset}px)`;setTimeout(() =>{this.track.style.transition = 'transform .4s cubic-bezier(0.25,0.46,0.45,0.94)';this.track.style.transform = `translateX(${base}px)`;},180);}return;}this.goToIndex(this.currentIndex + 1,true);},prevSlide: function(){const prevIndex = this.currentIndex > 0 ? this.currentIndex - 1 : this.cards.length - 1;this.goToIndex(prevIndex,true);},startAutoSlide: function(){this.isAutoSliding = true;this.autoSlideInterval = setInterval(() =>{let nextIndex = this.currentIndex + 1;if (nextIndex >= this.cards.length){nextIndex = 0;}this.goToIndex(nextIndex,true);},3200);},pauseAutoSlide: function(){clearInterval(this.autoSlideInterval);this.autoSlideInterval = null;},resumeAutoSlide: function(){if (this.isAutoSliding && !this.autoSlideInterval){this.autoSlideInterval = setInterval(() =>{let nextIndex = this.currentIndex + 1;if (nextIndex >= this.cards.length){nextIndex = 0;}this.goToIndex(nextIndex,true);},3200);}},handleStart: function(x,y){this.trackWidth = this.grid.clientWidth;this.startX = this.currentX = this.lastX = x;this.startY = y;this.lastT = performance.now();this.velocity = 0;this.dragging = true;this.horizontal = false;if (this.resumeTimer){clearTimeout(this.resumeTimer);this.resumeTimer = null;}this.pauseAutoSlide();this.track.style.transition = 'none';},handleMove: function(e,x,y){if (!this.dragging) return;const dx = x - this.startX;const dy = y - this.startY;if (!this.horizontal){if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 4){this.horizontal = true;}else if (Math.abs(dy) > Math.abs(dx)){this.dragging = false;return;}else{return;}}if (e.cancelable) e.preventDefault();const now = performance.now();const dt = now - this.lastT;if (dt > 0) this.velocity = (x - this.lastX) / dt;this.lastX = x;this.lastT = now;this.currentX = x;let base = -this.currentIndex * this.trackWidth;let translate = base + dx;if ((this.currentIndex === 0 && dx > 0) || (this.currentIndex === this.cards.length - 1 && dx < 0)){translate = base + dx * 0.45;}if (this.rafId) cancelAnimationFrame(this.rafId);this.rafId = requestAnimationFrame(() =>{this.track.style.transform = `translateX(${translate}px)`;});},handleEnd: function(){if (!this.dragging) return;this.dragging = false;if (this.rafId){cancelAnimationFrame(this.rafId);this.rafId = null;}const atLastCard = this.currentIndex === this.cards.length - 1;if (this.horizontal){const dx = this.currentX - this.startX;const distanceThreshold = this.trackWidth * 0.12;const flickThreshold = 0.22;if (dx <= -distanceThreshold || this.velocity <= -flickThreshold){this.nextSlide(true);}else if (dx >= distanceThreshold || this.velocity >= flickThreshold){this.prevSlide();}else{this.goToIndex(this.currentIndex,true);}}if (this.isAutoSliding){if (atLastCard){this.resumeTimer = setTimeout(() =>{this.resumeTimer = null;this.goToIndex(0,true);this.resumeTimer = setTimeout(() =>{this.resumeTimer = null;this.resumeAutoSlide();},600);},2500);}else{this.resumeTimer = setTimeout(() =>{this.resumeTimer = null;this.resumeAutoSlide();},1500);}}}};carousel.init();document.getElementById('complaintsForm').addEventListener('submit',async function(e){e.preventDefault();const submitBtn = this.querySelector('.complaints-submit');const messageDiv = document.getElementById('formMessage');const isBotC = document.getElementById('cWebsite').value.trim() !== '' || (Date.now() - pageLoadTime) < 3000;if (isBotC){messageDiv.className = 'form-message success';messageDiv.textContent = '✓ Your complaint has been submitted successfully. We will get in touch with you shortly.';this.reset();setTimeout(() =>{messageDiv.className = 'form-message';},3000);return;}const formData ={formType: 'complaint',name: document.getElementById('cname').value,email: document.getElementById('cemail').value,phone: document.getElementById('cphone').value,type: document.getElementById('ctype').value,message: document.getElementById('cmessage').value};submitBtn.disabled = true;const complaintBtnOriginalHTML = submitBtn.innerHTML;submitBtn.textContent = 'Sending...';try{const controller = new AbortController();const timeoutId = setTimeout(() => controller.abort(),15000);const response = await fetch(GOOGLE_SCRIPT_URL,{method: 'POST',headers:{'Content-Type': 'text/plain;charset=utf-8'},body: JSON.stringify(formData),signal: controller.signal});clearTimeout(timeoutId);const result = await response.json();if(result.success){messageDiv.className = 'form-message success';messageDiv.textContent = '✓ Your complaint has been submitted successfully. We will get in touch with you shortly.';document.getElementById('complaintsForm').reset();}else{throw new Error('Server error');}}catch(err){messageDiv.className = 'form-message error';messageDiv.textContent = '✗ Error: Please try again.';}setTimeout(() =>{submitBtn.disabled = false;submitBtn.innerHTML = complaintBtnOriginalHTML;messageDiv.className = 'form-message';},3000);});window.__pauseLeafFall = function(){};window.__resumeLeafFall = function(){};(function(){const layer = document.getElementById('leafFallLayer');const branch = document.querySelector('.branch-topright');if(!layer || !branch) return;let orderSectionPaused=false;let branchInViewport=true;const leafReducedMotion=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;const colors = ['#D9A441','#C1522E','#8A5A2E','#B8873A'];const types = ['straight','sway','diagonal'];const leafSvg = (color) => `<svg viewBox="0 0 24 24" width="100%" height="100%"><path d="M12 2 C4 6 2 14 12 22 C22 14 20 6 12 2 Z" fill="${color}"/><line x1="12" y1="4" x2="12" y2="20" stroke="rgba(0,0,0,0.18)" stroke-width="1"/></svg>`;const MAX_LEAVES = 24;let branchRect = branch.getBoundingClientRect();let branchRectResizeTimer = null;window.addEventListener('resize',() =>{clearTimeout(branchRectResizeTimer);branchRectResizeTimer = setTimeout(() =>{branchRect = branch.getBoundingClientRect();},150);});function spawnLeaf(){if(document.hidden||orderSectionPaused||!branchInViewport||leafReducedMotion)return;if (layer.childElementCount >= MAX_LEAVES) return;const rect = branchRect;const marginX = rect.width*0.12;const spawnLeft = rect.left + marginX + Math.random()*(rect.width - marginX*2);const spawnTop = rect.top + rect.height*0.04 + Math.random()*(rect.height*0.62);const leaf = document.createElement('div');const type = types[Math.floor(Math.random()*types.length)];leaf.className = 'fall-leaf type-' + type;const size = 12 + Math.random()*14;const duration = type === 'straight' ? (7 + Math.random()*4) : (10 + Math.random()*8);const color = colors[Math.floor(Math.random()*colors.length)];leaf.style.left = spawnLeft + 'px';leaf.style.top = spawnTop + 'px';leaf.style.width = size + 'px';leaf.style.height = size + 'px';leaf.style.animationDuration = duration + 's';leaf.innerHTML = leafSvg(color);layer.appendChild(leaf);setTimeout(() => leaf.remove(),duration*1000 + 500);}let leafInterval = null;function startLeafInterval(){if (leafInterval) return;leafInterval = setInterval(spawnLeaf,1000);}function stopLeafInterval(){clearInterval(leafInterval);leafInterval = null;}document.addEventListener('visibilitychange',() =>{if (document.hidden) stopLeafInterval();else startLeafInterval();});for(let i=0;i<7;i++){setTimeout(spawnLeaf,i*550);}startLeafInterval();window.__pauseLeafFall = function(){if (orderSectionPaused) return;orderSectionPaused = true;layer.classList.add('order-paused');stopLeafInterval();};window.__resumeLeafFall = function(){if (!orderSectionPaused) return;orderSectionPaused = false;layer.classList.remove('order-paused');startLeafInterval();};})();window.__pauseAmbientGlow = function(){};window.__resumeAmbientGlow = function(){};(function(){const layer = document.getElementById('ambientGlowLayer');const el = document.getElementById('ambientGlow');if(!layer || !el) return;if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches){layer.remove();return;}const events = [{t:3000,tone:'tone-cool'},{t:10000,tone:'tone-violet'},{t:17500,tone:'tone-violetblue'},{t:26000,tone:'tone-emerald'},{t:34000,tone:'tone-rosegold'},{t:42000,tone:'tone-caramel'},{t:50000,tone:'tone-wine'},{t:58000,tone:null}];let idx = 0;let timerId = null;let paused = false;let stepStart = 0;let stepRemaining = events[0].t;function fireEvent(){const ev = events[idx];if (ev.tone === null){layer.remove();return;}el.className = 'ambient-glow';void el.offsetWidth;el.classList.add(ev.tone);const prevT = ev.t;idx++;if (idx < events.length){stepRemaining = events[idx].t - prevT;armTimer();}}function armTimer(){stepStart = performance.now();timerId = setTimeout(fireEvent,stepRemaining);}armTimer();window.__pauseAmbientGlow = function(){if (paused || timerId === null) return;paused = true;clearTimeout(timerId);timerId = null;stepRemaining = Math.max(0,stepRemaining - (performance.now() - stepStart));el.style.animationPlayState = 'paused';};window.__resumeAmbientGlow = function(){if (!paused) return;paused = false;el.style.animationPlayState = 'running';armTimer();};})();function openAvatarModal(imgEl){const overlay = document.getElementById('avatarModalOverlay');const modalImg = document.getElementById('avatarModalImg');modalImg.src = imgEl.src;modalImg.alt = imgEl.alt;overlay.classList.add('open');document.body.style.overflow = 'hidden';}function closeAvatarModal(){const overlay = document.getElementById('avatarModalOverlay');if (!overlay.classList.contains('open')) return;overlay.classList.remove('open');document.body.style.overflow = '';}document.addEventListener('keydown',function(e){if (e.key === 'Escape') closeAvatarModal();});document.getElementById('contactForm').addEventListener('submit',function(e){e.preventDefault();const name = this.querySelector('input[type="text"]').value.trim();const email = this.querySelector('input[type="email"]').value.trim();const message = this.querySelector('textarea').value.trim();if(name && email && message){const text = `New website message%0AName: ${encodeURIComponent(name)}%0AEmail: ${encodeURIComponent(email)}%0AMessage: ${encodeURIComponent(message)}`;window.open(`https://wa.me/8801764491395?text=${text}`,'_blank','noopener,noreferrer');this.reset();}});</script>
+<script>
+  // 👉 এখানে আপনার Google Apps Script "Web App" URL বসান (Deploy করার পর যেটা পাবেন)
+  const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzLDXmCabAlyhqK_IB5YtUB_Vn9FvUlBBKI81m5yCeWmrwwEuLqksyUJ7eD8uYm173f9Q/exec';
+
+  // Spam protection: a bot that fills every field in one go will fill the hidden
+  // honeypot field, and will typically submit within a second or two of the page
+  // loading — a real visitor takes noticeably longer to read and type. Neither
+  // check touches page content, so it has no effect on SEO or search indexing.
+  const pageLoadTime = Date.now();
+  let orderFormOpenTime = 0;
+
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // Scroll reveal: fade + rise elements every time they enter view, respecting reduced motion
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (!prefersReducedMotion && 'IntersectionObserver' in window) {
+    // Reveal once and stop observing: previously the class was also removed
+    // when an element scrolled back out of view, so any pass back and forth
+    // across a section boundary re-triggered the fade/rise transition —
+    // this was the main source of the flicker/shake seen while scrolling.
+    // Unobserving after the first reveal keeps the exact same entrance
+    // animation but only ever plays it once per element.
+    const revealObserver = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('in-view');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0, rootMargin: '0px 0px -12% 0px' });
+    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+  } else {
+    document.querySelectorAll('.reveal').forEach(el => el.classList.add('in-view'));
+  }
+
+  // Navigation Toggle
+  const navToggle = document.getElementById('navToggle');
+  const navLinks = document.getElementById('navLinks');
+  navToggle.addEventListener('click', () => navLinks.classList.toggle('open'));
+  navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+
+  // Team Accordion
+  let teamAnimating = false;
+  function toggleTeam(header) {
+    if (teamAnimating) return; // ignore rapid repeat clicks while a panel is mid-transition
+    teamAnimating = true;
+
+    const details = header.nextElementSibling;
+    const toggle = header.querySelector('.team-toggle');
+
+    document.querySelectorAll('.team-details').forEach(d => {
+      if (d !== details) {
+        d.classList.remove('open');
+        d.previousElementSibling.querySelector('.team-toggle').classList.remove('open');
+      }
+    });
+
+    details.classList.toggle('open');
+    toggle.classList.toggle('open');
+
+    setTimeout(() => { teamAnimating = false; }, 420);
+  }
+
+  // Product Details Modal (Combo Box / Solo) — tab buttons + swipe, same panel
+  const productModalOverlay = document.getElementById('productModalOverlay');
+  const pmSwipeport = document.getElementById('pmSwipeport');
+  const pmTrack = document.getElementById('pmTrack');
+  const pmPanels = [document.getElementById('panelCombo'), document.getElementById('panelSolo')];
+  const pmTabEls = { combo: document.getElementById('tabCombo'), solo: document.getElementById('tabSolo') };
+  const PM_ORDER = ['combo', 'solo'];
+  let pmActiveIndex = 0;
+  let pmViewportWidth = 0;
+
+  function pmLayout() {
+    pmViewportWidth = pmSwipeport.clientWidth;
+    if (!pmViewportWidth) return;
+    pmTrack.style.width = (pmViewportWidth * PM_ORDER.length) + 'px';
+    pmPanels.forEach(function (panel) { panel.style.width = pmViewportWidth + 'px'; });
+    pmMoveToIndex(pmActiveIndex, false);
+  }
+
+  function pmMoveToIndex(index, animate) {
+    if (animate === undefined) animate = true;
+    pmActiveIndex = index;
+    const which = PM_ORDER[index];
+
+    pmTrack.style.transition = animate ? 'transform .34s cubic-bezier(.22,.8,.28,1)' : 'none';
+    pmTrack.style.transform = 'translateX(' + (-index * pmViewportWidth) + 'px)';
+
+    pmTabEls.combo.classList.toggle('active', which === 'combo');
+    pmTabEls.solo.classList.toggle('active', which === 'solo');
+    pmPanels.forEach(function (panel, i) { panel.setAttribute('aria-hidden', i === index ? 'false' : 'true'); });
+
+    const activePanel = pmPanels[index];
+    if (activePanel) {
+      pmSwipeport.style.transition = animate ? 'height .3s cubic-bezier(.2,.8,.2,1)' : 'none';
+      pmSwipeport.style.height = activePanel.scrollHeight + 'px';
+    }
+  }
+
+  function switchProductTab(which) {
+    let index = PM_ORDER.indexOf(which);
+    if (index === -1) index = 0;
+    if (!pmViewportWidth) pmLayout();
+    pmMoveToIndex(index, true);
+  }
+
+  function openProductModal(which) {
+    // Use requestAnimationFrame for smooth modal opening
+    requestAnimationFrame(() => {
+      pmLayout();
+      switchProductTab(which);
+      productModalOverlay.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      window.__pauseLeafFall();
+      window.__pauseAmbientGlow();
+    });
+  }
+
+  function closeProductModal() {
+    if (!productModalOverlay.classList.contains('open')) return; // already closed — avoid re-running the close/resume side effects on every Escape press
+    productModalOverlay.classList.remove('open');
+    // Resume animations after modal closes smoothly
+    setTimeout(() => {
+      document.body.style.overflow = '';
+      window.__resumeLeafFall();
+      window.__resumeAmbientGlow();
+      // On close, Solo is auto-selected so the next open starts there.
+      pmMoveToIndex(1, false);
+    }, 350);
+  }
+
+  function closeProductModalOnOverlay(e) {
+    if (e.target === productModalOverlay) closeProductModal();
+  }
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      requestAnimationFrame(() => {
+        closeProductModal();
+      });
+    }
+  });
+
+  let currentOrderProduct = { name: '', price: '' };
+  const WHATSAPP_NUMBER = '8801764491395';
+  const orderChoiceOverlay = document.getElementById('orderChoiceOverlay');
+  const orderFormOverlay = document.getElementById('orderFormOverlay');
+
+  // Cached once: these are looked up on every tap of the qty +/- buttons and
+  // every keystroke in the qty field, so avoiding a fresh getElementById()
+  // each time keeps that hot interaction path responsive.
+  const oQtyInputEl = document.getElementById('oQty');
+  const oQtyTotalEl = document.getElementById('oQtyTotal');
+  const oAdvanceAmountEl = document.getElementById('oAdvanceAmount');
+
+  const BD_DIVISIONS = {
+    'Dhaka': ['Dhaka', 'Faridpur', 'Gazipur', 'Gopalganj', 'Kishoreganj', 'Madaripur', 'Manikganj', 'Munshiganj', 'Narayanganj', 'Narsingdi', 'Rajbari', 'Shariatpur', 'Tangail'],
+    'Chattogram': ['Bandarban', 'Brahmanbaria', 'Chandpur', 'Chattogram', 'Cumilla', 'Cox\'s Bazar', 'Feni', 'Khagrachhari', 'Lakshmipur', 'Noakhali', 'Rangamati'],
+    'Rajshahi': ['Bogura', 'Joypurhat', 'Naogaon', 'Natore', 'Chapainawabganj', 'Pabna', 'Rajshahi', 'Sirajganj'],
+    'Khulna': ['Bagerhat', 'Chuadanga', 'Jashore', 'Jhenaidah', 'Khulna', 'Kushtia', 'Magura', 'Meherpur', 'Narail', 'Satkhira'],
+    'Barishal': ['Barguna', 'Barishal', 'Bhola', 'Jhalokathi', 'Patuakhali', 'Pirojpur'],
+    'Sylhet': ['Habiganj', 'Moulvibazar', 'Sunamganj', 'Sylhet'],
+    'Rangpur': ['Dinajpur', 'Gaibandha', 'Kurigram', 'Lalmonirhat', 'Nilphamari', 'Panchagarh', 'Rangpur', 'Thakurgaon'],
+    'Mymensingh': ['Jamalpur', 'Mymensingh', 'Netrokona', 'Sherpur']
+  };
+
+  function populateDivisions() {
+    const divisionSelect = document.getElementById('oDivision');
+    Object.keys(BD_DIVISIONS).forEach(function(div) {
+      const opt = document.createElement('option');
+      opt.value = div;
+      opt.textContent = div;
+      divisionSelect.appendChild(opt);
+    });
+  }
+
+  function populateDistricts() {
+    const division = document.getElementById('oDivision').value;
+    const districtSelect = document.getElementById('oDistrict');
+    districtSelect.innerHTML = '<option value="">--- Select District ---</option>';
+    if (BD_DIVISIONS[division]) {
+      BD_DIVISIONS[division].forEach(function(dist) {
+        const opt = document.createElement('option');
+        opt.value = dist;
+        opt.textContent = dist;
+        districtSelect.appendChild(opt);
+      });
+    }
+  }
+
+  populateDivisions();
+
+  function openOrderChoice(productName, price) {
+    currentOrderProduct = { name: productName, price: price };
+    document.getElementById('ocProductTitle').textContent = 'Order — ' + productName;
+    document.getElementById('oProduct').value = productName + ' (' + price + ')';
+    // Pause animations before modal appears
+    requestAnimationFrame(() => {
+      window.__pauseLeafFall();
+      window.__pauseAmbientGlow();
+      document.body.style.overflow = 'hidden';
+      orderChoiceOverlay.classList.add('open');
+    });
+  }
+
+  function getUnitPrice() {
+    const digits = (currentOrderProduct.price || '').replace(/[^0-9]/g, '');
+    return digits ? parseInt(digits, 10) : 0;
+  }
+
+  function updateOrderTotal() {
+    const qty = parseInt(oQtyInputEl.value, 10) || 0;
+    const unit = getUnitPrice();
+    const total = qty * unit;
+    oQtyTotalEl.textContent = '৳ ' + total;
+    oAdvanceAmountEl.textContent = '৳ ' + Math.round(total * 0.2);
+  }
+
+  function changeQty(delta) {
+    let val = (parseInt(oQtyInputEl.value, 10) || 1) + delta;
+    if (val < 1) val = 1;
+    oQtyInputEl.value = val;
+    updateOrderTotal();
+  }
+
+  function closeOrderChoice() {
+    if (!orderChoiceOverlay.classList.contains('open')) return; // already closed — avoid re-running the close/resume side effects on every Escape press
+    orderChoiceOverlay.classList.remove('open');
+    // Resume animations after modal closes smoothly
+    setTimeout(() => {
+      document.body.style.overflow = '';
+      window.__resumeLeafFall();
+      window.__resumeAmbientGlow();
+    }, 350);
+  }
+
+  function continueToWhatsApp() {
+    const text = encodeURIComponent('I would like to order the Ara Chocolates ' + currentOrderProduct.name);
+    window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${text}`, '_blank', 'noopener,noreferrer');
+    closeOrderChoice();
+  }
+
+  function openOrderForm() {
+    // Smooth transition: close choice modal, then open form modal
+    orderChoiceOverlay.classList.remove('open');
+    setTimeout(() => {
+      oQtyInputEl.value = 1;
+      updateOrderTotal();
+      orderFormOpenTime = Date.now();
+      requestAnimationFrame(() => {
+        orderFormOverlay.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      });
+    }, 350);
+  }
+
+  function closeOrderForm() {
+    if (!orderFormOverlay.classList.contains('open')) return; // already closed — avoid re-running the close/resume side effects on every Escape press
+    orderFormOverlay.classList.remove('open');
+    // Resume animations after form closes smoothly
+    setTimeout(() => {
+      document.body.style.overflow = '';
+      window.__resumeLeafFall();
+      window.__resumeAmbientGlow();
+    }, 350);
+  }
+
+  document.getElementById('orderForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const submitBtn = this.querySelector('.complaints-submit');
+    const msgDiv = document.getElementById('orderSubmitMsg');
+
+    const qty = parseInt(document.getElementById('oQty').value, 10) || 0;
+    if (qty < 1) {
+      msgDiv.className = 'form-message error';
+      msgDiv.textContent = '✗ অনুগ্রহ করে কমপক্ষে ১টি কোয়ান্টিটি সিলেক্ট করুন।';
+      return;
+    }
+
+    // Spam check: honeypot filled in, or submitted implausibly fast after the
+    // form opened → pretend it worked and quietly stop, without tipping off the bot.
+    const isBotO = document.getElementById('oWebsite').value.trim() !== '' || (Date.now() - orderFormOpenTime) < 3000;
+    if (isBotO) {
+      msgDiv.className = 'form-message success';
+      msgDiv.textContent = '✓ Your order has been submitted. We will contact you shortly to confirm. / আপনার অর্ডার সাবমিট হয়েছে।';
+      this.reset();
+      document.getElementById('oDistrict').innerHTML = '<option value="">--- Select District ---</option>';
+      document.getElementById('oQty').value = 1;
+      updateOrderTotal();
+      setTimeout(() => { msgDiv.className = 'form-message'; }, 3000);
+      return;
+    }
+
+    const unit = getUnitPrice();
+    const total = qty * unit;
+
+    const area = document.getElementById('oArea').value;
+    const detailedAddress = document.getElementById('oDetailedAddress').value;
+    const district = document.getElementById('oDistrict').value;
+    const division = document.getElementById('oDivision').value;
+
+    const formData = {
+      formType: 'order',
+      product: document.getElementById('oProduct').value,
+      name: document.getElementById('oName').value,
+      phone: document.getElementById('oPhone').value,
+      division: division,
+      district: district,
+      area: area,
+      detailedAddress: detailedAddress,
+      quantity: qty,
+      totalPrice: total,
+      advanceAmount: Math.round(total * 0.2),
+      paymentLast4: document.getElementById('oPaymentLast4').value,
+      notes: document.getElementById('oNotes').value
+    };
+
+    submitBtn.disabled = true;
+    const orderBtnOriginalHTML = submitBtn.innerHTML;
+    submitBtn.textContent = 'Sending...';
+
+    try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 15000);
+      const response = await fetch(GOOGLE_SCRIPT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(formData),
+        signal: controller.signal
+      });
+      clearTimeout(timeoutId);
+      const result = await response.json();
+      if (result.success) {
+        msgDiv.className = 'form-message success';
+        msgDiv.textContent = '✓ Your order has been submitted. We will contact you shortly to confirm. / আপনার অর্ডার সাবমিট হয়েছে।';
+        this.reset();
+        // District options were populated dynamically for the previously
+        // selected division, so they must be cleared explicitly — a plain
+        // form reset() does not remove JS-added <option> elements.
+        document.getElementById('oDistrict').innerHTML = '<option value="">--- Select District ---</option>';
+        document.getElementById('oQty').value = 1;
+        updateOrderTotal();
+      } else {
+        throw new Error('Server error');
+      }
+    } catch (err) {
+      msgDiv.className = 'form-message error';
+      msgDiv.textContent = '✗ Error: Please try again, or use the WhatsApp option.';
+    }
+
+    setTimeout(() => {
+      submitBtn.disabled = false;
+      // Restore the original bilingual (English/Bangla) button markup instead
+      // of plain text, so the styled spans aren't lost after the first submit.
+      submitBtn.innerHTML = orderBtnOriginalHTML;
+      msgDiv.className = 'form-message';
+    }, 3000);
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') { closeOrderChoice(); closeOrderForm(); }
+  });
+
+  // ========== CAROUSEL AUTO-SLIDE & SWIPE ==========
+  const carousel = {
+    track: document.getElementById('carouselTrack'),
+    grid: document.getElementById('reviewsCarousel'),
+    dotsContainer: document.getElementById('carouselDots'),
+    cards: document.querySelectorAll('#carouselTrack .review-card'),
+    dots: document.querySelectorAll('.dot'),
+    currentIndex: 0,
+    autoSlideInterval: null,
+    isAutoSliding: true,
+    resumeTimer: null,
+    trackWidth: 0,
+    startX: 0,
+    startY: 0,
+    currentX: 0,
+    lastX: 0,
+    lastT: 0,
+    velocity: 0,
+    dragging: false,
+    horizontal: false,
+
+    init: function() {
+      if (!this.track || this.cards.length === 0) return;
+
+      this.trackWidth = this.grid.clientWidth;
+      window.addEventListener('resize', () => {
+        this.trackWidth = this.grid.clientWidth;
+        this.goToIndex(this.currentIndex, false);
+      });
+
+      // Touch/swipe handlers
+      this.grid.addEventListener('touchstart', (e) => this.handleStart(e.touches[0].clientX, e.touches[0].clientY), { passive: true });
+      this.grid.addEventListener('touchmove', (e) => this.handleMove(e, e.touches[0].clientX, e.touches[0].clientY), { passive: false });
+      this.grid.addEventListener('touchend', () => this.handleEnd(), { passive: true });
+      this.grid.addEventListener('touchcancel', () => this.handleEnd(), { passive: true });
+
+      // Mouse drag handlers — mousemove/mouseup are attached to window only
+      // while a drag is in progress (and removed on mouseup), rather than
+      // listening globally at all times. handleMove/handleEnd already no-op
+      // when not dragging, so behavior is unchanged; this just avoids idle
+      // listener overhead on desktop when the user isn't dragging.
+      const onCarouselMouseMove = (e) => this.handleMove(e, e.clientX, e.clientY);
+      const onCarouselMouseUp = () => {
+        this.handleEnd();
+        window.removeEventListener('mousemove', onCarouselMouseMove);
+        window.removeEventListener('mouseup', onCarouselMouseUp);
+      };
+      this.grid.addEventListener('mousedown', (e) => {
+        this.handleStart(e.clientX, e.clientY);
+        e.preventDefault();
+        window.addEventListener('mousemove', onCarouselMouseMove);
+        window.addEventListener('mouseup', onCarouselMouseUp);
+      });
+
+      // Dot click handlers
+      this.dots.forEach(dot => {
+        dot.addEventListener('click', (e) => {
+          const index = parseInt(e.target.getAttribute('data-index'), 10);
+          if (this.resumeTimer) { clearTimeout(this.resumeTimer); this.resumeTimer = null; }
+          this.pauseAutoSlide();
+          this.goToIndex(index, true);
+          if (this.isAutoSliding) {
+            this.resumeTimer = setTimeout(() => { this.resumeTimer = null; this.resumeAutoSlide(); }, 3000);
+          }
+        });
+      });
+
+      // Start auto-slide immediately
+      this.startAutoSlide();
+
+      // Pause the auto-slide interval while the carousel is scrolled out of
+      // view (and while the tab itself is hidden) — same idea already used
+      // for the leaf animation. The interval was previously running non-stop
+      // for the whole time the page was open, even while the reviews section
+      // was nowhere near the viewport, which was unnecessary background work
+      // contributing to the overall sluggishness on lower-end phones.
+      if ('IntersectionObserver' in window) {
+        const carouselVisibilityObserver = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting && !document.hidden) {
+              this.resumeAutoSlide();
+            } else {
+              this.pauseAutoSlide();
+            }
+          });
+        }, { threshold: 0 });
+        carouselVisibilityObserver.observe(this.grid);
+        document.addEventListener('visibilitychange', () => {
+          if (document.hidden) {
+            this.pauseAutoSlide();
+          } else if (this.grid.getBoundingClientRect().top < window.innerHeight && this.grid.getBoundingClientRect().bottom > 0) {
+            this.resumeAutoSlide();
+          }
+        });
+      }
+    },
+
+    updateDots: function() {
+      this.dots.forEach((dot, index) => {
+        if (index === this.currentIndex) {
+          dot.classList.add('active');
+        } else {
+          dot.classList.remove('active');
+        }
+      });
+    },
+
+    goToIndex: function(index, animate = true) {
+      if (index < 0 || index >= this.cards.length) return;
+      this.currentIndex = index;
+      const offset = -index * this.trackWidth;
+      this.track.style.transition = animate ? 'transform .6s cubic-bezier(0.25, 0.46, 0.45, 0.94)' : 'none';
+      this.track.style.transform = `translateX(${offset}px)`;
+      this.updateDots();
+    },
+
+    nextSlide: function(fromSwipe) {
+      if (this.currentIndex === this.cards.length - 1) {
+        if (fromSwipe) {
+          // Rubber bounce: nudge left then snap back
+          const base = -this.currentIndex * this.trackWidth;
+          const bounceOffset = base - 60;
+          this.track.style.transition = 'transform .18s cubic-bezier(0.34, 1.56, 0.64, 1)';
+          this.track.style.transform = `translateX(${bounceOffset}px)`;
+          setTimeout(() => {
+            this.track.style.transition = 'transform .4s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+            this.track.style.transform = `translateX(${base}px)`;
+          }, 180);
+        }
+        return; // do NOT loop immediately
+      }
+      this.goToIndex(this.currentIndex + 1, true);
+    },
+
+    prevSlide: function() {
+      const prevIndex = this.currentIndex > 0 ? this.currentIndex - 1 : this.cards.length - 1;
+      this.goToIndex(prevIndex, true);
+    },
+
+    startAutoSlide: function() {
+      this.isAutoSliding = true;
+      this.autoSlideInterval = setInterval(() => {
+        let nextIndex = this.currentIndex + 1;
+        if (nextIndex >= this.cards.length) {
+          nextIndex = 0;
+        }
+        this.goToIndex(nextIndex, true);
+      }, 3200);
+    },
+
+    pauseAutoSlide: function() {
+      clearInterval(this.autoSlideInterval);
+      this.autoSlideInterval = null;
+    },
+
+    resumeAutoSlide: function() {
+      if (this.isAutoSliding && !this.autoSlideInterval) {
+        this.autoSlideInterval = setInterval(() => {
+          let nextIndex = this.currentIndex + 1;
+          if (nextIndex >= this.cards.length) {
+            nextIndex = 0;
+          }
+          this.goToIndex(nextIndex, true);
+        }, 3200);
+      }
+    },
+
+    handleStart: function(x, y) {
+      this.trackWidth = this.grid.clientWidth;
+      this.startX = this.currentX = this.lastX = x;
+      this.startY = y;
+      this.lastT = performance.now();
+      this.velocity = 0;
+      this.dragging = true;
+      this.horizontal = false;
+      // Cancel any pending resume timer so auto-slide can't restart while the user is holding
+      if (this.resumeTimer) { clearTimeout(this.resumeTimer); this.resumeTimer = null; }
+      this.pauseAutoSlide();
+      this.track.style.transition = 'none';
+    },
+
+    handleMove: function(e, x, y) {
+      if (!this.dragging) return;
+      const dx = x - this.startX;
+      const dy = y - this.startY;
+
+      if (!this.horizontal) {
+        if (Math.abs(dx) > Math.abs(dy) && Math.abs(dx) > 4) {
+          this.horizontal = true;
+        } else if (Math.abs(dy) > Math.abs(dx)) {
+          this.dragging = false;
+          return;
+        } else {
+          return;
+        }
+      }
+
+      if (e.cancelable) e.preventDefault();
+
+      const now = performance.now();
+      const dt = now - this.lastT;
+      if (dt > 0) this.velocity = (x - this.lastX) / dt;
+      this.lastX = x;
+      this.lastT = now;
+      this.currentX = x;
+
+      let base = -this.currentIndex * this.trackWidth;
+      let translate = base + dx;
+      if ((this.currentIndex === 0 && dx > 0) || (this.currentIndex === this.cards.length - 1 && dx < 0)) {
+        translate = base + dx * 0.45;
+      }
+      if (this.rafId) cancelAnimationFrame(this.rafId);
+      this.rafId = requestAnimationFrame(() => {
+        this.track.style.transform = `translateX(${translate}px)`;
+      });
+    },
+
+    handleEnd: function() {
+      if (!this.dragging) return;
+      this.dragging = false;
+      if (this.rafId) { cancelAnimationFrame(this.rafId); this.rafId = null; }
+
+      const atLastCard = this.currentIndex === this.cards.length - 1;
+
+      if (this.horizontal) {
+        const dx = this.currentX - this.startX;
+        const distanceThreshold = this.trackWidth * 0.12;
+        const flickThreshold = 0.22; // px/ms — a quick flick snaps even on a short drag
+        if (dx <= -distanceThreshold || this.velocity <= -flickThreshold) {
+          this.nextSlide(true); // pass fromSwipe=true
+        } else if (dx >= distanceThreshold || this.velocity >= flickThreshold) {
+          this.prevSlide();
+        } else {
+          this.goToIndex(this.currentIndex, true);
+        }
+      }
+
+      if (this.isAutoSliding) {
+        if (atLastCard) {
+          // After bounce at last card: wait 2.5s, jump to #1, then resume auto-sliding
+          this.resumeTimer = setTimeout(() => {
+            this.resumeTimer = null;
+            this.goToIndex(0, true);
+            this.resumeTimer = setTimeout(() => {
+              this.resumeTimer = null;
+              this.resumeAutoSlide();
+            }, 600);
+          }, 2500);
+        } else {
+          // Resume 1.5s after finger lifts
+          this.resumeTimer = setTimeout(() => {
+            this.resumeTimer = null;
+            this.resumeAutoSlide();
+          }, 1500);
+        }
+      }
+    }
+  };
+
+  carousel.init();
+
+  // Complaints Form Submission
+  document.getElementById('complaintsForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const submitBtn = this.querySelector('.complaints-submit');
+    const messageDiv = document.getElementById('formMessage');
+
+    // Spam check: honeypot filled in, or submitted implausibly fast → pretend
+    // it worked and quietly stop, without telling the bot why.
+    const isBotC = document.getElementById('cWebsite').value.trim() !== '' || (Date.now() - pageLoadTime) < 3000;
+    if (isBotC) {
+      messageDiv.className = 'form-message success';
+      messageDiv.textContent = '✓ Your complaint has been submitted successfully. We will get in touch with you shortly.';
+      this.reset();
+      setTimeout(() => { messageDiv.className = 'form-message'; }, 3000);
+      return;
+    }
+
+    const formData = {
+      formType: 'complaint',
+      name: document.getElementById('cname').value,
+      email: document.getElementById('cemail').value,
+      phone: document.getElementById('cphone').value,
+      type: document.getElementById('ctype').value,
+      message: document.getElementById('cmessage').value
+    };
+
+    submitBtn.disabled = true;
+    const complaintBtnOriginalHTML = submitBtn.innerHTML;
+    submitBtn.textContent = 'Sending...';
+
+    try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 15000);
+      const response = await fetch(GOOGLE_SCRIPT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(formData),
+        signal: controller.signal
+      });
+      clearTimeout(timeoutId);
+
+      const result = await response.json();
+
+      if(result.success) {
+        messageDiv.className = 'form-message success';
+        messageDiv.textContent = '✓ Your complaint has been submitted successfully. We will get in touch with you shortly.';
+        document.getElementById('complaintsForm').reset();
+      } else {
+        throw new Error('Server error');
+      }
+    } catch(err) {
+      messageDiv.className = 'form-message error';
+      messageDiv.textContent = '✗ Error: Please try again.';
+    }
+
+    setTimeout(() => {
+      submitBtn.disabled = false;
+      submitBtn.innerHTML = complaintBtnOriginalHTML;
+      messageDiv.className = 'form-message';
+    }, 3000);
+  });
+
+  // Falling leaves background animation
+  window.__pauseLeafFall = function(){};
+  window.__resumeLeafFall = function(){};
+  (function(){
+    const layer = document.getElementById('leafFallLayer');
+    const branch = document.querySelector('.branch-topright');
+    if(!layer || !branch) return;
+    let orderSectionPaused = false;
+    const colors = ['#D9A441', '#C1522E', '#8A5A2E', '#B8873A'];
+    const types = ['straight', 'sway', 'diagonal'];
+    const leafSvg = (color) => `<svg viewBox="0 0 24 24" width="100%" height="100%"><path d="M12 2 C4 6 2 14 12 22 C22 14 20 6 12 2 Z" fill="${color}"/><line x1="12" y1="4" x2="12" y2="20" stroke="rgba(0,0,0,0.18)" stroke-width="1"/></svg>`;
+    const MAX_LEAVES = 24; // safety cap so leaves can never silently pile up in the DOM
+
+    // .branch-topright is position:fixed, so its rect relative to the viewport
+    // never changes on scroll — only on resize (e.g. the 720px breakpoint).
+    // Cache it instead of forcing a layout read on every spawnLeaf() call.
+    let branchRect = branch.getBoundingClientRect();
+    let branchRectResizeTimer = null;
+    window.addEventListener('resize', () => {
+      clearTimeout(branchRectResizeTimer);
+      branchRectResizeTimer = setTimeout(() => { branchRect = branch.getBoundingClientRect(); }, 150);
+    });
+
+    function spawnLeaf(){
+      if (document.hidden || orderSectionPaused) return; // don't do work while the tab isn't visible, or the order section is open
+      if (layer.childElementCount >= MAX_LEAVES) return;
+      const rect = branchRect;
+      const marginX = rect.width*0.12;
+      const spawnLeft = rect.left + marginX + Math.random()*(rect.width - marginX*2);
+      const spawnTop = rect.top + rect.height*0.04 + Math.random()*(rect.height*0.62);
+
+      const leaf = document.createElement('div');
+      const type = types[Math.floor(Math.random()*types.length)];
+      leaf.className = 'fall-leaf type-' + type;
+      const size = 12 + Math.random()*14;
+      const duration = type === 'straight' ? (7 + Math.random()*4) : (10 + Math.random()*8);
+      const color = colors[Math.floor(Math.random()*colors.length)];
+      leaf.style.left = spawnLeft + 'px';
+      leaf.style.top = spawnTop + 'px';
+      leaf.style.width = size + 'px';
+      leaf.style.height = size + 'px';
+      leaf.style.animationDuration = duration + 's';
+      leaf.innerHTML = leafSvg(color);
+      layer.appendChild(leaf);
+      setTimeout(() => leaf.remove(), duration*1000 + 500);
+    }
+
+    let leafInterval = null;
+    function startLeafInterval(){
+      if (leafInterval) return;
+      leafInterval = setInterval(spawnLeaf, 1000);
+    }
+    function stopLeafInterval(){
+      clearInterval(leafInterval);
+      leafInterval = null;
+    }
+    // Pause spawning while the tab is in the background — resumes exactly as before when the tab is visible again.
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) stopLeafInterval();
+      else startLeafInterval();
+    });
+
+    for(let i=0;i<7;i++){
+      setTimeout(spawnLeaf, i*550);
+    }
+    startLeafInterval();
+
+    window.__pauseLeafFall = function(){
+      if (orderSectionPaused) return;
+      orderSectionPaused = true;
+      layer.classList.add('order-paused');
+      stopLeafInterval();
+    };
+    window.__resumeLeafFall = function(){
+      if (!orderSectionPaused) return;
+      orderSectionPaused = false;
+      layer.classList.remove('order-paused');
+      startLeafInterval();
+    };
+  })();
+
+  // Ambient entrance glow: drive tone changes on a single recycled element
+  // instead of keeping 7 full-screen blurred layers mounted at once — same
+  // visual sequence, far less GPU/memory overhead on low-RAM phones.
+  window.__pauseAmbientGlow = function(){};
+  window.__resumeAmbientGlow = function(){};
+  (function(){
+    const layer = document.getElementById('ambientGlowLayer');
+    const el = document.getElementById('ambientGlow');
+    if(!layer || !el) return;
+
+    if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      layer.remove();
+      return;
+    }
+
+    // Absolute times (ms from page load) at which the glow switches tone,
+    // plus a final entry (tone:null) marking when the whole layer is removed.
+    const events = [
+      { t:3000,  tone:'tone-cool' },
+      { t:10000, tone:'tone-violet' },
+      { t:17500, tone:'tone-violetblue' },
+      { t:26000, tone:'tone-emerald' },
+      { t:34000, tone:'tone-rosegold' },
+      { t:42000, tone:'tone-caramel' },
+      { t:50000, tone:'tone-wine' },
+      { t:58000, tone:null }
+    ];
+
+    let idx = 0;
+    let timerId = null;
+    let paused = false;
+    let stepStart = 0;
+    let stepRemaining = events[0].t;
+
+    function fireEvent(){
+      const ev = events[idx];
+      if (ev.tone === null) { layer.remove(); return; }
+      el.className = 'ambient-glow';
+      void el.offsetWidth; // force reflow so the (same-named) animation restarts
+      el.classList.add(ev.tone);
+      const prevT = ev.t;
+      idx++;
+      if (idx < events.length) {
+        stepRemaining = events[idx].t - prevT;
+        armTimer();
+      }
+    }
+
+    function armTimer(){
+      stepStart = performance.now();
+      timerId = setTimeout(fireEvent, stepRemaining);
+    }
+
+    armTimer();
+
+    window.__pauseAmbientGlow = function(){
+      if (paused || timerId === null) return;
+      paused = true;
+      clearTimeout(timerId);
+      timerId = null;
+      stepRemaining = Math.max(0, stepRemaining - (performance.now() - stepStart));
+      el.style.animationPlayState = 'paused';
+    };
+    window.__resumeAmbientGlow = function(){
+      if (!paused) return;
+      paused = false;
+      el.style.animationPlayState = 'running';
+      armTimer();
+    };
+  })();
+
+  // Avatar Zoom Modal
+  function openAvatarModal(imgEl) {
+    const overlay = document.getElementById('avatarModalOverlay');
+    const modalImg = document.getElementById('avatarModalImg');
+    modalImg.src = imgEl.src;
+    modalImg.alt = imgEl.alt;
+    overlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeAvatarModal() {
+    const overlay = document.getElementById('avatarModalOverlay');
+    if (!overlay.classList.contains('open')) return; // already closed — avoid clobbering body scroll state set by another open modal
+    overlay.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeAvatarModal();
+  });
+
+  // Contact Form (WhatsApp)
+  document.getElementById('contactForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    const name = this.querySelector('input[type="text"]').value.trim();
+    const email = this.querySelector('input[type="email"]').value.trim();
+    const message = this.querySelector('textarea').value.trim();
+    if(name && email && message){
+      const text = `New website message%0AName: ${encodeURIComponent(name)}%0AEmail: ${encodeURIComponent(email)}%0AMessage: ${encodeURIComponent(message)}`;
+      window.open(`https://wa.me/8801764491395?text=${text}`, '_blank', 'noopener,noreferrer');
+      this.reset();
+    }
+  });
+</script>
 
 </body>
 </html>
