@@ -136,6 +136,12 @@
 @keyframes amapTxtIn{from{opacity:0;transform:translateX(-12px);}to{opacity:1;transform:translateX(0);}}
 @media(prefers-reduced-motion:reduce){.amap-done-ico,.amap-done-txt{animation:none;}}
 </style>
+<style>
+.choco-price-wrap{align-self:stretch;display:flex;flex-direction:column;justify-content:space-between;align-items:stretch;gap:12px;}
+.choco-order{width:100%;font-weight:600;font-size:0.75rem;background:linear-gradient(135deg,var(--cocoa) 0%,var(--cocoa-dark) 100%);border:none;color:var(--white);padding:6px 14px;border-radius:6px;cursor:pointer;font-family:'Archivo',sans-serif;box-shadow:0 4px 12px rgba(36,18,9,0.18);transition:background .25s ease,transform .15s ease,box-shadow .25s ease;}
+.choco-order:hover{background:linear-gradient(135deg,var(--swiss-red) 0%,#8f0c22 100%);box-shadow:0 6px 16px rgba(200,16,46,0.24);}
+.choco-order:active{transform:scale(.95);}
+</style>
 </head>
 <body>
 
@@ -243,9 +249,9 @@
   </div>
   <div class="products">
     <div class="product combo reveal" onclick="openProductModal('combo')">
-      <div class="ph"><img src="images/combo-box.png" alt="Ara Chocolates Combo Box — Premium Artisan Selection" width="280" height="280" loading="lazy" decoding="async" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'img-fallback',textContent:'Combo Box'}))"></div>
+      <div class="ph"><img src="images/combo-box.png" alt="Ara Chocolates Chocolate Gift Box — Premium Artisan Selection" width="280" height="280" loading="lazy" decoding="async" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'img-fallback',textContent:'Chocolate Gift Box'}))"></div>
       <div class="pbody">
-        <h3>Combo Box</h3>
+        <h3>Chocolate Gift Box</h3>
         <p class="desc">A larger collection made for sharing — ideal for gifting or a family occasion. Includes 3 flavors.</p>
         <button type="button" class="view-details">View flavors &amp; details <span class="arrow">→</span></button>
         <div class="row">
@@ -255,9 +261,9 @@
       </div>
     </div>
     <div class="product solo reveal" onclick="openProductModal('solo')">
-      <div class="ph"><img src="images/solo-bar.png" alt="Ara Chocolates Solo Dark Chocolate Bar" width="280" height="280" loading="lazy" decoding="async" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'img-fallback',textContent:'Solo Bar'}))"></div>
+      <div class="ph"><img src="images/solo-bar.png" alt="Ara Chocolates Pure Dark Chocolate Bar" width="280" height="280" loading="lazy" decoding="async" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'img-fallback',textContent:'Pure Dark Bar'}))"></div>
       <div class="pbody">
-        <h3>Solo</h3>
+        <h3>Pure Dark Chocolate Bar</h3>
         <p class="desc">Made for a single serving — a small, rich moment just for you.</p>
         <button type="button" class="view-details">View details <span class="arrow">→</span></button>
         <div class="row">
@@ -285,7 +291,7 @@
           <p>Smooth milk chocolate with premium almonds</p>
         </div>
         <div class="choco-weight">125–130<br>g</div>
-        <div class="choco-price">৳ 390</div>
+        <div class="choco-price-wrap"><div class="choco-price">৳ 390</div><button type="button" class="choco-order" onclick="event.stopPropagation(); openOrderChoice('Almond Chocolate', '৳ 390')">Order</button></div>
       </div>
 
       <div class="choco-row" onclick="openOrderChoice('Cashew Chocolate', '৳ 390')">
@@ -296,7 +302,7 @@
           <p>Creamy chocolate filled with whole cashews</p>
         </div>
         <div class="choco-weight">125–130<br>g</div>
-        <div class="choco-price">৳ 390</div>
+        <div class="choco-price-wrap"><div class="choco-price">৳ 390</div><button type="button" class="choco-order" onclick="event.stopPropagation(); openOrderChoice('Cashew Chocolate', '৳ 390')">Order</button></div>
       </div>
 
       <div class="choco-row" onclick="openOrderChoice('Mixed Nut Chocolate', '৳ 370')">
@@ -307,7 +313,7 @@
           <p>A blend of assorted premium nuts in chocolate</p>
         </div>
         <div class="choco-weight">125–130<br>g</div>
-        <div class="choco-price">৳ 370</div>
+        <div class="choco-price-wrap"><div class="choco-price">৳ 370</div><button type="button" class="choco-order" onclick="event.stopPropagation(); openOrderChoice('Mixed Nut Chocolate', '৳ 370')">Order</button></div>
       </div>
 
       <div class="choco-row" onclick="openOrderChoice('Pure Dark Chocolate', '৳ 350')">
@@ -318,7 +324,7 @@
           <p>100% pure, rich and intense dark chocolate</p>
         </div>
         <div class="choco-weight">125–130<br>g</div>
-        <div class="choco-price">৳ 350</div>
+        <div class="choco-price-wrap"><div class="choco-price">৳ 350</div><button type="button" class="choco-order" onclick="event.stopPropagation(); openOrderChoice('Pure Dark Chocolate', '৳ 350')">Order</button></div>
       </div>
     </div>
   </div>
@@ -330,18 +336,18 @@
     <button type="button" class="product-modal-close" onclick="closeProductModal()" aria-label="Close">✕</button>
 
     <div class="product-modal-tabs">
-      <button type="button" class="product-tab" id="tabCombo" onclick="switchProductTab('combo')">Combo Box</button>
-      <button type="button" class="product-tab" id="tabSolo" onclick="switchProductTab('solo')">Solo</button>
+      <button type="button" class="product-tab" id="tabCombo" onclick="switchProductTab('combo')">Chocolate Gift Box</button>
+      <button type="button" class="product-tab" id="tabSolo" onclick="switchProductTab('solo')">Pure Dark Chocolate Bar</button>
     </div>
 
     <div class="pm-swipeport" id="pmSwipeport">
       <div class="pm-track" id="pmTrack">
         <div class="product-modal-panel" id="panelCombo">
           <div class="pm-head">
-            <h3 id="productModalTitle">Combo Box</h3>
+            <h3 id="productModalTitle">Chocolate Gift Box</h3>
             <div class="pm-price">৳ 1499</div>
           </div>
-          <p class="pm-intro">One box, three rich experiences — made for sharing, gifting, or a family occasion. Every Combo Box includes all three flavors below.</p>
+          <p class="pm-intro">One box, three rich experiences — made for sharing, gifting, or a family occasion. Every Chocolate Gift Box includes all three flavors below.</p>
           <div class="pm-flavors">
             <div class="pm-flavor">
               <div class="pm-flavor-tag">01</div>
@@ -365,12 +371,12 @@
               </div>
             </div>
           </div>
-          <button type="button" class="pm-order" onclick="openOrderChoice('Combo Box','৳ 1499')">Order</button>
+          <button type="button" class="pm-order" onclick="openOrderChoice('Chocolate Gift Box','৳ 1499')">Order</button>
         </div>
 
         <div class="product-modal-panel" id="panelSolo">
           <div class="pm-head">
-            <h3>Solo</h3>
+            <h3>Pure Dark Chocolate Bar</h3>
             <div class="pm-price">৳ 390</div>
           </div>
           <p class="pm-intro">Made for a single serving — a small, rich moment just for you.</p>
@@ -383,7 +389,7 @@
               </div>
             </div>
           </div>
-          <button type="button" class="pm-order" onclick="openOrderChoice('Solo','৳ 390')">Order</button>
+          <button type="button" class="pm-order" onclick="openOrderChoice('Pure Dark Chocolate Bar','৳ 390')">Order</button>
         </div>
       </div>
     </div>
