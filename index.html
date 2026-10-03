@@ -107,6 +107,32 @@
   .avan-tick{animation:none;stroke-dashoffset:0;}
   .avan-ring,.avan-spark{display:none;}
 }
+
+/* ===== ম্যাপ ডেলিভারি অ্যানিমেশন / Mini-map car delivery ===== */
+.amap{display:inline-flex;flex-direction:column;align-items:center;gap:7px;}
+.amap svg{display:block;width:168px;max-width:100%;height:auto;overflow:visible;border-radius:9px;box-shadow:0 0 0 1px rgba(255,255,255,.28),0 4px 10px rgba(0,0,0,.28);}
+.amap > span{font-size:.8rem;}
+.amap-route{fill:none;stroke:#C8102E;stroke-width:1.3;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:3 3;opacity:.5;}
+.amap-trail{fill:none;stroke:#C8102E;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:400;stroke-dashoffset:400;}
+.amap-car-in{transform-box:fill-box;transform-origin:center;animation:amapIdle .6s ease-in-out infinite;}
+.amap-beam{animation:amapBeam 1.1s ease-in-out infinite;}
+.amap-origin-ring{transform-box:fill-box;transform-origin:center;animation:amapPulse 1.3s ease-out infinite;}
+.amap-ring{transform-box:fill-box;transform-origin:center;opacity:0;}
+.amap-pin{transform-box:fill-box;transform-origin:50% 100%;}
+.amap-go .amap-origin-ring{animation:none;opacity:0;}
+.amap-go .amap-car-in{animation-duration:.2s;}
+.amap-go > span{animation:amapTextOut .3s ease forwards;}
+.amap-arrived .amap-pin{animation:amapPin .5s cubic-bezier(.2,1.5,.4,1);}
+.amap-arrived .amap-ring{animation:amapRing .7s ease-out;}
+@keyframes amapIdle{0%,100%{transform:translateY(0);}50%{transform:translateY(-.3px);}}
+@keyframes amapBeam{0%,100%{opacity:.45;}50%{opacity:.9;}}
+@keyframes amapPulse{0%{transform:scale(.5);opacity:.8;}100%{transform:scale(2.6);opacity:0;}}
+@keyframes amapTextOut{to{opacity:0;}}
+@keyframes amapPin{0%{transform:scale(1);}40%{transform:scale(1.35,.8);}70%{transform:scale(.92,1.12);}100%{transform:scale(1);}}
+@keyframes amapRing{0%{transform:scale(.3);opacity:.9;}100%{transform:scale(3.2);opacity:0;}}
+@media(prefers-reduced-motion:reduce){
+  .amap-car-in,.amap-beam,.amap-origin-ring,.amap-go > span,.amap-arrived .amap-pin,.amap-arrived .amap-ring{animation:none;}
+}
 </style>
 </head>
 <body>
@@ -937,67 +963,60 @@ window.__resumeAmbientGlow();
 }
 /* ===== নতুন ভ্যান অ্যানিমেশন / New van animation ===== */
 
-/* চাকা আঁকে (টায়ার + রিম + স্পোক) / draws one wheel */
-function avanWheel(cx) {
-  const cy = 32;
-  return '<g class="avan-wheel">' +
-    '<circle cx="' + cx + '" cy="' + cy + '" r="5.4" fill="#15100d"/>' +
-    '<circle cx="' + cx + '" cy="' + cy + '" r="4.5" fill="none" stroke="#3a2f27" stroke-width=".9" stroke-dasharray="1.5 1.3"/>' +
-    '<circle cx="' + cx + '" cy="' + cy + '" r="3.3" fill="url(#avRim)"/>' +
-    '<g stroke="#7d7d7d" stroke-width=".7" stroke-linecap="round">' +
-      '<line x1="' + (cx - 2.8) + '" y1="' + cy + '" x2="' + (cx + 2.8) + '" y2="' + cy + '"/>' +
-      '<line x1="' + (cx - 1.4) + '" y1="' + (cy - 2.4) + '" x2="' + (cx + 1.4) + '" y2="' + (cy + 2.4) + '"/>' +
-      '<line x1="' + (cx - 1.4) + '" y1="' + (cy + 2.4) + '" x2="' + (cx + 1.4) + '" y2="' + (cy - 2.4) + '"/>' +
-    '</g>' +
-    '<circle cx="' + cx + '" cy="' + cy + '" r="1" fill="#3a3a3a"/>' +
-  '</g>';
-}
+/* ম্যাপের রুট (শুরু থেকে গন্তব্য) / map route: start → destination */
+const AMAP_ROUTE = 'M18 46H48Q60 46 60 36V28Q60 18 72 18H106Q118 18 118 28V38Q118 46 128 46H150Q162 46 162 36V30Q162 18 176 18';
+let avanExtraDelay = 0; // সফল অ্যানিমেশনের সময় বাটন রিসেট পিছিয়ে দেয় / delays button reset during success animation
 
-/* লোডিং ভ্যান (অর্ডার পাঠানোর সময়) / loading van shown while sending */
+/* লোডিং: ছোট ম্যাপ + নতুন গাড়ি / loading: mini map + new car */
 function vanLoadingHTML() {
-  return '<span class="avan" role="status" aria-live="polite">' +
-  '<svg viewBox="0 0 100 40" width="84" height="34" aria-hidden="true">' +
+  avanExtraDelay = 0;
+  return '<span class="amap" role="status" aria-live="polite">' +
+  '<svg viewBox="0 0 200 62" aria-hidden="true">' +
     '<defs>' +
-      '<linearGradient id="avBody" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFBF0"/><stop offset=".55" stop-color="#F1E6CC"/><stop offset="1" stop-color="#D3C19B"/></linearGradient>' +
-      '<linearGradient id="avGlass" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#C6EAF7"/><stop offset=".55" stop-color="#6FA8C4"/><stop offset="1" stop-color="#3E6F8C"/></linearGradient>' +
-      '<linearGradient id="avBeam" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#FFE9A8" stop-opacity=".8"/><stop offset="1" stop-color="#FFE9A8" stop-opacity="0"/></linearGradient>' +
-      '<radialGradient id="avRim" cx=".4" cy=".35" r=".8"><stop offset="0" stop-color="#F6F6F6"/><stop offset="1" stop-color="#999"/></radialGradient>' +
+      '<clipPath id="amapClip"><rect width="200" height="62" rx="7"/></clipPath>' +
+      '<linearGradient id="amapBody" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFBF0"/><stop offset="1" stop-color="#D9C9A3"/></linearGradient>' +
+      '<linearGradient id="amapGlass" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#C6EAF7"/><stop offset="1" stop-color="#3E6F8C"/></linearGradient>' +
+      '<linearGradient id="amapBeamG" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#FFE9A8" stop-opacity=".85"/><stop offset="1" stop-color="#FFE9A8" stop-opacity="0"/></linearGradient>' +
     '</defs>' +
-
-    /* রাস্তা + ছায়া / road + ground shadow */
-    '<g class="avan-road"><line x1="-10" y1="38.7" x2="112" y2="38.7" stroke="rgba(255,255,255,.38)" stroke-width="1.2" stroke-dasharray="7 6" stroke-linecap="round"/></g>' +
-    '<ellipse cx="55" cy="37.5" rx="40" ry="1.7" fill="rgba(0,0,0,.35)"/>' +
-
-    /* গতির দাগ ও ধুলো / speed lines + dust */
-    '<g class="avan-speed" stroke="#FFE9A8" stroke-width="1.3" stroke-linecap="round">' +
-      '<line x1="14" y1="12" x2="4" y2="12"/><line x1="14" y1="19" x2="1" y2="19"/><line x1="14" y1="26" x2="5" y2="26"/></g>' +
-    '<g class="avan-dust" fill="#EDE4D0">' +
-      '<circle cx="20" cy="34" r="2.2"/><circle cx="19" cy="32" r="1.7"/><circle cx="20" cy="35" r="1.9"/><circle cx="19" cy="33" r="1.4"/></g>' +
-
-    /* ভ্যানের শরীর (দোলে) / van body (bobs) */
-    '<g class="avan-body">' +
-      '<path class="avan-beam" d="M91 25.2 L108 19.5 V32 Z" fill="url(#avBeam)"/>' +
-      '<path d="M20 9a3 3 0 0 1 3-3H64c3 0 5.2 1.2 7 3.6L81 20c.8 1 2 1.6 3.4 2L89 23.4c1.4.5 2.4 1.8 2.4 3.3V30a1.5 1.5 0 0 1-1.5 1.5H21.5A1.5 1.5 0 0 1 20 30Z" fill="url(#avBody)" stroke="rgba(36,18,9,.4)" stroke-width=".5"/>' +
-      '<path d="M24 6.9H63" stroke="#fff" stroke-width=".8" stroke-linecap="round" opacity=".8"/>' +
-      /* সোনালি স্ট্রাইপ / gold stripe */
-      '<rect x="20" y="23.4" width="44" height="2.3" fill="#B8873A"/><rect x="20" y="26" width="44" height=".6" fill="#B8873A" opacity=".55"/>' +
-      /* ব্র্যান্ড ব্যাজ / brand badge */
-      '<rect x="28" y="10.5" width="24" height="9.5" rx="2" fill="#4A2C1A"/>' +
-      '<text x="40" y="17.4" text-anchor="middle" font-size="5.6" font-weight="800" letter-spacing=".7" fill="#EDE4D0" font-family="\'Archivo Expanded\',\'Archivo\',Arial,sans-serif">ARA</text>' +
-      '<path d="M64.5 8V31" stroke="rgba(36,18,9,.3)" stroke-width=".6"/>' +
-      /* জানালা / windshield */
-      '<path d="M66 8.4h1.2c1.2 0 2.2.5 3 1.5L78 19.4H66Z" fill="url(#avGlass)" stroke="rgba(36,18,9,.45)" stroke-width=".4"/>' +
-      '<path d="M67.6 9.8 66.8 17.6" stroke="#fff" stroke-width="1" stroke-linecap="round" opacity=".5"/>' +
-      '<rect x="70" y="21" width="3" height=".9" rx=".45" fill="#8a7a5a"/>' +
-      '<rect x="78.8" y="14.2" width="2.4" height="3.4" rx="1" fill="#3a2418"/>' +
-      /* লাইট ও বাম্পার / lights & bumpers */
-      '<rect x="88.4" y="24" width="3" height="3" rx="1.2" fill="#FFF1B8"/>' +
-      '<rect x="19.6" y="24" width="1.8" height="4.4" rx=".8" fill="#FF5A4D"/>' +
-      '<rect x="89" y="28.6" width="3.2" height="1.7" rx=".8" fill="#6b5a45"/><rect x="18.8" y="29" width="3" height="1.6" rx=".8" fill="#6b5a45"/>' +
-      /* চাকার খোপ / wheel arches */
-      '<path d="M27 31.5A7 7 0 0 1 41 31.5Z" fill="#1b0f09"/><path d="M71 31.5A7 7 0 0 1 85 31.5Z" fill="#1b0f09"/>' +
+    '<g clip-path="url(#amapClip)">' +
+      /* ম্যাপের পটভূমি / map background */
+      '<rect width="200" height="62" fill="#EFE7D3"/>' +
+      '<path d="M-5 57Q40 50 90 59T205 55" fill="none" stroke="#9CC9DC" stroke-width="7"/>' +
+      '<rect x="80" y="33" width="26" height="11" rx="3" fill="#BFD8B0"/>' +
+      '<g fill="#DDD3BB"><rect x="4" y="5" width="24" height="20" rx="2"/><rect x="38" y="4" width="14" height="10" rx="2"/><rect x="124" y="4" width="30" height="9" rx="2"/><rect x="170" y="34" width="24" height="10" rx="2"/><rect x="66" y="22" width="14" height="8" rx="2"/><rect x="122" y="22" width="14" height="14" rx="2"/></g>' +
+      /* রাস্তা / streets */
+      '<g fill="none" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" opacity=".95">' +
+        '<path d="M0 32H200M34 0V62M90 0V62M140 0V62" stroke-width="2.6"/>' +
+        '<path d="' + AMAP_ROUTE + '" stroke-width="5.5"/>' +
+      '</g>' +
+      /* রুট (ডটেড) ও ট্রেইল / route + trail */
+      '<path class="amap-route" d="' + AMAP_ROUTE + '"/>' +
+      '<path class="amap-trail" d="' + AMAP_ROUTE + '"/>' +
+      /* শুরুর পয়েন্ট / origin */
+      '<circle class="amap-origin-ring" cx="18" cy="46" r="3.5" fill="#B8873A"/>' +
+      '<circle cx="18" cy="46" r="3" fill="#B8873A" stroke="#fff" stroke-width="1.2"/>' +
+      /* গন্তব্য পিন / destination pin */
+      '<circle class="amap-ring" cx="176" cy="18" r="3" fill="none" stroke="#C8102E" stroke-width="1"/>' +
+      '<g class="amap-pin"><g transform="translate(176 18)">' +
+        '<path d="M0 0C-5-6-6.5-9-6.5-12A6.5 6.5 0 1 1 6.5-12C6.5-9 5-6 0 0Z" fill="#C8102E" stroke="#fff" stroke-width="1"/>' +
+        '<circle cy="-12" r="2.4" fill="#fff"/>' +
+      '</g></g>' +
+      /* নতুন গাড়ি (উপর থেকে দেখা) / new car (top view) */
+      '<g class="amap-car" transform="translate(18 46) rotate(0)"><g transform="scale(1.3)"><g class="amap-car-in">' +
+        '<path class="amap-beam" d="M7.2-2L18-5.5V5.5L7.2 2Z" fill="url(#amapBeamG)"/>' +
+        '<rect x="-6.6" y="-2.8" width="14" height="7" rx="2.4" fill="rgba(0,0,0,.28)"/>' +
+        '<g fill="#1b1410"><rect x="-5.2" y="-4.3" width="3.2" height="1.7" rx=".6"/><rect x="-5.2" y="2.6" width="3.2" height="1.7" rx=".6"/><rect x="2.6" y="-4.3" width="3.2" height="1.7" rx=".6"/><rect x="2.6" y="2.6" width="3.2" height="1.7" rx=".6"/></g>' +
+        '<path d="M-7-2.2Q-7-3.3-5.6-3.3H3.6Q6-3.3 7-1.4Q7.6 0 7 1.4Q6 3.3 3.6 3.3H-5.6Q-7 3.3-7 2.2Z" fill="url(#amapBody)" stroke="#4A2C1A" stroke-width=".5"/>' +
+        '<rect x="-6.4" y="-.4" width="12.4" height=".8" fill="#B8873A"/>' +
+        '<path d="M1.3-2.3L3.5-1.8Q3.9 0 3.5 1.8L1.3 2.3Z" fill="url(#amapGlass)" stroke="#4A2C1A" stroke-width=".25"/>' +
+        '<rect x="-3.9" y="-2.4" width="5.2" height="4.8" rx="1.2" fill="#4A2C1A"/>' +
+        '<rect x="-3.2" y="-1.7" width="3.2" height="1" rx=".5" fill="#fff" opacity=".18"/>' +
+        '<path d="M-4.9-1.9L-4-2V2L-4.9 1.9Z" fill="#3E6F8C"/>' +
+        '<g fill="#FFF1B8"><rect x="5.9" y="-2.7" width="1.2" height="1.2" rx=".4"/><rect x="5.9" y="1.5" width="1.2" height="1.2" rx=".4"/></g>' +
+        '<g fill="#FF5A4D"><rect x="-7.1" y="-2.7" width=".9" height="1.3" rx=".3"/><rect x="-7.1" y="1.4" width=".9" height="1.3" rx=".3"/></g>' +
+        '<g fill="#D9C9A3" stroke="#4A2C1A" stroke-width=".2"><rect x="1.4" y="-3.9" width="1.3" height=".8" rx=".3"/><rect x="1.4" y="3.1" width="1.3" height=".8" rx=".3"/></g>' +
+      '</g></g></g>' +
     '</g>' +
-    avanWheel(34) + avanWheel(78) +
   '</svg><span>অর্ডার পাঠানো হচ্ছে...</span></span>';
 }
 
@@ -1018,19 +1037,48 @@ const AVAN_DONE_HTML =
     '</g>' +
   '</svg><span>অর্ডার সাবমিট হয়েছে!</span></span>';
 
-/* সফল হলে ভ্যান ছুটে যায় / van drives off on success */
+/* সফল হলে গাড়ি ম্যাপের রুট ধরে গন্তব্যে যায় (৩ সেকেন্ড + ০.৩ সেকেন্ড) / car drives along the map route to the destination */
 function vanSuccess(btn) {
   try {
-    const wrap = btn && btn.querySelector('.avan');
-    if (!wrap || wrap.classList.contains('avan-go')) return;   // আগেই চলছে / already running
-    const w = wrap.offsetWidth;
-    wrap.style.width = w + 'px';                                // প্রস্থ ঠিক রাখে / keep width fixed
-    wrap.style.setProperty('--avan-dist', (w + 18) + 'px');     // কতদূর যাবে / drive distance
-    wrap.classList.add('avan-go');
+    const wrap = btn && btn.querySelector('.amap');
+    if (!wrap || wrap.classList.contains('amap-go')) return;    // আগেই চলছে / already running
     const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    setTimeout(function () {
-      if (btn.contains(wrap)) btn.innerHTML = AVAN_DONE_HTML;   // টিক দেখায় / show tick
-    }, reduce ? 150 : 1300);
+    if (reduce) {
+      avanExtraDelay = 150;
+      setTimeout(function () { if (btn.contains(wrap)) btn.innerHTML = AVAN_DONE_HTML; }, 150);
+      return;
+    }
+    wrap.classList.add('amap-go');
+    avanExtraDelay = 3300;
+    const route = wrap.querySelector('.amap-route');
+    const trail = wrap.querySelector('.amap-trail');
+    const car = wrap.querySelector('.amap-car');
+    const L = route.getTotalLength();
+    const DUR = 3000;
+    const t0 = performance.now();
+    let ang = null;
+    trail.style.strokeDasharray = L;
+    trail.style.strokeDashoffset = L;
+    function frame(now) {
+      if (!btn.contains(wrap)) return;
+      const t = Math.min(1, (now - t0) / DUR);
+      const e = 0.3 * t + 0.7 * (1 - Math.cos(Math.PI * t)) / 2;   // হালকা স্টার্ট-স্টপ / gentle ease
+      const s = L * e;
+      const p = route.getPointAtLength(s);
+      const f = route.getPointAtLength(Math.min(L, s + 5));
+      const b = route.getPointAtLength(Math.max(0, s - 5));
+      const deg = Math.atan2(f.y - b.y, f.x - b.x) * 180 / Math.PI;
+      if (ang === null) { ang = deg; }
+      else { ang += (((deg - ang + 540) % 360) - 180) * 0.3; }    // মোড়ে নরম ঘোরা / smooth turns
+      car.setAttribute('transform', 'translate(' + p.x.toFixed(2) + ' ' + p.y.toFixed(2) + ') rotate(' + ang.toFixed(1) + ')');
+      trail.style.strokeDashoffset = L - s;
+      if (t < 1) { requestAnimationFrame(frame); }
+      else {
+        wrap.classList.add('amap-arrived');                       // গন্তব্যে পৌঁছেছে / arrived
+        setTimeout(function () { if (btn.contains(wrap)) btn.innerHTML = AVAN_DONE_HTML; }, 300);
+      }
+    }
+    requestAnimationFrame(frame);
   } catch (e) { /* অ্যানিমেশনে সমস্যা হলেও অর্ডার আটকাবে না / never break the order */ }
 }
 
@@ -1110,7 +1158,7 @@ setTimeout(() => {
 submitBtn.disabled = false;
 submitBtn.innerHTML = orderBtnOriginalHTML;
 msgDiv.className = 'form-message';
-}, 3000);
+}, 3000 + avanExtraDelay);
 });
 document.addEventListener('keydown', (e) => {
 if (e.key === 'Escape') { closeOrderChoice(); closeOrderForm(); }
