@@ -1222,6 +1222,14 @@ html.order-open:not(:has(.order-form-overlay.open)) .nf-dot::after{animation-pla
             <input class="nf-in" type="tel" id="oPhone" name="phone" placeholder="01XXXXXXXXX" inputmode="tel" autocomplete="tel" pattern="[0-9+ ]{10,15}" required>
           </div>
         </div>
+        <div class="nf-f ofgeo-wrap">
+          <button type="button" class="ofgeo-btn" id="ofGeoBtn" aria-describedby="ofGeoStatus">
+            <span class="ofgeo-light" aria-hidden="true"></span>
+            <span class="ofgeo-t"><b lang="bn">এক ট্যাপে ঠিকানা বসান</b><small>Auto-fill my location</small></span>
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.6"/></svg>
+          </button>
+          <p class="ofgeo-status" id="ofGeoStatus" role="status" aria-live="polite" hidden></p>
+        </div>
         <div class="nf-f">
           <label class="nf-l req" for="oDistrictSearch"><span>District</span><span lang="bn">জেলা</span></label>
           <div class="nf-cwrap">
@@ -2710,6 +2718,20 @@ this.reset();
     setTimeout(function(){ inp.value=''; unpick(); close(); },0);
   });
 
+  /* used by the "Use my current location" button */
+  var ALIAS={chittagong:'Chattogram',chattagram:'Chattogram',comilla:'Cumilla',jessore:'Jashore',bogra:'Bogura',barisal:'Barishal',nawabganj:'Chapainawabganj',jhalakathi:'Jhalokathi',jhalokati:'Jhalokathi',jhalakati:'Jhalokathi',maulvibazar:'Moulvibazar',khagrachari:'Khagrachhari',netrakona:'Netrokona',jaipurhat:'Joypurhat',laxmipur:'Lakshmipur',coxsbazar:"Cox's Bazar",coxbazar:"Cox's Bazar",brahmanbari:'Brahmanbaria',munshiganj:'Munshiganj',narsingdi:'Narsingdi',narsinghdi:'Narsingdi',gopalganj:'Gopalganj',habiganj:'Habiganj'};
+  function cleanName(t){return norm(t).replace(/(district|division|zilla|zila|city|corporation|metropolitan|sadar|upazila|upazilla|thana|north|south)/g,'');}
+  window.araSetDistrict=function(values){
+    for(var i=0;i<values.length;i++){
+      var v=values[i]; if(!v||/division/i.test(v)) continue;
+      var k=cleanName(v); if(!k) continue;
+      var hit=all.filter(function(x){return x.k===k;})[0];
+      if(!hit && ALIAS[k]){ hit=all.filter(function(x){return x.n===ALIAS[k];})[0]; }
+      if(hit){ pick(hit); return hit; }
+    }
+    return null;
+  };
+
   /* product name + price shown in section 1 */
   function fillProduct(){
     var v=(document.getElementById('oProduct')||{}).value||'';
@@ -2719,6 +2741,115 @@ this.reset();
   }
   var prev=window.openOrderForm;
   if(typeof prev==='function'){ window.openOrderForm=function(){ fillProduct(); return prev.apply(this,arguments); }; }
+})();
+</script>
+<style>
+.ofgeo-wrap{margin-bottom:2px}
+.ofgeo-btn{width:100%;display:flex;align-items:center;justify-content:flex-start;gap:14px;padding:13px 16px;border-radius:12px;border:1.5px solid rgba(184,135,58,.7);background:linear-gradient(180deg,#fffdf8 0%,#f3e9d2 100%);color:var(--cocoa-dark);font-family:'Archivo',sans-serif;font-weight:600;font-size:.95rem;cursor:pointer;box-shadow:0 3px 0 #c9b283,0 8px 14px rgba(36,18,9,.12);transition:transform .15s ease,box-shadow .15s ease,background .2s ease;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.ofgeo-btn svg{flex:none;color:var(--swiss-red);margin-left:auto}
+.ofgeo-btn .ofgeo-t{display:flex;flex-direction:column;align-items:flex-start;text-align:left;line-height:1.25;min-width:0}
+.ofgeo-btn .ofgeo-t b{font-family:'Noto Sans Bengali','Archivo',sans-serif;font-size:1.02rem;font-weight:700;color:var(--cocoa-dark)}
+.ofgeo-btn .ofgeo-t small{font-size:.74rem;font-weight:500;letter-spacing:.04em;color:var(--cocoa)}
+.ofgeo-light{position:relative;flex:none;width:12px;height:12px;border-radius:50%;background:#22c55e;animation:ofgeoColor 2.4s ease-in-out infinite}
+.ofgeo-light::before,.ofgeo-light::after{content:"";position:absolute;inset:0;border-radius:50%;border:2px solid currentColor;opacity:0;animation:ofgeoRing 1.6s ease-out infinite}
+.ofgeo-light::after{animation-delay:.8s}
+@keyframes ofgeoColor{0%,100%{background:#22c55e;color:#22c55e;box-shadow:0 0 10px 3px rgba(34,197,94,.75)}50%{background:#38bdf8;color:#38bdf8;box-shadow:0 0 10px 3px rgba(56,189,248,.75)}}
+@keyframes ofgeoRing{0%{transform:scale(1);opacity:.9}100%{transform:scale(3.2);opacity:0}}
+.ofgeo-btn.busy .ofgeo-light{animation-duration:.8s}
+@media(prefers-reduced-motion:reduce){.ofgeo-light,.ofgeo-light::before,.ofgeo-light::after{animation:none}}
+.ofgeo-btn:active{transform:translateY(2px);box-shadow:0 1px 0 #c9b283,0 4px 8px rgba(36,18,9,.12)}
+.ofgeo-btn:disabled{opacity:.7;cursor:progress}
+.ofgeo-status{margin-top:8px;font-size:.85rem;line-height:1.55;font-family:'Noto Sans Bengali','Archivo',sans-serif}
+.ofgeo-status.ok{color:#1a7d3c}
+.ofgeo-status.warn{color:#9a6a12}
+.ofgeo-status.err{color:var(--swiss-red)}
+</style>
+<script>
+/* "Use my current location": GPS -> district / area / full address (editable) */
+(function(){
+  var btn=document.getElementById('ofGeoBtn'), st=document.getElementById('ofGeoStatus'),
+      form=document.getElementById('orderForm');
+  if(!btn||!st||!form) return;
+
+  function say(msg,cls){ st.textContent=msg; st.className='ofgeo-status '+(cls||''); st.hidden=!msg; }
+  function busy(on){ btn.disabled=on; btn.classList.toggle('busy',on); }
+
+  /* ask the phone for GPS; keep listening up to ~8s and use the best (most accurate) reading */
+  function getPosition(){
+    return new Promise(function(resolve,reject){
+      if(!navigator.geolocation){ reject({code:-1}); return; }
+      var best=null, done=false, wid=null, timer=null;
+      function finish(ok,val){
+        if(done) return; done=true;
+        if(wid!==null) navigator.geolocation.clearWatch(wid);
+        clearTimeout(timer);
+        ok?resolve(val):reject(val);
+      }
+      wid=navigator.geolocation.watchPosition(function(p){
+        if(!best||p.coords.accuracy<best.coords.accuracy) best=p;
+        if(p.coords.accuracy<=25) finish(true,best);
+      },function(e){ if(best) finish(true,best); else finish(false,e); },
+      {enableHighAccuracy:true,timeout:15000,maximumAge:0});
+      timer=setTimeout(function(){ if(best) finish(true,best); else finish(false,{code:3}); },9000);
+    });
+  }
+
+  function reverseGeocode(lat,lon){
+    var ctl=new AbortController(), t=setTimeout(function(){ctl.abort();},10000);
+    var url='https://nominatim.openstreetmap.org/reverse?format=jsonv2&addressdetails=1&zoom=18&accept-language=en&lat='+lat+'&lon='+lon;
+    return fetch(url,{signal:ctl.signal,headers:{'Accept':'application/json'}})
+      .then(function(r){ clearTimeout(t); if(!r.ok) throw new Error('geo'); return r.json(); });
+  }
+
+  function uniq(arr){ var seen={}; return arr.filter(function(x){ if(!x) return false; var k=x.toLowerCase(); if(seen[k]) return false; seen[k]=1; return true; }); }
+
+  function fill(lat,lon,acc,data){
+    var ad=(data&&data.address)||{}, dist=null;
+    var cands=[ad.state_district,ad.county,ad.city,ad.town,ad.municipality,ad.region,ad.state_district&&ad.state_district.replace(/\s*District$/i,'')];
+    if(data&&data.display_name) cands=cands.concat(data.display_name.split(',').map(function(x){return x.trim();}));
+    if(window.araSetDistrict) dist=window.araSetDistrict(cands);
+
+    var area=ad.suburb||ad.neighbourhood||ad.city_district||ad.quarter||ad.village||ad.town||ad.municipality||String(ad.county||'').replace(/\s*(Upazila|Upazilla|Thana)$/i,'');
+    var areaEl=document.getElementById('oArea');
+    if(area&&areaEl) areaEl.value=area;
+
+    var parts=uniq([
+      [ad.house_number,ad.road].filter(Boolean).join(', '),
+      ad.neighbourhood, ad.suburb, ad.quarter, ad.hamlet, ad.village, ad.city_district
+    ]);
+    var line=parts.join(', ');
+    var mapLink='https://www.google.com/maps?q='+lat.toFixed(6)+','+lon.toFixed(6);
+    var addr=(line?line+'\n':'')+'GPS: '+lat.toFixed(6)+', '+lon.toFixed(6)+(acc?' (±'+Math.round(acc)+'m)':'')+'\n'+mapLink;
+    var ta=document.getElementById('oDetailedAddress');
+    if(ta){ ta.value=addr; ta.rows=4; }
+    return {dist:dist,area:area};
+  }
+
+  btn.addEventListener('click',function(){
+    say('',''); busy(true);
+    say('লোকেশন খোঁজা হচ্ছে… একটু অপেক্ষা করুন / Finding your location…','');
+    getPosition().then(function(pos){
+      var lat=pos.coords.latitude, lon=pos.coords.longitude, acc=pos.coords.accuracy;
+      say('ঠিকানা বের করা হচ্ছে… / Getting your address…','');
+      return reverseGeocode(lat,lon).then(function(d){return fill(lat,lon,acc,d);},function(){return fill(lat,lon,acc,null);})
+        .then(function(r){
+          var msg='✓ লোকেশন বসানো হয়েছে।';
+          if(!r.dist) msg+=' জেলা অটো পাওয়া যায়নি, দয়া করে জেলা বেছে নিন।';
+          msg+=' বাড়ি/ফ্ল্যাট নম্বর যোগ করুন এবং ঠিকানাটা একবার দেখে নিন।';
+          say(msg,(acc>100||!r.dist)?'warn':'ok');
+          if(acc>100) say(msg+' (GPS সিগন্যাল দুর্বল — প্রায় '+Math.round(acc)+' মিটার ভুল হতে পারে। খোলা জায়গায় গিয়ে আবার চেষ্টা করুন।)','warn');
+        });
+    }).catch(function(e){
+      var code=e&&e.code, m;
+      if(code===1) m='লোকেশন পারমিশন দেওয়া হয়নি। ব্রাউজারের Settings থেকে Location "Allow" করে আবার চাপুন।';
+      else if(code===3) m='লোকেশন পেতে বেশি সময় লাগছে। ফোনের Location (GPS) অন আছে কিনা দেখে আবার চেষ্টা করুন।';
+      else if(code===-1) m='এই ব্রাউজারে লোকেশন সাপোর্ট নেই। ঠিকানা হাতে লিখুন।';
+      else m='লোকেশন পাওয়া যায়নি। ফোনের Location অন করে আবার চেষ্টা করুন। Facebook/Messenger থেকে ঢুকলে Chrome-এ খুলুন।';
+      say(m,'err');
+    }).then(function(){ busy(false); });
+  });
+
+  form.addEventListener('reset',function(){ setTimeout(function(){ say('',''); var ta=document.getElementById('oDetailedAddress'); if(ta) ta.rows=2; },0); });
 })();
 </script>
 </body>
