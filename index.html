@@ -1226,7 +1226,7 @@ html.order-open:not(:has(.order-form-overlay.open)) .nf-dot::after{animation-pla
           <button type="button" class="ofgeo-btn" id="ofGeoBtn" aria-describedby="ofGeoStatus">
             <span class="ofgeo-light" aria-hidden="true"></span>
             <span class="ofgeo-t"><b lang="bn">এক ট্যাপে ঠিকানা বসান</b><small>Auto-fill my location</small></span>
-            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.6"/></svg>
+            <span class="ofgeo-ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><g class="pin"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.6"/></g><path class="chk" pathLength="1" d="M5.5 12.5l4.2 4.2 8.8-9.4"/></svg></span>
           </button>
           <p class="ofgeo-status" id="ofGeoStatus" role="status" aria-live="polite" hidden></p>
         </div>
@@ -2745,24 +2745,56 @@ this.reset();
 </script>
 <style>
 .ofgeo-wrap{margin-bottom:2px}
-.ofgeo-btn{width:100%;display:flex;align-items:center;justify-content:flex-start;gap:14px;padding:13px 16px;border-radius:12px;border:1.5px solid rgba(184,135,58,.7);background:linear-gradient(180deg,#fffdf8 0%,#f3e9d2 100%);color:var(--cocoa-dark);font-family:'Archivo',sans-serif;font-weight:600;font-size:.95rem;cursor:pointer;box-shadow:0 3px 0 #c9b283,0 8px 14px rgba(36,18,9,.12);transition:transform .15s ease,box-shadow .15s ease,background .2s ease;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
-.ofgeo-btn svg{flex:none;color:var(--swiss-red);margin-left:auto}
-.ofgeo-btn .ofgeo-t{display:flex;flex-direction:column;align-items:flex-start;text-align:left;line-height:1.25;min-width:0}
-.ofgeo-btn .ofgeo-t b{font-family:'Noto Sans Bengali','Archivo',sans-serif;font-size:1.02rem;font-weight:700;color:var(--cocoa-dark)}
-.ofgeo-btn .ofgeo-t small{font-size:.74rem;font-weight:500;letter-spacing:.04em;color:var(--cocoa)}
-.ofgeo-light{position:relative;flex:none;width:12px;height:12px;border-radius:50%;background:#22c55e;animation:ofgeoColor 2.4s ease-in-out infinite}
-.ofgeo-light::before,.ofgeo-light::after{content:"";position:absolute;inset:0;border-radius:50%;border:2px solid currentColor;opacity:0;animation:ofgeoRing 1.6s ease-out infinite}
-.ofgeo-light::after{animation-delay:.8s}
-@keyframes ofgeoColor{0%,100%{background:#22c55e;color:#22c55e;box-shadow:0 0 10px 3px rgba(34,197,94,.75)}50%{background:#38bdf8;color:#38bdf8;box-shadow:0 0 10px 3px rgba(56,189,248,.75)}}
-@keyframes ofgeoRing{0%{transform:scale(1);opacity:.9}100%{transform:scale(3.2);opacity:0}}
-.ofgeo-btn.busy .ofgeo-light{animation-duration:.8s}
-@media(prefers-reduced-motion:reduce){.ofgeo-light,.ofgeo-light::before,.ofgeo-light::after{animation:none}}
+.ofgeo-btn{position:relative;overflow:hidden;width:100%;display:flex;align-items:center;justify-content:flex-start;gap:14px;padding:13px 16px;border-radius:14px;border:1.5px solid rgba(184,135,58,.7);background:linear-gradient(180deg,#fffdf8 0%,#f3e9d2 100%);color:var(--cocoa-dark);font-family:'Archivo',sans-serif;cursor:pointer;box-shadow:0 3px 0 #c9b283,0 8px 14px rgba(36,18,9,.12);transition:transform .15s ease,box-shadow .2s ease,background .7s ease,border-color .7s ease;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.ofgeo-btn>*{position:relative;z-index:2}
 .ofgeo-btn:active{transform:translateY(2px);box-shadow:0 1px 0 #c9b283,0 4px 8px rgba(36,18,9,.12)}
-.ofgeo-btn:disabled{opacity:.7;cursor:progress}
+.ofgeo-btn:disabled{cursor:progress}
+.ofgeo-t{display:flex;flex-direction:column;align-items:flex-start;text-align:left;line-height:1.25;min-width:0}
+.ofgeo-t b{font-family:'Noto Sans Bengali','Archivo',sans-serif;font-size:1.02rem;font-weight:700;color:var(--cocoa-dark);transition:opacity .2s ease,transform .2s ease,color .6s ease}
+.ofgeo-t small{font-size:.74rem;font-weight:500;letter-spacing:.04em;color:var(--cocoa);transition:opacity .2s ease .04s,transform .2s ease .04s}
+.ofgeo-t.swap b,.ofgeo-t.swap small{opacity:0;transform:translateY(5px)}
+.ofgeo-light{position:relative;flex:none;width:11px;height:11px;border-radius:50%;background:#22c55e;color:#22c55e;animation:ofgeoColor 2.6s ease-in-out infinite}
+.ofgeo-light::before,.ofgeo-light::after{content:"";position:absolute;inset:0;border-radius:50%;border:2px solid currentColor;opacity:0;animation:ofgeoRing 1.8s ease-out infinite}
+.ofgeo-light::after{animation-delay:.9s}
+@keyframes ofgeoColor{0%,100%{background:#22c55e;color:#22c55e;box-shadow:0 0 9px 2px rgba(34,197,94,.7)}50%{background:#38bdf8;color:#38bdf8;box-shadow:0 0 9px 2px rgba(56,189,248,.7)}}
+@keyframes ofgeoRing{0%{transform:scale(1);opacity:.85}100%{transform:scale(3);opacity:0}}
+.ofgeo-ico{position:relative;flex:none;margin-left:auto;width:36px;height:36px;display:flex;align-items:center;justify-content:center;color:var(--swiss-red)}
+.ofgeo-ico svg{position:relative;z-index:1;overflow:visible}
+.ofgeo-ico::before,.ofgeo-ico::after{content:"";position:absolute;inset:2px;border-radius:50%;border:1.5px solid #38bdf8;opacity:0;pointer-events:none}
+.ofgeo-ico::after{border-color:#22c55e}
+.ofgeo-ico .pin{transform-box:fill-box;transform-origin:50% 100%;transition:opacity .3s ease,transform .4s cubic-bezier(.4,0,.2,1)}
+.ofgeo-ico .chk{stroke:#1f9d55;stroke-dasharray:1;stroke-dashoffset:1;opacity:0}
+.ofgeo-btn::before{content:"";position:absolute;top:0;bottom:0;left:0;width:55%;z-index:1;pointer-events:none;background:linear-gradient(100deg,transparent 0%,rgba(255,255,255,0) 25%,rgba(255,246,222,.9) 50%,rgba(255,255,255,0) 75%,transparent 100%);transform:translateX(-130%) skewX(-16deg);opacity:0}
+.ofgeo-btn::after{content:"";position:absolute;left:0;bottom:0;height:2.5px;width:0;z-index:1;pointer-events:none;border-radius:0 3px 3px 0;background:linear-gradient(90deg,rgba(184,135,58,0),#b8873a 40%,#22c55e 80%,#38bdf8);box-shadow:0 0 8px 1px rgba(56,189,248,.5);opacity:0}
+.ofgeo-btn.busy{background:linear-gradient(180deg,#fffaf0 0%,#f2e5c4 100%);border-color:#c9a45c}
+.ofgeo-btn.busy::before{opacity:1;animation:ofgeoShine 2s ease-in-out infinite}
+.ofgeo-btn.busy::after{opacity:1;animation:ofgeoBar 3.8s cubic-bezier(.2,.7,.2,1) forwards}
+.ofgeo-btn.busy .ofgeo-light{animation-duration:1.1s}
+.ofgeo-btn.busy .ofgeo-ico::before{animation:ofgeoRadar 1.8s cubic-bezier(.2,.6,.3,1) infinite}
+.ofgeo-btn.busy .ofgeo-ico::after{animation:ofgeoRadar 1.8s cubic-bezier(.2,.6,.3,1) .9s infinite}
+.ofgeo-btn.busy .ofgeo-ico .pin{animation:ofgeoFloat 1.6s ease-in-out infinite}
+.ofgeo-btn.done{background:linear-gradient(180deg,#f8fcf9 0%,#e3f3e8 100%);border-color:#5bb97c;box-shadow:0 3px 0 #a8d9b8,0 8px 16px rgba(34,164,85,.16)}
+.ofgeo-btn.done::after{opacity:1;width:100%;animation:ofgeoBarOut .8s ease .45s forwards}
+.ofgeo-btn.done .ofgeo-t b{color:#1d6b3b}
+.ofgeo-btn.done .ofgeo-light{animation:none;background:#22c55e;box-shadow:0 0 8px 2px rgba(34,197,94,.55)}
+.ofgeo-btn.done .ofgeo-light::before,.ofgeo-btn.done .ofgeo-light::after{animation:none;opacity:0}
+.ofgeo-btn.done .ofgeo-ico::before{animation:ofgeoBurst .9s ease-out 1}
+.ofgeo-btn.done .ofgeo-ico .pin{opacity:0;transform:scale(.55)}
+.ofgeo-btn.done .ofgeo-ico .chk{opacity:1;animation:ofgeoDraw .55s cubic-bezier(.4,0,.2,1) .12s forwards}
+@keyframes ofgeoShine{0%{transform:translateX(-130%) skewX(-16deg)}65%,100%{transform:translateX(280%) skewX(-16deg)}}
+@keyframes ofgeoBar{0%{width:0}30%{width:48%}100%{width:90%}}
+@keyframes ofgeoBarOut{to{opacity:0}}
+@keyframes ofgeoRadar{0%{transform:scale(.45);opacity:.85}100%{transform:scale(1.5);opacity:0}}
+@keyframes ofgeoBurst{0%{transform:scale(.5);opacity:.9}100%{transform:scale(1.8);opacity:0}}
+@keyframes ofgeoFloat{0%,100%{transform:translateY(0)}50%{transform:translateY(-2.5px)}}
+@keyframes ofgeoDraw{to{stroke-dashoffset:0}}
+.ofgeo-flash{animation:ofgeoField 1.5s ease-out}
+@keyframes ofgeoField{0%{box-shadow:0 0 0 0 rgba(34,197,94,0);background-color:#eaf8ef}25%{box-shadow:0 0 0 4px rgba(34,197,94,.25);background-color:#eaf8ef}100%{box-shadow:0 0 0 0 rgba(34,197,94,0)}}
 .ofgeo-status{margin-top:8px;font-size:.85rem;line-height:1.55;font-family:'Noto Sans Bengali','Archivo',sans-serif}
 .ofgeo-status.ok{color:#1a7d3c}
 .ofgeo-status.warn{color:#9a6a12}
 .ofgeo-status.err{color:var(--swiss-red)}
+@media(prefers-reduced-motion:reduce){.ofgeo-btn.busy::before,.ofgeo-btn.busy .ofgeo-ico::before,.ofgeo-btn.busy .ofgeo-ico::after,.ofgeo-btn.busy .ofgeo-ico .pin,.ofgeo-light{animation:none}}
 </style>
 <script>
 /* "Use my current location": GPS -> district / area / full address (editable) */
@@ -2772,7 +2804,25 @@ this.reset();
   if(!btn||!st||!form) return;
 
   function say(msg,cls){ st.textContent=msg; st.className='ofgeo-status '+(cls||''); st.hidden=!msg; }
-  function busy(on){ btn.disabled=on; btn.classList.toggle('busy',on); }
+  var tbox=btn.querySelector('.ofgeo-t'), tb=tbox.querySelector('b'), ts=tbox.querySelector('small'),
+      t0=[tb.textContent,ts.textContent], doneT=null, ok=false, startT=0;
+  function setText(x,y){ tbox.classList.add('swap'); setTimeout(function(){ tb.textContent=x; ts.textContent=y; tbox.classList.remove('swap'); },190); }
+  function resetBtn(){ btn.classList.remove('done'); setText(t0[0],t0[1]); }
+  function busy(on){
+    clearTimeout(doneT);
+    btn.disabled=on; btn.classList.toggle('busy',on);
+    if(on){ btn.classList.remove('done'); setText('লোকেশন খোঁজা হচ্ছে…','Locating you'); }
+    else if(ok){ btn.classList.add('done'); setText('ঠিকানা বসে গেছে','Location filled'); doneT=setTimeout(resetBtn,3000); }
+    else resetBtn();
+  }
+  function holdMin(){ var w=Math.max(0,1900-(Date.now()-startT)); return new Promise(function(r){setTimeout(r,w);}); }
+  function flashFields(){
+    ['oDistrictSearch','oArea','oDetailedAddress'].forEach(function(id,i){
+      var el=document.getElementById(id); if(!el) return;
+      el.classList.remove('ofgeo-flash'); void el.offsetWidth;
+      el.style.animationDelay=(i*0.18)+'s'; el.classList.add('ofgeo-flash');
+    });
+  }
 
   /* ask the phone for GPS; keep listening up to ~8s and use the best (most accurate) reading */
   function getPosition(){
@@ -2822,20 +2872,22 @@ this.reset();
     var addr=(line?line+'\n':'')+'GPS: '+lat.toFixed(6)+', '+lon.toFixed(6)+(acc?' (±'+Math.round(acc)+'m)':'')+'\n'+mapLink;
     var ta=document.getElementById('oDetailedAddress');
     if(ta){ ta.value=addr; ta.rows=4; }
+    flashFields();
     return {dist:dist,area:area};
   }
 
   btn.addEventListener('click',function(){
-    say('',''); busy(true);
+    ok=false; startT=Date.now(); say('',''); busy(true);
     say('লোকেশন খোঁজা হচ্ছে… একটু অপেক্ষা করুন / Finding your location…','');
     getPosition().then(function(pos){
       var lat=pos.coords.latitude, lon=pos.coords.longitude, acc=pos.coords.accuracy;
-      say('ঠিকানা বের করা হচ্ছে… / Getting your address…','');
-      return reverseGeocode(lat,lon).then(function(d){return fill(lat,lon,acc,d);},function(){return fill(lat,lon,acc,null);})
+      say('ঠিকানা বের করা হচ্ছে… / Getting your address…',''); setText('ঠিকানা সাজানো হচ্ছে…','Preparing your address');
+      return reverseGeocode(lat,lon).catch(function(){return null;}).then(function(d){return holdMin().then(function(){return fill(lat,lon,acc,d);});})
         .then(function(r){
           var msg='✓ লোকেশন বসানো হয়েছে।';
           if(!r.dist) msg+=' জেলা অটো পাওয়া যায়নি, দয়া করে জেলা বেছে নিন।';
           msg+=' বাড়ি/ফ্ল্যাট নম্বর যোগ করুন এবং ঠিকানাটা একবার দেখে নিন।';
+          ok=true;
           say(msg,(acc>100||!r.dist)?'warn':'ok');
           if(acc>100) say(msg+' (GPS সিগন্যাল দুর্বল — প্রায় '+Math.round(acc)+' মিটার ভুল হতে পারে। খোলা জায়গায় গিয়ে আবার চেষ্টা করুন।)','warn');
         });
