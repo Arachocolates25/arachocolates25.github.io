@@ -2815,7 +2815,7 @@ this.reset();
     else if(ok){ btn.classList.add('done'); setText('ঠিকানা বসে গেছে','Location filled'); doneT=setTimeout(resetBtn,3000); }
     else resetBtn();
   }
-  function holdMin(){ var w=Math.max(0,1900-(Date.now()-startT)); return new Promise(function(r){setTimeout(r,w);}); }
+  function holdMin(){ var w=Math.max(0,700-(Date.now()-startT)); return new Promise(function(r){setTimeout(r,w);}); }
   function flashFields(){
     ['oDistrictSearch','oArea','oDetailedAddress'].forEach(function(id,i){
       var el=document.getElementById(id); if(!el) return;
@@ -2824,31 +2824,45 @@ this.reset();
     });
   }
 
-  /* ask the phone for GPS; keep listening up to ~8s and use the best (most accurate) reading */
+  /* FAST location: ask for a quick network/cached location AND a precise GPS at the same time; use whichever answers first */
   function getPosition(){
     return new Promise(function(resolve,reject){
       if(!navigator.geolocation){ reject({code:-1}); return; }
-      var best=null, done=false, wid=null, timer=null;
-      function finish(ok,val){
-        if(done) return; done=true;
-        if(wid!==null) navigator.geolocation.clearWatch(wid);
-        clearTimeout(timer);
-        ok?resolve(val):reject(val);
+      var done=false, fails=0, lastErr=null;
+      var safe=setTimeout(function(){ if(done) return; done=true; reject({code:3}); },30000);
+      function good(p){ if(done) return; done=true; clearTimeout(safe); resolve(p); }
+      function bad(e){
+        if(done) return; lastErr=e;
+        if(e&&e.code===1){ done=true; clearTimeout(safe); reject({code:1}); return; }
+        if(++fails>=2){ done=true; clearTimeout(safe); reject(lastErr||{code:2}); }
       }
-      wid=navigator.geolocation.watchPosition(function(p){
-        if(!best||p.coords.accuracy<best.coords.accuracy) best=p;
-        if(p.coords.accuracy<=25) finish(true,best);
-      },function(e){ if(best) finish(true,best); else finish(false,e); },
-      {enableHighAccuracy:true,timeout:15000,maximumAge:0});
-      timer=setTimeout(function(){ if(best) finish(true,best); else finish(false,{code:3}); },9000);
+      try{
+        navigator.geolocation.getCurrentPosition(good,bad,{enableHighAccuracy:false,timeout:10000,maximumAge:600000});
+        navigator.geolocation.getCurrentPosition(good,bad,{enableHighAccuracy:true,timeout:20000,maximumAge:60000});
+      }catch(err){ done=true; clearTimeout(safe); reject({code:2}); }
     });
   }
 
   function reverseGeocode(lat,lon){
-    var ctl=new AbortController(), t=setTimeout(function(){ctl.abort();},10000);
-    var url='https://nominatim.openstreetmap.org/reverse?format=jsonv2&addressdetails=1&zoom=18&accept-language=en&lat='+lat+'&lon='+lon;
-    return fetch(url,{signal:ctl.signal,headers:{'Accept':'application/json'}})
-      .then(function(r){ clearTimeout(t); if(!r.ok) throw new Error('geo'); return r.json(); });
+    function timed(url,ms){
+      var ctl=new AbortController(), t=setTimeout(function(){ctl.abort();},ms);
+      return fetch(url,{signal:ctl.signal,headers:{'Accept':'application/json'}})
+        .then(function(r){ clearTimeout(t); if(!r.ok) throw new Error('geo'); return r.json(); });
+    }
+    var p1=timed('https://nominatim.openstreetmap.org/reverse?format=jsonv2&addressdetails=1&zoom=18&accept-language=en&lat='+lat+'&lon='+lon,5000);
+    var p2=timed('https://api.bigdatacloud.net/data/reverse-geocode-client?latitude='+lat+'&longitude='+lon+'&localityLanguage=en',5000)
+      .then(function(d){
+        var names=[];
+        try{ ((d.localityInfo&&d.localityInfo.administrative)||[]).forEach(function(x){ if(x&&x.name) names.push(x.name); }); }catch(e){}
+        var loc=d.locality||d.city||'';
+        if(!loc&&!names.length) throw new Error('geo');
+        return {address:{suburb:loc||undefined,city:d.city||undefined},display_name:[loc].concat(names.slice().reverse()).filter(Boolean).join(', ')};
+      });
+    /* first one that answers wins; if both fail -> null */
+    return new Promise(function(resolve){
+      var n=0;
+      [p1,p2].forEach(function(p){ p.then(resolve,function(){ if(++n>=2) resolve(null); }); });
+    });
   }
 
   function uniq(arr){ var seen={}; return arr.filter(function(x){ if(!x) return false; var k=x.toLowerCase(); if(seen[k]) return false; seen[k]=1; return true; }); }
@@ -2888,8 +2902,8 @@ this.reset();
           if(!r.dist) msg+=' জেলা অটো পাওয়া যায়নি, দয়া করে জেলা বেছে নিন।';
           msg+=' বাড়ি/ফ্ল্যাট নম্বর যোগ করুন এবং ঠিকানাটা একবার দেখে নিন।';
           ok=true;
-          say(msg,(acc>100||!r.dist)?'warn':'ok');
-          if(acc>100) say(msg+' (GPS সিগন্যাল দুর্বল — প্রায় '+Math.round(acc)+' মিটার ভুল হতে পারে। খোলা জায়গায় গিয়ে আবার চেষ্টা করুন।)','warn');
+          say(msg,(acc>300||!r.dist)?'warn':'ok');
+          if(acc>300) say(msg+' (এটা আনুমানিক এলাকার লোকেশন — প্রায় '+Math.round(acc)+' মিটার ব্যবধান হতে পারে। ঠিকানাটা একবার দেখে নিন।)','warn');
         });
     }).catch(function(e){
       var code=e&&e.code, m;
