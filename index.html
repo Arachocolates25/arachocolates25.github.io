@@ -2960,7 +2960,7 @@ this.reset();
     title: 'Ara Chocolates',
     sub: 'চকলেট নিয়ে প্রশ্ন করুন',
     placeholder: 'প্রশ্ন লিখুন',
-    welcome: 'আসসালামু আলাইকুম! আমি আরা, আপনার চকলেট সহকারী। গিফট বক্স, ফ্লেভার, দাম বা অর্ডার — যা জানতে চান, জিজ্ঞেস করুন।',
+    welcome: 'আসসালামু আলাইকুম! 👋 আমি Ara। Ara Chocolates-এ আপনাকে স্বাগতম 🍫 কিছু জানতে চাইলে নির্দ্বিধায় জিজ্ঞেস করুন।',
     chips: ['গিফট বক্সে কী আছে?', 'ফ্লেভার ও দাম', 'কীভাবে অর্ডার করব?', 'গিফটের আইডিয়া'],
     err: 'এই মুহূর্তে উত্তর পাওয়া যাচ্ছে না। আবার চেষ্টা করুন, অথবা WhatsApp-এ আমাদের টিমকে জিজ্ঞেস করুন।',
     errs: {
@@ -3019,12 +3019,11 @@ this.reset();
     '.water .panel{background:rgba(246,241,230,.64);-webkit-backdrop-filter:none;backdrop-filter:url(#ara-water) blur(3.2px) saturate(1.05)}',
 
     /* header */
-    '.hd{flex:none;display:flex;align-items:center;gap:12px;padding:13px 10px 13px 16px;background:#241209;color:#F6F1E6;border-bottom:1px solid rgba(184,135,58,.55);touch-action:none}',
-    '.av{flex:none;width:38px;height:38px;border-radius:50%;background:#B8873A;color:#241209;display:grid;place-items:center;font-family:"Archivo Expanded","Archivo",sans-serif;font-weight:700;font-size:16px}',
+    '.hd{flex:none;display:flex;align-items:center;gap:8px;padding:12px 6px 12px 18px;background:#F6F1E6;color:#241209;border-bottom:1px solid rgba(36,18,9,.12);touch-action:none}',
     '.ti{flex:1;min-width:0}',
-    '.ti b{display:block;font-size:15px;font-weight:600;letter-spacing:.01em}',
-    '.ti span{display:block;font-size:12.5px;opacity:.72;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}',
-    '.x{flex:none;width:44px;height:44px;display:grid;place-items:center;border-radius:50%;color:#F6F1E6}',
+    '.ti b{display:block;font-size:16px;font-weight:600;line-height:1.3}',
+    '.ti span{display:block;font-size:13px;color:#7A6552;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}',
+    '.x{flex:none;width:44px;height:44px;display:grid;place-items:center;border-radius:50%;color:#4A2C1A}',
 
     /* messages */
     '.msgs{position:relative;flex:1 1 auto;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:16px 16px 8px;display:flex;flex-direction:column;gap:10px;scrollbar-width:thin;scrollbar-color:rgba(36,18,9,.25) transparent}',
@@ -3162,7 +3161,6 @@ this.reset();
         '<div class="teaser" role="status"><button class="tt" type="button">' + T.teaser + '</button><button class="tx" type="button" aria-label="বন্ধ করুন">' + ICON_X + '</button></div>' +
         '<section class="panel" role="dialog" aria-label="Ara Chocolates chat" inert>' +
           '<header class="hd">' +
-            '<div class="av" aria-hidden="true">A</div>' +
             '<div class="ti"><b>' + T.title + '</b><span>' + T.sub + '</span></div>' +
             '<button class="x" type="button" aria-label="চ্যাট বন্ধ করুন / Close chat">' + ICON_X + '</button>' +
           '</header>' +
@@ -3191,7 +3189,9 @@ this.reset();
     var settle = sh.querySelector('#ara-settle');
 
     /* water effect: on in Chromium browsers (Chrome/Brave/Edge/Samsung); other browsers get a clean frosted-glass look */
-    var WATER = !(script && script.getAttribute('data-water') === 'off') && waterOK();
+    var liteSaved = false;
+    try { liteSaved = sessionStorage.getItem('ara_lite') === '1'; } catch (e) {}
+    var WATER = !(script && script.getAttribute('data-water') === 'off') && !liteSaved && waterOK();
     var calm = (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) ||
       (navigator.deviceMemory && navigator.deviceMemory <= 2) || (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 2);
     var waterMove = WATER && !calm && !!(wsvg && wsvg.pauseAnimations);
@@ -3214,13 +3214,41 @@ this.reset();
       try {
         if (on) {
           if (window.__pauseAmbientGlow) window.__pauseAmbientGlow();
-          if (window.__slowLeafFall) window.__slowLeafFall(true);
+          if (window.__pauseLeafFall) window.__pauseLeafFall();
         } else {
           if (window.__resumeAmbientGlow) window.__resumeAmbientGlow();
-          if (window.__slowLeafFall) window.__slowLeafFall(false);
+          if (window.__resumeLeafFall) window.__resumeLeafFall();
         }
       } catch (e) {}
       iconRun(!on);
+    }
+
+    /* slow-device guard: if frames stay slow after opening, switch to the clean frosted-glass look (the same look non-Chromium browsers use) so chat never hangs */
+    var perfChecked = false;
+    function goLite() {
+      WATER = false; waterMove = false; iconMove = false;
+      root.classList.remove('water');
+      try { if (wsvg.pauseAnimations) wsvg.pauseAnimations(); } catch (e) {}
+      try { if (wsvg2 && wsvg2.pauseAnimations) wsvg2.pauseAnimations(); } catch (e) {}
+      try { sessionStorage.setItem('ara_lite', '1'); } catch (e) {}
+    }
+    function watchPerf() {
+      if (perfChecked || !WATER || !window.requestAnimationFrame) return;
+      perfChecked = true;
+      setTimeout(function () {
+        var t = [], last = 0, start = performance.now();
+        var f = function (ts) {
+          if (!open || !WATER) return;
+          if (last && ts - last < 500) t.push(ts - last);
+          last = ts;
+          if (ts - start < 2200 && t.length < 60) { requestAnimationFrame(f); return; }
+          if (t.length >= 12) {
+            t.sort(function (a, b) { return a - b; });
+            if (t[t.length >> 1] > 40) goLite();
+          }
+        };
+        requestAnimationFrame(f);
+      }, 600);
     }
 
     var history = [], busy = false, open = false, atBottom = true, grown = false;
@@ -3314,7 +3342,7 @@ this.reset();
         });
         var N = toks.length;
         if (!N) { follow(m); return; }
-        var delay = Math.max(16, Math.min(55, 6000 / N)), start = 0, shown = 0, raf = 0, ended = false;
+        var delay = Math.max(16, Math.min(55, 6000 / N)), start = 0, shown = 0, raf = 0, ended = false, lastF = 0;
         var end = function () {
           if (ended) return; ended = true; cancelAnimationFrame(raf);
           while (shown < N) { var k = toks[shown++]; k.n.nodeValue += k.t; }
@@ -3326,7 +3354,7 @@ this.reset();
           var target = Math.min(N, Math.floor((ts - start) / delay) + 1);
           if (target > shown) {
             while (shown < target) { var k = toks[shown++]; k.n.nodeValue += k.t; }
-            follow(m);
+            if (ts - lastF > 90) { lastF = ts; follow(m); }
           }
           if (shown < N) raf = requestAnimationFrame(step); else { ended = true; curType = null; }
         };
@@ -3426,6 +3454,7 @@ this.reset();
         toBottom();
         track('chat_open');
         if (waterMove) { waterRun(true); try { settle.beginElement(); } catch (e) {} }
+        watchPerf();
         pageFx(true);
         if (!isMobile()) setTimeout(function () { try { ta.focus({ preventScroll: true }); } catch (e) {} }, 240);
       } else {
@@ -3490,11 +3519,9 @@ this.reset();
     function chipsMoving() {
       if (!open) return;
       waterRun(false);
-      try { if (window.__pauseLeafFall) window.__pauseLeafFall(); } catch (e) {}
       clearTimeout(chipT);
       chipT = setTimeout(function () {
         if (open && !(isMobile() && sh.activeElement === ta)) waterRun(true);
-        try { if (window.__resumeLeafFall) window.__resumeLeafFall(); } catch (e) {}
       }, 280);
     }
     chips.addEventListener('touchstart', chipsMoving, { passive: true });
@@ -3534,8 +3561,15 @@ this.reset();
     window.AraChat = { open: function () { setOpen(true); }, close: function () { setOpen(false); } };
   }
 
-  if (document.body) init();
-  else document.addEventListener('DOMContentLoaded', init);
+  var inited = false;
+  function boot() { if (inited) return; inited = true; init(); }
+  window.AraChat = { open: function () { boot(); window.AraChat.open(); }, close: function () {} };
+  function later() {
+    if (window.requestIdleCallback) window.requestIdleCallback(boot, { timeout: 1500 });
+    else setTimeout(boot, 400);
+  }
+  function ready() { if (document.readyState === 'complete') later(); else window.addEventListener('load', later); }
+  if (document.body) ready(); else document.addEventListener('DOMContentLoaded', ready);
 })();
 
 </script>
