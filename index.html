@@ -932,6 +932,10 @@ html.order-open:not(:has(.order-form-overlay.open)) .nf-dot::after{animation-pla
 /* ===== Complaints box: white card, cream fields ===== */
 #complaints .complaints-wrapper{background:#FFFFFF;}
 #complaints .form-group input,#complaints .form-group textarea,#complaints .form-group select{background:var(--cream-2);}
+
+/* chat open: the background light effect switches off (comes straight back when chat closes) */
+.ambient-glow-layer{transition:opacity .28s ease;}
+html.ara-chat-open .ambient-glow-layer{opacity:0;}
 </style>
 </head>
 <body>
@@ -2427,12 +2431,14 @@ messageDiv.className = 'form-message';
 });
 window.__pauseLeafFall = function(){};
 window.__resumeLeafFall = function(){};
+window.__slowLeafFall = function(){};
 (function(){
 const layer = document.getElementById('leafFallLayer');
 const branch = document.querySelector('.branch-topright');
 if(!layer || !branch) return;
 if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 let orderSectionPaused = false;
+let leafSlow = false;
 const colors = ['#3F7A2C', '#4E8A34', '#5E9640', '#2C5A22', '#8FA23A', '#B08A3A', '#8A5A2E'];
 const types = ['straight', 'sway', 'diagonal'];
 const leafSvg = (color) => `<svg viewBox="0 0 24 24" width="100%" height="100%"><path d="M12 1 C17 4 18.5 10 15.5 16 Q13.5 20.5 12 23 Q10.5 20.5 8.5 16 C5.5 10 7 4 12 1 Z" fill="${color}" stroke="rgba(20,40,10,0.45)" stroke-width="0.5"/><line x1="12" y1="3" x2="12" y2="21.5" stroke="rgba(235,245,190,0.75)" stroke-width="0.9"/><path d="M12 8 L15 6 M12 11 L16 9 M12 14 L15.5 12.5 M12 8 L9 6 M12 11 L8 9 M12 14 L8.5 12.5" stroke="rgba(235,245,190,0.4)" stroke-width="0.6" fill="none"/></svg>`;
@@ -2463,12 +2469,21 @@ leaf.style.height = size + 'px';
 leaf.style.animationDuration = duration + 's';
 leaf.innerHTML = leafSvg(color);
 layer.appendChild(leaf);
-setTimeout(() => leaf.remove(), duration*1000 + 500);
+leaf._dur = duration*1000;
+armLeafRemove(leaf);
+if (leafSlow) { try { leaf.getAnimations().forEach(a => { a.playbackRate = 2/3; }); } catch(e){} }
+}
+function armLeafRemove(leaf){
+clearTimeout(leaf._rm);
+const rate = leafSlow ? 2/3 : 1;
+let cur = 0;
+try { const a = leaf.getAnimations()[0]; if (a && a.currentTime) cur = a.currentTime; } catch(e){}
+leaf._rm = setTimeout(() => leaf.remove(), Math.max(0, leaf._dur - cur)/rate + 500);
 }
 let leafInterval = null;
 function startLeafInterval(){
 if (leafInterval) return;
-leafInterval = setInterval(spawnLeaf, 1000);
+leafInterval = setInterval(spawnLeaf, leafSlow ? 1500 : 1000);
 }
 function stopLeafInterval(){
 clearInterval(leafInterval);
@@ -2502,6 +2517,16 @@ if (!orderSectionPaused) return;
 orderSectionPaused = false;
 layer.classList.remove('order-paused');
 startLeafInterval();
+};
+window.__slowLeafFall = function(on){
+on = !!on;
+if (on === leafSlow) return;
+leafSlow = on;
+Array.from(layer.children).forEach(l => {
+try { l.getAnimations().forEach(a => { a.playbackRate = on ? 2/3 : 1; }); } catch(e){}
+armLeafRemove(l);
+});
+if (leafInterval) { stopLeafInterval(); startLeafInterval(); }
 };
 })();
 window.__pauseAmbientGlow = function(){};
@@ -2917,6 +2942,602 @@ this.reset();
 
   form.addEventListener('reset',function(){ setTimeout(function(){ say('',''); var ta=document.getElementById('oDetailedAddress'); if(ta) ta.rows=2; },0); });
 })();
+</script>
+<script data-endpoint="https://blue-pine-f4db.araofficials25.workers.dev">
+/*! Ara Chocolates chat widget */
+(function () {
+  'use strict';
+  if (window.__araChatLoaded) return;
+  window.__araChatLoaded = true;
+
+  var script = document.currentScript;
+  var CFG = {
+    endpoint: (script && script.getAttribute('data-endpoint')) || '',
+    whatsapp: (script && script.getAttribute('data-whatsapp')) || '8801764491395'
+  };
+
+  var T = {
+    title: 'Ara Chocolates',
+    sub: 'চকলেট নিয়ে প্রশ্ন করুন',
+    placeholder: 'প্রশ্ন লিখুন',
+    welcome: 'আসসালামু আলাইকুম! আমি আরা, আপনার চকলেট সহকারী। গিফট বক্স, ফ্লেভার, দাম বা অর্ডার — যা জানতে চান, জিজ্ঞেস করুন।',
+    chips: ['গিফট বক্সে কী আছে?', 'ফ্লেভার ও দাম', 'কীভাবে অর্ডার করব?', 'গিফটের আইডিয়া'],
+    err: 'এই মুহূর্তে উত্তর পাওয়া যাচ্ছে না। আবার চেষ্টা করুন, অথবা WhatsApp-এ আমাদের টিমকে জিজ্ঞেস করুন।',
+    errs: {
+      server: 'সার্ভারে সমস্যা হচ্ছে। কিছুক্ষণ পর আবার চেষ্টা করুন, অথবা WhatsApp-এ আমাদের টিমকে জিজ্ঞেস করুন।',
+      body: 'সার্ভার থেকে সঠিক উত্তর আসেনি। আবার চেষ্টা করুন, অথবা WhatsApp-এ আমাদের টিমকে জিজ্ঞেস করুন।',
+      timeout: 'সার্ভার সাড়া দিচ্ছে না। আবার চেষ্টা করুন, অথবা WhatsApp-এ আমাদের টিমকে জিজ্ঞেস করুন।',
+      net: 'সার্ভারের সাথে যোগাযোগ করা যাচ্ছে না। ইন্টারনেট সংযোগ দেখে আবার চেষ্টা করুন, অথবা WhatsApp-এ আমাদের টিমকে জিজ্ঞেস করুন।',
+      noep: 'চ্যাট সার্ভারের ঠিকানা সেট করা নেই।'
+    },
+    retry: 'আবার চেষ্টা করুন',
+    wa: 'WhatsApp',
+    note: 'AI সহকারী, ভুল হতে পারে। নিশ্চিত হতে',
+    noteLink: 'WhatsApp-এ জিজ্ঞেস করুন',
+    teaser: 'চকলেট নিয়ে কিছু জানতে চান?'
+  };
+
+  var KEY = 'ara_chat_v1';
+  var WA_URL = 'https://wa.me/' + CFG.whatsapp;
+
+  var ICON_CHAT = '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 4.5h12A2.5 2.5 0 0 1 20.5 7v7.5a2.5 2.5 0 0 1-2.5 2.5h-6.2L8 20.5V17H6a2.5 2.5 0 0 1-2.5-2.5V7A2.5 2.5 0 0 1 6 4.5z" stroke="#2B1A10" stroke-width="1.4" stroke-linejoin="round"/><path d="M12 7.4l1 2.7 2.7 1-2.7 1-1 2.7-1-2.7-2.7-1 2.7-1z" fill="#2B1A10"/></svg>';
+  var ICON_X = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+  var ICON_SEND = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D9AE62" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>';
+
+  var CSS = [
+    ':host{display:block}',
+    '*,*::before,*::after{box-sizing:border-box}',
+    'p,ul,li{margin:0}',
+    '.root{font-family:"Archivo","Noto Sans Bengali",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:15px;line-height:1.5;color:#241209;-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%;text-size-adjust:100%}',
+    'button{font:inherit;color:inherit;background:none;border:0;padding:0;margin:0;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation}',
+    'button:focus-visible,a:focus-visible{outline:2px solid #B8873A;outline-offset:2px}',
+
+    /* launcher */
+    '.launcher{position:fixed;right:16px;bottom:16px;width:58px;height:58px;border-radius:50%;background:radial-gradient(ellipse 46% 30% at 32% 20%,rgba(255,255,255,.92) 0%,rgba(255,255,255,0) 100%),radial-gradient(circle at 70% 88%,rgba(255,255,255,.5) 0%,rgba(255,255,255,0) 45%),linear-gradient(135deg,rgba(255,140,170,.16) 0%,rgba(255,235,150,.12) 38%,rgba(150,230,255,.14) 72%,rgba(190,150,255,.14) 100%),rgba(255,255,255,.10);background-size:100% 100%,100% 100%,230% 230%,100% 100%;-webkit-backdrop-filter:blur(2.5px) saturate(1.25);backdrop-filter:blur(2.5px) saturate(1.25);display:grid;place-items:center;box-shadow:0 10px 24px rgba(36,18,9,.22),0 2px 6px rgba(36,18,9,.12),0 0 0 1px rgba(255,255,255,.8),inset 0 1px 1px rgba(255,255,255,.95),inset 2px 0 4px rgba(255,90,140,.22),inset -2px 0 4px rgba(90,205,255,.22),inset 0 -8px 14px rgba(255,255,255,.3);transition:transform .2s ease,opacity .2s ease;animation:pop .5s .9s cubic-bezier(.2,.9,.3,1.2) backwards,glint 7s ease-in-out infinite alternate}',
+    '@keyframes glint{from{background-position:0 0,0 0,0% 0%,0 0}to{background-position:0 0,0 0,100% 100%,0 0}}',
+    '.water .launcher{-webkit-backdrop-filter:none;backdrop-filter:url(#ara-water-ico) saturate(1.3) contrast(1.04)}',
+    '.launcher svg{position:relative;opacity:.92;filter:drop-shadow(0 1px 0 rgba(255,255,255,.9)) drop-shadow(0 2px 3px rgba(36,18,9,.25))}',
+    '.launcher::before,.launcher::after{content:"";position:absolute;inset:0;border-radius:50%;border:1px solid rgba(255,255,255,.95);box-shadow:0 0 6px rgba(36,18,9,.14);opacity:0;pointer-events:none;animation:ripple 4.6s ease-out 2.2s infinite}',
+    '.launcher::after{animation-delay:3.9s}',
+    '.open .launcher::before,.open .launcher::after{animation:none}',
+    '@keyframes ripple{0%{transform:scale(1);opacity:.55}70%,100%{transform:scale(1.9);opacity:0}}',
+    '.open .launcher{transform:scale(.6);opacity:0;pointer-events:none}',
+    '@keyframes pop{from{transform:scale(.5);opacity:0}}',
+
+    /* teaser (shows once per session) */
+    '.teaser{position:fixed;right:16px;bottom:86px;max-width:230px;background:#fff;border-radius:14px 14px 4px 14px;box-shadow:0 8px 24px rgba(36,18,9,.18),0 0 0 1px rgba(36,18,9,.1);opacity:0;visibility:hidden;transform:translateY(8px);transition:opacity .25s ease,transform .25s ease,visibility 0s .25s}',
+    '.teaser.show{opacity:1;visibility:visible;transform:none;transition:opacity .25s ease,transform .25s ease,visibility 0s}',
+    '.teaser .tt{display:block;text-align:left;padding:11px 34px 11px 14px;font-size:14px;color:#241209}',
+    '.teaser .tx{position:absolute;top:2px;right:2px;width:30px;height:30px;display:grid;place-items:center;color:#7A6552}',
+    '.teaser .tx svg{width:14px;height:14px}',
+
+    /* panel */
+    '.panel{position:fixed;right:16px;bottom:90px;width:384px;height:560px;height:min(640px,calc(100vh - 112px));height:min(640px,calc(100dvh - 112px));display:flex;flex-direction:column;background:rgba(246,241,230,.9);-webkit-backdrop-filter:blur(14px) saturate(1.1);backdrop-filter:blur(14px) saturate(1.1);border-radius:20px;overflow:hidden;isolation:isolate;box-shadow:0 18px 50px rgba(36,18,9,.3),0 0 0 1px rgba(36,18,9,.14);opacity:0;visibility:hidden;pointer-events:none;transform:translateY(14px);transition:opacity .22s ease,transform .22s cubic-bezier(.2,.8,.2,1),visibility 0s .22s}',
+    '.open .panel{opacity:1;visibility:visible;pointer-events:auto;transform:none;transition:opacity .22s ease,transform .22s cubic-bezier(.2,.8,.2,1),visibility 0s}',
+
+    /* water mode (Chromium only): page text behind the panel ripples like seen through water */
+    '.water .panel{background:rgba(246,241,230,.64);-webkit-backdrop-filter:none;backdrop-filter:url(#ara-water) blur(3.2px) saturate(1.05)}',
+
+    /* header */
+    '.hd{flex:none;display:flex;align-items:center;gap:12px;padding:13px 10px 13px 16px;background:#241209;color:#F6F1E6;border-bottom:1px solid rgba(184,135,58,.55);touch-action:none}',
+    '.av{flex:none;width:38px;height:38px;border-radius:50%;background:#B8873A;color:#241209;display:grid;place-items:center;font-family:"Archivo Expanded","Archivo",sans-serif;font-weight:700;font-size:16px}',
+    '.ti{flex:1;min-width:0}',
+    '.ti b{display:block;font-size:15px;font-weight:600;letter-spacing:.01em}',
+    '.ti span{display:block;font-size:12.5px;opacity:.72;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}',
+    '.x{flex:none;width:44px;height:44px;display:grid;place-items:center;border-radius:50%;color:#F6F1E6}',
+
+    /* messages */
+    '.msgs{position:relative;flex:1 1 auto;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:16px 16px 8px;display:flex;flex-direction:column;gap:10px;scrollbar-width:thin;scrollbar-color:rgba(36,18,9,.25) transparent}',
+    '.m{flex:none;max-width:86%;padding:10px 13px;border-radius:16px;overflow-wrap:anywhere;word-break:break-word;animation:in .2s ease-out}',
+    '.m.bot{align-self:flex-start;background:#fff;box-shadow:0 0 0 1px rgba(36,18,9,.12);border-bottom-left-radius:5px}',
+    '.m.user{align-self:flex-end;background:#4A2C1A;color:#F6F1E6;border-bottom-right-radius:5px;white-space:pre-wrap}',
+    '.m p+p,.m p+ul,.m ul+p{margin-top:8px}',
+    '.m ul{padding-left:18px}',
+    '.m li+li{margin-top:3px}',
+    '.m a{color:#8A5F1E;text-decoration:underline;text-underline-offset:2px}',
+    '.m.instant{animation:none}',
+    '.m .ec{font-size:12px;color:#7A6552;margin-top:4px}',
+    '.kb .chips{display:none}',
+    '@keyframes in{from{opacity:0;transform:translateY(6px)}}',
+
+    /* typing dots */
+    '.dots{display:flex;gap:5px;padding:5px 2px}',
+    '.dots i{width:7px;height:7px;border-radius:50%;background:#B8873A;opacity:.35;animation:dot 1s ease-in-out infinite}',
+    '.dots i:nth-child(2){animation-delay:.15s}.dots i:nth-child(3){animation-delay:.3s}',
+    '@keyframes dot{0%,80%,100%{opacity:.35;transform:translateY(0)}40%{opacity:1;transform:translateY(-3px)}}',
+
+    /* error actions */
+    '.acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}',
+    '.btn{display:inline-flex;align-items:center;min-height:38px;padding:0 15px;border-radius:999px;font-size:13.5px;font-weight:600;background:#241209;color:#F6F1E6;text-decoration:none!important}',
+    '.btn.alt{background:transparent;color:#4A2C1A!important;box-shadow:inset 0 0 0 1px rgba(36,18,9,.3)}',
+
+    /* chips */
+    '.chips{flex:none;display:flex;gap:8px;padding:2px 16px 12px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;touch-action:pan-x;overscroll-behavior-x:contain;transform:translateZ(0)}',
+    '.chips::-webkit-scrollbar{display:none}',
+    '.chips[hidden]{display:none}',
+    '.chip{flex:none;touch-action:pan-x;min-height:38px;padding:0 14px;border-radius:999px;background:#fff;box-shadow:inset 0 0 0 1px rgba(36,18,9,.22);font-size:13.5px;color:#4A2C1A;white-space:nowrap}',
+    '.chip:active{background:#EDE4D0}',
+    '@media (hover:hover){.chip:hover{background:#EDE4D0}}',
+
+    /* composer — no transitions here on purpose (no lag/flicker while typing) */
+    '.cm{flex:none;display:flex;align-items:flex-end;gap:8px;padding:10px 12px;background:rgba(255,255,255,.86);border-top:1px solid rgba(36,18,9,.12)}',
+    '.cm textarea{flex:1;min-width:0;display:block;resize:none;border:1px solid rgba(36,18,9,.25);border-radius:21px;padding:10px 15px;font:inherit;font-size:16px;line-height:1.4;min-height:44px;max-height:112px;background:#F6F1E6;color:#241209;outline:none;-webkit-appearance:none;appearance:none;overflow-y:auto}',
+    '.cm textarea::placeholder{color:#8B7763;opacity:1}',
+    '.cm textarea:focus{border-color:#B8873A}',
+    '.send{flex:none;width:44px;height:44px;border-radius:50%;background:#241209;display:grid;place-items:center;opacity:.4}',
+    '.send.on{opacity:1}',
+    '.note{flex:none;padding:0 14px 9px;background:rgba(255,255,255,.86);text-align:center;font-size:11.5px;color:#7A6552}',
+    '.note a{color:#8A5F1E}',
+    '.kb .note{display:none}',
+
+    /* phones: full-screen sheet pinned to the *visible* area (keyboard-safe) */
+    '@media (max-width:520px){',
+    '.panel{left:0;right:0;bottom:auto;width:auto;top:var(--vt,0px);height:100%;height:var(--vh,100dvh);border-radius:0;box-shadow:none}',
+    '.hd{padding-top:calc(13px + env(safe-area-inset-top,0px))}',
+    '.cm{padding-bottom:calc(10px + env(safe-area-inset-bottom,0px))}',
+    '.launcher{right:14px;bottom:14px}',
+    '.teaser{right:14px;bottom:84px}',
+    '}',
+
+    '@media (prefers-reduced-motion:reduce){.launcher,.panel,.teaser,.m,.dots i,.launcher::before,.launcher::after{animation:none!important;transition:none!important}.dots i{opacity:.7}}'
+  ].join('\n');
+
+  /* ---------- tiny helpers ---------- */
+  function el(tag, cls, txt) {
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (txt != null) e.textContent = txt;
+    return e;
+  }
+  function track(name) {
+    try { if (typeof window.gtag === 'function') window.gtag('event', name); } catch (e) {}
+  }
+
+  /* Safe mini-markdown: bold, bullets, links. Never uses innerHTML for model text. */
+  function inline(parent, str) {
+    var re = /(\*\*[^*]+\*\*)|(https?:\/\/[^\s<>]+)/g, last = 0, m;
+    while ((m = re.exec(str))) {
+      if (m.index > last) parent.appendChild(document.createTextNode(str.slice(last, m.index)));
+      if (m[1]) {
+        var b = el('strong', '', m[1].slice(2, -2));
+        parent.appendChild(b);
+      } else {
+        var url = m[2], trail = '';
+        while (/[.,;:!?)\u0964]$/.test(url)) { trail = url.slice(-1) + trail; url = url.slice(0, -1); }
+        var a = el('a', '', url.replace(/^https?:\/\//, ''));
+        a.href = url; a.target = '_blank'; a.rel = 'noopener noreferrer';
+        parent.appendChild(a);
+        if (trail) parent.appendChild(document.createTextNode(trail));
+      }
+      last = re.lastIndex;
+    }
+    if (last < str.length) parent.appendChild(document.createTextNode(str.slice(last)));
+  }
+  function rich(container, text) {
+    text = String(text)
+      .replace(/\r/g, '')
+      .replace(/^#{1,6}\s*/gm, '')
+      .replace(/(^|[^*])\*(?![\s*])([^*\n]+?)\*(?!\*)/g, '$1$2');
+    var lines = text.split('\n'), list = null, para = null, i, line, bullet;
+    for (i = 0; i < lines.length; i++) {
+      line = lines[i];
+      bullet = /^\s*(?:[-*\u2022])\s+(.*)$/.exec(line);
+      if (bullet) {
+        para = null;
+        if (!list) { list = el('ul'); container.appendChild(list); }
+        var li = el('li'); inline(li, bullet[1]); list.appendChild(li);
+      } else if (/^\s*$/.test(line)) {
+        list = null; para = null;
+      } else {
+        list = null;
+        if (!para) { para = el('p'); container.appendChild(para); }
+        else para.appendChild(document.createElement('br'));
+        inline(para, line.trim());
+      }
+    }
+    if (!container.firstChild) container.textContent = text;
+  }
+
+  function waterOK() {
+    var ua = navigator.userAgent || '';
+    if (/iPhone|iPad|iPod|CriOS|FxiOS|EdgiOS|Firefox/.test(ua)) return false;
+    return /Chrome[/]|Chromium[/]/.test(ua) && !!(window.CSS && window.CSS.supports && window.CSS.supports('backdrop-filter', 'blur(1px)'));
+  }
+
+  /* ---------- build ---------- */
+  function init() {
+    var host = document.createElement('div');
+    host.id = 'ara-chat-root';
+    host.style.cssText = 'position:fixed;left:0;top:0;width:0;height:0;margin:0;padding:0;border:0;z-index:90;';
+    var sh = host.attachShadow ? host.attachShadow({ mode: 'open' }) : null;
+    if (!sh) return;
+
+    sh.innerHTML =
+      '<style>' + CSS + '</style>' +
+      '<div class="root">' +
+        '<svg class="wsvg" width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute;width:0;height:0;overflow:hidden"><defs><filter id="ara-water" x="-5%" y="-5%" width="110%" height="110%" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency="0.011 0.017" numOctaves="2" seed="7" result="n"><animate attributeName="baseFrequency" dur="16s" values="0.011 0.017;0.016 0.012;0.011 0.017" repeatCount="indefinite"/></feTurbulence><feDisplacementMap in="SourceGraphic" in2="n" scale="16" xChannelSelector="R" yChannelSelector="G"><animate id="ara-settle" attributeName="scale" from="46" to="16" dur=".9s" begin="indefinite" fill="freeze" calcMode="spline" keyTimes="0;1" keySplines=".2 .7 .2 1"/></feDisplacementMap></filter></defs></svg>' +
+
+        '<svg class="wsvg2" width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute;width:0;height:0;overflow:hidden"><defs><filter id="ara-water-ico" x="-12%" y="-12%" width="124%" height="124%" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency="0.03 0.042" numOctaves="2" seed="3" result="n"><animate attributeName="baseFrequency" dur="7s" values="0.03 0.042;0.042 0.032;0.03 0.042" repeatCount="indefinite"/></feTurbulence><feColorMatrix in="SourceGraphic" type="matrix" values="1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0" result="r"/><feColorMatrix in="SourceGraphic" type="matrix" values="0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 1 0" result="g"/><feColorMatrix in="SourceGraphic" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 1 0" result="b"/><feDisplacementMap in="r" in2="n" scale="24" xChannelSelector="R" yChannelSelector="G" result="rd"/><feDisplacementMap in="g" in2="n" scale="17" xChannelSelector="R" yChannelSelector="G" result="gd"/><feDisplacementMap in="b" in2="n" scale="10" xChannelSelector="R" yChannelSelector="G" result="bd"/><feComposite in="rd" in2="gd" operator="arithmetic" k1="0" k2="1" k3="1" k4="0" result="rg"/><feComposite in="rg" in2="bd" operator="arithmetic" k1="0" k2="1" k3="1" k4="0"/></filter></defs></svg>' +
+        '<button class="launcher" type="button" aria-label="চ্যাট খুলুন / Open chat" aria-expanded="false">' + ICON_CHAT + '</button>' +
+        '<div class="teaser" role="status"><button class="tt" type="button">' + T.teaser + '</button><button class="tx" type="button" aria-label="বন্ধ করুন">' + ICON_X + '</button></div>' +
+        '<section class="panel" role="dialog" aria-label="Ara Chocolates chat" inert>' +
+          '<header class="hd">' +
+            '<div class="av" aria-hidden="true">A</div>' +
+            '<div class="ti"><b>' + T.title + '</b><span>' + T.sub + '</span></div>' +
+            '<button class="x" type="button" aria-label="চ্যাট বন্ধ করুন / Close chat">' + ICON_X + '</button>' +
+          '</header>' +
+          '<div class="msgs" role="log" aria-live="polite" aria-relevant="additions"></div>' +
+          '<div class="chips"></div>' +
+          '<form class="cm" autocomplete="off">' +
+            '<textarea rows="1" maxlength="500" enterkeyhint="send" autocomplete="off" autocapitalize="sentences" spellcheck="false" aria-label="' + T.placeholder + '" placeholder="' + T.placeholder + '"></textarea>' +
+            '<button class="send" type="submit" aria-label="পাঠান / Send">' + ICON_SEND + '</button>' +
+          '</form>' +
+          '<div class="note">' + T.note + ' <a href="' + WA_URL + '" target="_blank" rel="noopener noreferrer">' + T.noteLink + '</a></div>' +
+        '</section>' +
+      '</div>';
+
+    document.body.appendChild(host);
+
+    var root = sh.querySelector('.root');
+    var launcher = sh.querySelector('.launcher');
+    var teaser = sh.querySelector('.teaser');
+    var panel = sh.querySelector('.panel');
+    var msgs = sh.querySelector('.msgs');
+    var chips = sh.querySelector('.chips');
+    var form = sh.querySelector('.cm');
+    var ta = sh.querySelector('textarea');
+    var sendBtn = sh.querySelector('.send');
+    var wsvg = sh.querySelector('.wsvg');
+    var settle = sh.querySelector('#ara-settle');
+
+    /* water effect: on in Chromium browsers (Chrome/Brave/Edge/Samsung); other browsers get a clean frosted-glass look */
+    var WATER = !(script && script.getAttribute('data-water') === 'off') && waterOK();
+    var calm = (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) ||
+      (navigator.deviceMemory && navigator.deviceMemory <= 2) || (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 2);
+    var waterMove = WATER && !calm && !!(wsvg && wsvg.pauseAnimations);
+    if (WATER) { root.classList.add('water'); try { if (wsvg.pauseAnimations) wsvg.pauseAnimations(); } catch (e) {} }
+    function waterRun(on) {
+      if (!waterMove) return;
+      try { if (on) wsvg.unpauseAnimations(); else wsvg.pauseAnimations(); } catch (e) {}
+    }
+
+    /* launcher water: keeps flowing while chat is closed; page behind reacts to open/close */
+    var wsvg2 = sh.querySelector('.wsvg2');
+    var iconMove = WATER && !calm && !!(wsvg2 && wsvg2.pauseAnimations);
+    function iconRun(on) {
+      if (!iconMove) return;
+      try { if (on) wsvg2.unpauseAnimations(); else wsvg2.pauseAnimations(); } catch (e) {}
+    }
+    if (WATER && !iconMove) { try { if (wsvg2 && wsvg2.pauseAnimations) wsvg2.pauseAnimations(); } catch (e) {} }
+    function pageFx(on) {
+      document.documentElement.classList.toggle('ara-chat-open', on);
+      try {
+        if (on) {
+          if (window.__pauseAmbientGlow) window.__pauseAmbientGlow();
+          if (window.__slowLeafFall) window.__slowLeafFall(true);
+        } else {
+          if (window.__resumeAmbientGlow) window.__resumeAmbientGlow();
+          if (window.__slowLeafFall) window.__slowLeafFall(false);
+        }
+      } catch (e) {}
+      iconRun(!on);
+    }
+
+    var history = [], busy = false, open = false, atBottom = true, grown = false;
+    var fitQ = false, vvQ = false, hasText = false, prevOverflow = '', errBubble = null;
+    var vv = window.visualViewport;
+    var mq = window.matchMedia ? window.matchMedia('(max-width:520px)') : { matches: false };
+    function isMobile() { return mq.matches; }
+
+    /* ----- storage (private mode safe) ----- */
+    function load() {
+      try {
+        var a = JSON.parse(sessionStorage.getItem(KEY) || '[]');
+        if (!Array.isArray(a)) return [];
+        return a.filter(function (x) { return x && (x.role === 'user' || x.role === 'bot') && typeof x.text === 'string'; }).slice(-20);
+      } catch (e) { return []; }
+    }
+    function save() { try { sessionStorage.setItem(KEY, JSON.stringify(history.slice(-20))); } catch (e) {} }
+
+    /* ----- messages ----- */
+    function toBottom() { msgs.scrollTop = msgs.scrollHeight; atBottom = true; }
+    function addMsg(role, text, instant) {
+      var m = el('div', 'm ' + role + (instant ? ' instant' : ''));
+      if (role === 'bot') rich(m, text); else m.textContent = text;
+      msgs.appendChild(m);
+      return m;
+    }
+    function showTyping() {
+      var m = el('div', 'm bot');
+      m.setAttribute('aria-label', 'টাইপ করছে');
+      var d = el('span', 'dots'); d.appendChild(el('i')); d.appendChild(el('i')); d.appendChild(el('i'));
+      m.appendChild(d); msgs.appendChild(m); toBottom();
+      return m;
+    }
+    function showError(kind, code) {
+      var m = el('div', 'm bot');
+      m.appendChild(el('p', '', (T.errs && T.errs[kind]) || T.err));
+      if (code) m.appendChild(el('p', 'ec', 'কোড: ' + code));
+      var acts = el('div', 'acts');
+      var retry = el('button', 'btn', T.retry); retry.type = 'button';
+      retry.addEventListener('click', function () {
+        if (busy) return;
+        if (m.parentNode) m.parentNode.removeChild(m);
+        errBubble = null;
+        request();
+      });
+      var wa = el('a', 'btn alt', T.wa); wa.href = WA_URL; wa.target = '_blank'; wa.rel = 'noopener noreferrer';
+      acts.appendChild(retry); acts.appendChild(wa); m.appendChild(acts);
+      msgs.appendChild(m); errBubble = m; toBottom();
+    }
+    function clearError() {
+      if (errBubble && errBubble.parentNode) errBubble.parentNode.removeChild(errBubble);
+      errBubble = null;
+    }
+
+    /* ----- composer ----- */
+    function updSend() {
+      var has = ta.value.trim().length > 0 && !busy;
+      if (has !== hasText) { hasText = has; sendBtn.classList.toggle('on', has); }
+    }
+    function fit() {
+      if (fitQ) return; fitQ = true;
+      requestAnimationFrame(function () {
+        fitQ = false;
+        if (!grown && ta.scrollHeight <= ta.clientHeight + 1) return; /* one line fits: touch nothing */
+        ta.style.height = 'auto';
+        var h = Math.min(ta.scrollHeight, 112);
+        ta.style.height = h + 'px';
+        grown = h > 48;
+      });
+    }
+
+    /* ----- typewriter: bot replies appear word by word ----- */
+    var reduceMotion = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+    var curType = null;
+    function finishType() { if (curType) curType.finish(); }
+    function follow(m) {
+      if (m.offsetHeight > msgs.clientHeight - 24) { msgs.scrollTop = Math.max(0, m.offsetTop - 12); atBottom = false; }
+      else if (atBottom) msgs.scrollTop = msgs.scrollHeight;
+    }
+    function typeReply(reply) {
+      var m = addMsg('bot', reply);
+      if (reduceMotion || !window.requestAnimationFrame || !document.createTreeWalker) { follow(m); return; }
+      try {
+        var nodes = [], tw = document.createTreeWalker(m, NodeFilter.SHOW_TEXT), n;
+        while ((n = tw.nextNode())) nodes.push(n);
+        var toks = [];
+        nodes.forEach(function (node) {
+          var parts = node.nodeValue.match(/\S+\s*|\s+/g) || [];
+          node.nodeValue = '';
+          parts.forEach(function (t) { toks.push({ n: node, t: t }); });
+        });
+        var N = toks.length;
+        if (!N) { follow(m); return; }
+        var delay = Math.max(16, Math.min(55, 6000 / N)), start = 0, shown = 0, raf = 0, ended = false;
+        var end = function () {
+          if (ended) return; ended = true; cancelAnimationFrame(raf);
+          while (shown < N) { var k = toks[shown++]; k.n.nodeValue += k.t; }
+          follow(m); curType = null;
+        };
+        var step = function (ts) {
+          if (ended) return;
+          if (!start) start = ts;
+          var target = Math.min(N, Math.floor((ts - start) / delay) + 1);
+          if (target > shown) {
+            while (shown < target) { var k = toks[shown++]; k.n.nodeValue += k.t; }
+            follow(m);
+          }
+          if (shown < N) raf = requestAnimationFrame(step); else { ended = true; curType = null; }
+        };
+        curType = { finish: end };
+        raf = requestAnimationFrame(step);
+      } catch (e) { curType = null; try { m.textContent = reply; } catch (e2) {} }
+    }
+
+    /* ----- request ----- */
+    function cleanHistory() {
+      /* the server needs: first message from the user, roles alternating (merges back-to-back ones) */
+      var out = [];
+      history.slice(-12).forEach(function (h) {
+        if (!out.length && h.role !== 'user') return;
+        var last = out[out.length - 1];
+        if (last && last.role === h.role) last.text += '\n' + h.text;
+        else out.push({ role: h.role, text: h.text });
+      });
+      return out;
+    }
+    function request() {
+      if (!CFG.endpoint) { showError('noep'); return; }
+      busy = true; updSend();
+      var typing = showTyping();
+      var ctrl = window.AbortController ? new AbortController() : null;
+      var timedOut = false;
+      var timer = setTimeout(function () { timedOut = true; if (ctrl) ctrl.abort(); }, 25000);
+      var done = function () { clearTimeout(timer); if (typing.parentNode) typing.parentNode.removeChild(typing); };
+      var fail = function (kind, code) { var e = new Error(kind); e.kind = kind; e.code = code; return e; };
+
+      fetch(CFG.endpoint, {
+        method: 'POST',
+        /* text/plain = "simple request": no CORS preflight, so replies arrive faster */
+        headers: { 'Content-Type': 'text/plain;charset=UTF-8' },
+        body: JSON.stringify({ messages: cleanHistory() }),
+        signal: ctrl ? ctrl.signal : undefined
+      }).then(function (r) {
+        return r.json().catch(function () { return {}; }).then(function (d) {
+          if (!r.ok) throw fail('server', r.status);
+          if (!d || !d.reply) throw fail('body');
+          return String(d.reply);
+        });
+      }).then(function (reply) {
+        done();
+        history.push({ role: 'bot', text: reply }); save();
+        typeReply(reply);
+      }).catch(function (err) {
+        done();
+        if (err && err.kind) showError(err.kind, err.code);
+        else showError(timedOut ? 'timeout' : 'net');
+      }).then(function () {
+        busy = false; updSend();
+      });
+    }
+
+    function send(text) {
+      text = String(text || '').trim();
+      if (!text || busy) return;
+      if (text.length > 500) text = text.slice(0, 500);
+      finishType();
+      clearError();
+      addMsg('user', text); toBottom();
+      history.push({ role: 'user', text: text }); save();
+      track('chat_message');
+      ta.value = ''; fit(); updSend();
+      request();
+    }
+
+    /* ----- open / close + keyboard-safe sizing ----- */
+    function lock(on) {
+      var d = document.documentElement;
+      if (on) { prevOverflow = d.style.overflow; d.style.overflow = 'hidden'; }
+      else d.style.overflow = prevOverflow;
+    }
+    function syncVV() {
+      if (!open || !isMobile() || vvQ) return;
+      vvQ = true;
+      requestAnimationFrame(function () {
+        vvQ = false;
+        var h = vv ? vv.height : window.innerHeight;
+        var t = vv ? vv.offsetTop : 0;
+        root.style.setProperty('--vh', h + 'px');
+        root.style.setProperty('--vt', t + 'px');
+        root.classList.toggle('kb', window.innerHeight - h > 120);
+        if (atBottom) msgs.scrollTop = msgs.scrollHeight;
+      });
+    }
+    function setOpen(v) {
+      if (v === open) return;
+      open = v;
+      root.classList.toggle('open', v);
+      launcher.setAttribute('aria-expanded', v ? 'true' : 'false');
+      if (v) {
+        panel.removeAttribute('inert');
+        hideTeaser();
+        if (isMobile()) { lock(true); syncVV(); }
+        toBottom();
+        track('chat_open');
+        if (waterMove) { waterRun(true); try { settle.beginElement(); } catch (e) {} }
+        pageFx(true);
+        if (!isMobile()) setTimeout(function () { try { ta.focus({ preventScroll: true }); } catch (e) {} }, 240);
+      } else {
+        panel.setAttribute('inert', '');
+        waterRun(false);
+        pageFx(false);
+        ta.blur();
+        lock(false);
+        root.style.removeProperty('--vh'); root.style.removeProperty('--vt'); root.classList.remove('kb');
+        try { launcher.focus({ preventScroll: true }); } catch (e) {}
+      }
+    }
+
+    /* ----- teaser (once per session) ----- */
+    var teaserTimers = [];
+    function hideTeaser() { teaser.classList.remove('show'); teaserTimers.forEach(clearTimeout); teaserTimers = []; }
+    function maybeTeaser() {
+      try { if (sessionStorage.getItem('ara_teaser')) return; } catch (e) {}
+      teaserTimers.push(setTimeout(function () {
+        if (open) return;
+        teaser.classList.add('show');
+        try { sessionStorage.setItem('ara_teaser', '1'); } catch (e) {}
+        teaserTimers.push(setTimeout(hideTeaser, 9000));
+      }, 7000));
+    }
+
+    /* ----- events ----- */
+    launcher.addEventListener('click', function () { setOpen(true); });
+    sh.querySelector('.x').addEventListener('click', function () { setOpen(false); });
+    sh.querySelector('.tt').addEventListener('click', function () { setOpen(true); });
+    sh.querySelector('.tx').addEventListener('click', hideTeaser);
+
+    sh.addEventListener('keydown', function (e) { if (e.key === 'Escape' && open) setOpen(false); });
+
+    form.addEventListener('submit', function (e) { e.preventDefault(); send(ta.value); });
+    /* Send বাটনে চাপলে textarea-র focus থাকে → কীবোর্ড নামে/উঠে ঝিলিক দেয় না */
+    sendBtn.addEventListener('mousedown', function (e) { e.preventDefault(); });
+    var shiftDown = false;
+    ta.addEventListener('keyup', function (e) { shiftDown = e.shiftKey; });
+    ta.addEventListener('beforeinput', function (e) {
+      if (e.inputType === 'insertLineBreak' && !shiftDown) { e.preventDefault(); send(ta.value); }
+    });
+    ta.addEventListener('keydown', function (e) {
+      shiftDown = e.shiftKey;
+      if (e.key === 'Enter' && !e.shiftKey && !e.isComposing && e.keyCode !== 229) {
+        e.preventDefault(); send(ta.value);
+      }
+    });
+    ta.addEventListener('input', function () { updSend(); fit(); });
+    /* phones: freeze the ripple while typing so the keyboard never competes with it */
+    ta.addEventListener('focus', function () { if (isMobile()) waterRun(false); });
+    ta.addEventListener('blur', function () { if (open && isMobile()) waterRun(true); });
+
+    chips.addEventListener('click', function (e) {
+      var t = e.target;
+      while (t && t !== chips && !(t.classList && t.classList.contains('chip'))) t = t.parentNode;
+      if (t && t !== chips) send(t.getAttribute('data-q'));
+    });
+
+    /* chips swipe: freeze the heavy water + falling leaves while the row moves, so the swipe stays smooth */
+    var chipT = 0;
+    function chipsMoving() {
+      if (!open) return;
+      waterRun(false);
+      try { if (window.__pauseLeafFall) window.__pauseLeafFall(); } catch (e) {}
+      clearTimeout(chipT);
+      chipT = setTimeout(function () {
+        if (open && !(isMobile() && sh.activeElement === ta)) waterRun(true);
+        try { if (window.__resumeLeafFall) window.__resumeLeafFall(); } catch (e) {}
+      }, 280);
+    }
+    chips.addEventListener('touchstart', chipsMoving, { passive: true });
+    chips.addEventListener('scroll', chipsMoving, { passive: true });
+
+    msgs.addEventListener('scroll', function () {
+      atBottom = msgs.scrollHeight - msgs.scrollTop - msgs.clientHeight < 40;
+    }, { passive: true });
+
+    /* iOS: পেছনের পেজ যেন টেনে সরে না যায় */
+    panel.addEventListener('touchmove', function (e) {
+      if (!open || !isMobile()) return;
+      var t = e.target;
+      if (msgs.contains(t)) return;
+      if (t === ta && ta.scrollHeight > ta.clientHeight) return;
+      if (t === chips || chips.contains(t)) return;
+      e.preventDefault();
+    }, { passive: false });
+
+    if (vv) { vv.addEventListener('resize', syncVV); vv.addEventListener('scroll', syncVV); }
+    window.addEventListener('resize', syncVV);
+    window.addEventListener('orientationchange', syncVV);
+
+    /* ----- initial content ----- */
+    T.chips.forEach(function (q) {
+      var c = el('button', 'chip', q); c.type = 'button'; c.setAttribute('data-q', q); chips.appendChild(c);
+    });
+    history = load();
+    if (history.length) {
+      history.forEach(function (h) { addMsg(h.role, h.text, true); });
+      toBottom();
+    } else {
+      addMsg('bot', T.welcome, true);
+      maybeTeaser();
+    }
+
+    window.AraChat = { open: function () { setOpen(true); }, close: function () { setOpen(false); } };
+  }
+
+  if (document.body) init();
+  else document.addEventListener('DOMContentLoaded', init);
+})();
+
 </script>
 </body>
 </html>
