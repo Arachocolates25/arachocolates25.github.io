@@ -2961,7 +2961,7 @@ this.reset();
     sub: 'চকলেট নিয়ে প্রশ্ন করুন',
     placeholder: 'প্রশ্ন লিখুন',
     welcome: 'আসসালামু আলাইকুম! 👋 আমি Ara। Ara Chocolates-এ আপনাকে স্বাগতম 🍫 কিছু জানতে চাইলে নির্দ্বিধায় জিজ্ঞেস করুন।',
-    chips: ['গিফট বক্সে কী আছে?', 'ফ্লেভার ও দাম', 'কীভাবে অর্ডার করব?', 'গিফটের আইডিয়া'],
+    chips: ['অর্ডার করতে চাই', 'গিফট বক্সে কী আছে?', 'ফ্লেভার ও দাম', 'কীভাবে অর্ডার করব?', 'গিফটের আইডিয়া'],
     err: 'এই মুহূর্তে উত্তর পাওয়া যাচ্ছে না। আবার চেষ্টা করুন, অথবা WhatsApp-এ আমাদের টিমকে জিজ্ঞেস করুন।',
     errs: {
       server: 'সার্ভারে সমস্যা হচ্ছে। কিছুক্ষণ পর আবার চেষ্টা করুন, অথবা WhatsApp-এ আমাদের টিমকে জিজ্ঞেস করুন।',
@@ -3330,7 +3330,7 @@ this.reset();
     }
     function typeReply(reply) {
       var m = addMsg('bot', reply);
-      if (reduceMotion || !window.requestAnimationFrame || !document.createTreeWalker) { follow(m); return; }
+      if (reduceMotion || !window.requestAnimationFrame || !document.createTreeWalker) { follow(m); return m; }
       try {
         var nodes = [], tw = document.createTreeWalker(m, NodeFilter.SHOW_TEXT), n;
         while ((n = tw.nextNode())) nodes.push(n);
@@ -3341,7 +3341,7 @@ this.reset();
           parts.forEach(function (t) { toks.push({ n: node, t: t }); });
         });
         var N = toks.length;
-        if (!N) { follow(m); return; }
+        if (!N) { follow(m); return m; }
         var delay = Math.max(16, Math.min(55, 6000 / N)), start = 0, shown = 0, raf = 0, ended = false, lastF = 0;
         var end = function () {
           if (ended) return; ended = true; cancelAnimationFrame(raf);
@@ -3361,6 +3361,7 @@ this.reset();
         curType = { finish: end };
         raf = requestAnimationFrame(step);
       } catch (e) { curType = null; try { m.textContent = reply; } catch (e2) {} }
+      return m;
     }
 
     /* ----- request ----- */
@@ -3401,6 +3402,7 @@ this.reset();
         done();
         history.push({ role: 'bot', text: reply }); save();
         typeReply(reply);
+        oAfterAI();
       }).catch(function (err) {
         done();
         if (err && err.kind) showError(err.kind, err.code);
@@ -3420,7 +3422,397 @@ this.reset();
       history.push({ role: 'user', text: text }); save();
       track('chat_message');
       ta.value = ''; fit(); updSend();
+      if (oHandle(text)) return;
       request();
+    }
+
+    /* ===== ORDER ASSISTANT: asks for the order details one by one, then fills the website order form ===== */
+    var OKEY = KEY + '_order', O = null;
+    /*ORDER_PURE_START*/
+    function bn2en(s) { return String(s).replace(/[\u09E6-\u09EF]/g, function (d) { return d.charCodeAt(0) - 0x09E6; }); }
+    function normL(s) { return String(s).toLowerCase().replace(/[^a-z]/g, ''); }
+
+    var DVS = {
+      'Dhaka': 'Dhaka:ঢাকা,Faridpur:ফরিদপুর,Gazipur:গাজীপুর,Gopalganj:গোপালগঞ্জ,Kishoreganj:কিশোরগঞ্জ,Madaripur:মাদারীপুর,Manikganj:মানিকগঞ্জ,Munshiganj:মুন্সীগঞ্জ,Narayanganj:নারায়ণগঞ্জ,Narsingdi:নরসিংদী,Rajbari:রাজবাড়ী,Shariatpur:শরীয়তপুর,Tangail:টাঙ্গাইল',
+      'Mymensingh': 'Jamalpur:জামালপুর,Mymensingh:ময়মনসিংহ,Netrokona:নেত্রকোনা,Sherpur:শেরপুর',
+      'Chattogram': 'Bandarban:বান্দরবান,Brahmanbaria:ব্রাহ্মণবাড়িয়া,Chandpur:চাঁদপুর,Chattogram:চট্টগ্রাম,Cumilla:কুমিল্লা,Cox\'s Bazar:কক্সবাজার,Feni:ফেনী,Khagrachhari:খাগড়াছড়ি,Lakshmipur:লক্ষ্মীপুর,Noakhali:নোয়াখালী,Rangamati:রাঙ্গামাটি',
+      'Rajshahi': 'Bogura:বগুড়া,Chapainawabganj:চাঁপাইনবাবগঞ্জ,Joypurhat:জয়পুরহাট,Naogaon:নওগাঁ,Natore:নাটোর,Pabna:পাবনা,Rajshahi:রাজশাহী,Sirajganj:সিরাজগঞ্জ',
+      'Khulna': 'Bagerhat:বাগেরহাট,Chuadanga:চুয়াডাঙ্গা,Jashore:যশোর,Jhenaidah:ঝিনাইদহ,Khulna:খুলনা,Kushtia:কুষ্টিয়া,Magura:মাগুরা,Meherpur:মেহেরপুর,Narail:নড়াইল,Satkhira:সাতক্ষীরা',
+      'Barishal': 'Barguna:বরগুনা,Barishal:বরিশাল,Bhola:ভোলা,Jhalokathi:ঝালকাঠি,Patuakhali:পটুয়াখালী,Pirojpur:পিরোজপুর',
+      'Sylhet': 'Habiganj:হবিগঞ্জ,Moulvibazar:মৌলভীবাজার,Sunamganj:সুনামগঞ্জ,Sylhet:সিলেট',
+      'Rangpur': 'Dinajpur:দিনাজপুর,Gaibandha:গাইবান্ধা,Kurigram:কুড়িগ্রাম,Lalmonirhat:লালমনিরহাট,Nilphamari:নীলফামারী,Panchagarh:পঞ্চগড়,Rangpur:রংপুর,Thakurgaon:ঠাকুরগাঁও'
+    };
+    var DIST = [];
+    Object.keys(DVS).forEach(function (dv) {
+      DVS[dv].split(',').forEach(function (p) { var a = p.split(':'); DIST.push({ n: a[0], bn: a[1], dv: dv, k: normL(a[0]) }); });
+    });
+    var DALIAS = { chittagong: 'Chattogram', chattagram: 'Chattogram', comilla: 'Cumilla', jessore: 'Jashore', bogra: 'Bogura', barisal: 'Barishal', nawabganj: 'Chapainawabganj', jhalakathi: 'Jhalokathi', coxbazar: 'Cox\'s Bazar', narayangonj: 'Narayanganj', mymensing: 'Mymensingh', moulvibazar: 'Moulvibazar', maulvibazar: 'Moulvibazar' };
+    var BALIAS = { 'চিটাগং': 'Chattogram', 'চিটাগাং': 'Chattogram', 'কুমিল্লা': 'Cumilla', 'ময়মনসিংহ': 'Mymensingh', 'মোমেনশাহী': 'Mymensingh' };
+    function distByName(n) { for (var i = 0; i < DIST.length; i++) if (DIST[i].n === n) return DIST[i]; return null; }
+    function findDistrict(t) {
+      var k = normL(t), b = String(t).replace(/\s+/g, ''), best = null, bl = 0;
+      DIST.forEach(function (x) {
+        if (x.k.length >= 4 && k.indexOf(x.k) > -1 && x.k.length > bl) { best = x; bl = x.k.length; }
+        if (b.indexOf(x.bn) > -1 && x.bn.length > bl) { best = x; bl = x.bn.length; }
+      });
+      if (!best) Object.keys(DALIAS).forEach(function (a) { if (!best && k.indexOf(a) > -1) best = distByName(DALIAS[a]); });
+      if (!best) Object.keys(BALIAS).forEach(function (a) { if (!best && b.indexOf(a) > -1) best = distByName(BALIAS[a]); });
+      return best;
+    }
+
+    var SZ = {
+      almond: { n: 'Almond Chocolate', re: /almond|আমন্ড|আমান্ড/i, pr: { 120: 390, 90: 285, 60: 200 } },
+      cashew: { n: 'Cashew Chocolate', re: /cashew|কাজু|ক্যাশু/i, pr: { 120: 390, 90: 285, 60: 200 } },
+      mixed: { n: 'Mixed Nut Chocolate', re: /mixed|mix|মিক্সড|মিক্স|মিশ্র/i, pr: { 120: 370, 90: 280, 60: 190 } },
+      dark: { n: 'Pure Dark Chocolate', re: /dark|ডার্ক|pure|পিউর/i, pr: { 120: 350, 90: 265, 60: 180 } }
+    };
+    var FAMS = ['almond', 'cashew', 'mixed', 'dark'];
+    function sized(fam, s) { return { fam: fam, size: s, n: SZ[fam].n + ' (' + s + 'g)', price: SZ[fam].pr[s] }; }
+    function findSize(t) { var m = /(?:^|[^\d])(120|90|60)(?!\d)/.exec(bn2en(t)); return m ? +m[1] : 0; }
+    function findProduct(t) {
+      if (/white|হোয়াইট|special\s*touch|স্পেশাল/i.test(t)) return { special: true };
+      var bar = /(?:^|[^a-z])bar(?:[^a-z]|$)|(?:^|\s)বার(?:\s|$)/i.test(t);
+      if (!bar && /gift|গিফট|combo|কম্বো|(?:^|[^a-z])box(?:[^a-z]|$)|বক্স/i.test(t)) return { n: 'Chocolate Gift Box', price: 1499 };
+      if (bar) return { n: 'Pure Dark Chocolate Bar', price: 390 };
+      var fam = null, i;
+      for (i = 0; i < FAMS.length; i++) if (SZ[FAMS[i]].re.test(t)) { fam = FAMS[i]; break; }
+      if (!fam) return null;
+      var s = findSize(t);
+      return s ? sized(fam, s) : { fam: fam, n: SZ[fam].n, price: 0 };
+    }
+
+    var NW = { 'একটা': 1, 'একটি': 1, 'দুইটা': 2, 'দুটো': 2, 'দুটি': 2, 'দুইটি': 2, 'তিনটা': 3, 'তিনটি': 3, 'চারটা': 4, 'চারটি': 4, 'পাঁচটা': 5, 'পাঁচটি': 5, 'পাচটা': 5, 'ছয়টা': 6, 'সাতটা': 7, 'আটটা': 8, 'নয়টা': 9, 'দশটা': 10 };
+    var NW2 = { 'এক': 1, 'দুই': 2, 'তিন': 3, 'চার': 4, 'পাঁচ': 5, 'পাচ': 5, 'ছয়': 6, 'সাত': 7, 'আট': 8, 'নয়': 9, 'দশ': 10, ek: 1, dui: 2, tin: 3, char: 4, pach: 5, one: 1, two: 2, three: 3, four: 4, five: 5 };
+    function parseQty(t, strict) {
+      var s = bn2en(t).trim(), m, toks, i, w;
+      if (strict) {
+        m = /^(\d{1,3})\s*(?:টা|টি|ta|ti|pcs?|pieces?|boxes|box|বক্স|পিস|প্যাকেট|packet)?\s*(?:লাগবে|চাই|chai|nibo|নিব|নেব)?\s*[।.!]*$/i.exec(s);
+        if (m) return +m[1];
+        toks = s.toLowerCase().split(/[\s,।.!]+/);
+        for (i = 0; i < toks.length; i++) { w = toks[i]; if (NW[w]) return NW[w]; if (NW2[w]) return NW2[w]; }
+        return null;
+      }
+      m = /(\d{1,3})\s*(?:টা|টি|ta\b|ti\b|pcs?\b|pieces?\b|boxes\b|box\b|বক্স|পিস|packet|প্যাকেট)/i.exec(s);
+      if (m) return +m[1];
+      toks = s.split(/[\s,।.!]+/);
+      for (i = 0; i < toks.length; i++) if (NW[toks[i]]) return NW[toks[i]];
+      return null;
+    }
+    function parsePhone(t) {
+      var s = bn2en(t).replace(/[\s\-().]/g, ''), m = /(?:\+?88)?(01[3-9]\d{8})/.exec(s);
+      return m ? m[1] : null;
+    }
+    function parseLast4(t) {
+      var s = bn2en(t).replace(/[\s\-]/g, '');
+      if (/^\d{4}$/.test(s)) return s;
+      if (/^(?:\+?88)?01\d{9}$/.test(s)) return s.slice(-4);
+      return null;
+    }
+    function extractName(t) {
+      var m = /(?:আমার\s*নাম|নাম|amar\s*nam|my\s*name\s*is|name)\s*(?:[:：=\-–]|হলো|হল|হয়|is)?\s*([^\n,।.;:0-9]{2,40})/i.exec(t);
+      if (!m) return null;
+      var n = m[1].replace(/\s+(?:এবং|আর|আমি|আমার|ar|ami|amar|and|my|ফোন|phone|number|নাম্বার|নম্বর|mobile|মোবাইল|ঠিকানা|address|থাকি|এই|করি|পণ্য|product)(?:\s.*)?$/i, '').replace(/\s+(?:হলো|হল|হয়|বলছি)$/, '').trim();
+      return n.length >= 2 ? n : null;
+    }
+    function looksQ(t) {
+      return /[?？]|(?:^|\s)(?:কত|কেন|কীভাবে|কিভাবে|কখন|কোথায়|কি|কী)(?:\s|$)|দাম|ডেলিভারি|delivery|price|koto|kivabe|keno|kothay|kemon|কেমন|ache\s*ki|আছে\s*কি/i.test(t);
+    }
+    function orderIntent(t) {
+      var s = String(t);
+      if (/কীভাবে|কিভাবে|কেমনে|kivabe|kibhabe|kemne|kmne|how\s+(?:do|to|can|should)|পদ্ধতি|প্রসেস/i.test(s)) return false;
+      return /(?:অর্ডার|order)\s*(?:করতে\s*চাই|করতে\s*চাচ্ছি|দিতে\s*চাই|করবো|করব|দেব|দিব|korte\s*chai|dite\s*chai|korbo|dibo)(?=$|[\s?।!.,])|(?:কিনতে|নিতে|কিনবো|কিনব|নেব|নিব|kinte|nite|kinbo|nibo)\s*(?:চাই|চাচ্ছি|chai)(?=$|[\s?।!.,])|i\s*(?:want|wanna|would\s*like)\s*to\s*(?:buy|order)|place\s*(?:an?\s*)?order|^\s*(?:order|অর্ডার)\s*(?:দিন|করুন|করো)?\s*[।.!]*\s*$/i.test(s);
+    }
+    var CANCEL = /^\s*(?:বাতিল|অর্ডার\s*বাতিল|ক্যান্সেল|cancel|থাক|না\s*থাক|বাদ\s*দিন|stop)\s*[।.!]*\s*$/i;
+    var YES = /^\s*(?:হ্যাঁ|হ্যা|হাঁ|হা|জি|জি\s*হ্যাঁ|ha|haa|yes|y|ok|okay|ঠিক\s*আছে|thik\s*ache|করুন|করো|দিন|দাও|কর)\s*[।.!]*\s*$/i;
+    var NO = /^\s*(?:না|no|na|nah|nope|বদলাব|বদলাবো|পরিবর্তন)\s*[।.!]*\s*$/i;
+    var NONOTE = /^\s*(?:না|নাই|নেই|কিছু\s*নেই|কোনো\s*নোট\s*নেই|কোন\s*নোট\s*নেই|no|none|skip|nothing|-)\s*[।.!]*\s*$/i;
+    /*ORDER_PURE_END*/
+
+    var PL = [
+      { t: 'Chocolate Gift Box · ৳1499', f: { n: 'Chocolate Gift Box', price: 1499 } },
+      { t: 'Pure Dark Chocolate Bar · ৳390', f: { n: 'Pure Dark Chocolate Bar', price: 390 } },
+      { t: 'Almond Chocolate', f: { fam: 'almond' } },
+      { t: 'Cashew Chocolate', f: { fam: 'cashew' } },
+      { t: 'Mixed Nut Chocolate', f: { fam: 'mixed' } },
+      { t: 'Pure Dark Chocolate', f: { fam: 'dark' } }
+    ];
+
+    function oSave() { try { if (O && O.on) sessionStorage.setItem(OKEY, JSON.stringify(O)); else sessionStorage.removeItem(OKEY); } catch (e) {} }
+    function clearOActs() {
+      var a = msgs.querySelectorAll('.oacts'), i;
+      for (i = 0; i < a.length; i++) if (a[i].parentNode) a[i].parentNode.removeChild(a[i]);
+    }
+    function userSay(t) {
+      finishType(); clearOActs();
+      addMsg('user', t); toBottom();
+      history.push({ role: 'user', text: t }); save();
+    }
+    function addBtns(m, list) {
+      var acts = el('div', 'acts oacts');
+      list.forEach(function (b) {
+        var x = el('button', 'btn' + (b.alt ? ' alt' : ''), b.t); x.type = 'button';
+        x.addEventListener('click', function () { if (busy) return; userSay(b.t); b.fn(); });
+        acts.appendChild(x);
+      });
+      m.appendChild(acts); follow(m);
+    }
+    /* the bot "thinks" for half a second (typing dots), then types the message; optional quick-reply buttons */
+    function botSay(text, btns) {
+      finishType();
+      busy = true; updSend();
+      var typing = showTyping();
+      setTimeout(function () {
+        if (typing.parentNode) typing.parentNode.removeChild(typing);
+        history.push({ role: 'bot', text: text }); save();
+        var m = typeReply(text);
+        if (m && btns && btns.length) addBtns(m, btns);
+        busy = false; updSend();
+      }, 500);
+    }
+    function prodBtns() {
+      return PL.map(function (x) { return { t: x.t, fn: function () { oPickProd(x.f); } }; });
+    }
+    function oPickProd(f) {
+      O.d.prod = f.fam ? { fam: f.fam, n: SZ[f.fam].n, price: 0 } : { n: f.n, price: f.price };
+      oNext(O.d.prod.price ? '✓ ' + O.d.prod.n + ' — ৳' + O.d.prod.price + '\n\n' : '');
+    }
+    function oSetSize(fam, s) { O.d.prod = sized(fam, s); oNext('✓ ' + O.d.prod.n + ' — ৳' + O.d.prod.price + '\n\n'); }
+    function oSetQty(n) { O.d.qty = n; oNext('✓ ' + n + 'টি\n\n'); }
+
+    function oIngest(text) {
+      var d = O.d, got = [], p = findProduct(text), q, ph, nm, ds;
+      if (p && !p.special) { d.prod = p; got.push('**পণ্য:** ' + p.n + (p.price ? ' — ৳' + p.price : '')); }
+      q = parseQty(text, false);
+      if (q && q >= 1 && q <= 50) { d.qty = q; got.push('**সংখ্যা:** ' + q + 'টি'); }
+      nm = extractName(text);
+      if (nm && nm.length <= 60) { d.name = nm; got.push('**নাম:** ' + nm); }
+      ph = parsePhone(text);
+      if (ph) { d.phone = ph; got.push('**ফোন:** ' + ph); }
+      ds = findDistrict(text);
+      if (ds && (d.name || ph || /ঠিকানা|থাকি|জেলা|address|thaki/i.test(text))) { d.district = ds.n; d.division = ds.dv; got.push('**জেলা:** ' + ds.n); }
+      return got;
+    }
+    function oStart(text) {
+      O = { on: true, step: '', d: {}, ai: false };
+      var got = oIngest(text);
+      oNext(got.length
+        ? 'অবশ্যই! 🍫 যা বললেন নিয়ে নিলাম:\n' + got.map(function (g) { return '- ' + g; }).join('\n') + '\n\n'
+        : 'অবশ্যই! 🍫 আমি আপনার তথ্য নিয়ে অর্ডার ফর্ম নিজেই পূরণ করে দেব। শেষে আপনি শুধু Submit চাপবেন।\n\n');
+    }
+    function oNext(pre) {
+      var d = O.d;
+      O.step = !d.prod ? 'prod' : !d.prod.price ? 'size' : !d.qty ? 'qty' : !d.name ? 'name' : !d.phone ? 'phone' :
+        !d.district ? 'district' : !d.area ? 'area' : !d.address ? 'address' : !d.noteDone ? 'note' : 'consent';
+      oSave(); oAsk(pre || '');
+    }
+    function oSummary() {
+      var d = O.d, p = d.prod, tot = p.price * d.qty, adv = Math.round(tot * 0.2);
+      return 'আপনার অর্ডারের সারাংশ 📋\n' +
+        '- **পণ্য:** ' + p.n + ' × ' + d.qty + '\n' +
+        '- **মোট:** ৳' + tot + ' (ডেলিভারি ফ্রি)\n' +
+        '- **নাম:** ' + d.name + '\n' +
+        '- **ফোন:** ' + d.phone + '\n' +
+        '- **ঠিকানা:** ' + d.area + ', ' + d.district + ' (' + d.division + ' বিভাগ), ' + d.address +
+        (d.note ? '\n- **নোট:** ' + d.note : '') +
+        (d.last4 ? '\n- **পেমেন্টের শেষ ৪ ডিজিট:** ' + d.last4 : '') +
+        '\n\nঅর্ডার নিশ্চিত করতে মোট দামের ২০% অগ্রিম, অর্থাৎ **৳' + adv + '**, bKash 01799403099 বা Nagad 01577203389-এ পাঠাতে হবে। ' +
+        (d.last4 ? '' : 'পাঠানো হয়ে গেলে যে নম্বর থেকে পাঠিয়েছেন তার শেষ ৪ ডিজিট এখানে লিখলে আমি ফর্মে বসিয়ে দেব। না লিখলে ফর্মে নিজে লিখবেন।') +
+        '\n\nআমি কি এই তথ্য দিয়ে আপনার হয়ে অর্ডার ফর্ম পূরণ করে দেব?';
+    }
+    function oAsk(pre) {
+      var d = O.d, s = O.step, q = '', b = null;
+      if (s === 'prod') { q = 'কোন পণ্যটি অর্ডার করবেন?'; b = prodBtns(); }
+      else if (s === 'size') {
+        var fam = d.prod.fam;
+        q = d.prod.n + ' কোন সাইজে নেবেন?';
+        b = [120, 90, 60].map(function (z) { return { t: z + 'g · ৳' + SZ[fam].pr[z], fn: function () { oSetSize(fam, z); } }; });
+      }
+      else if (s === 'qty') { q = 'কয়টি নেবেন?'; b = [1, 2, 3].map(function (n) { return { t: n + 'টি', fn: function () { oSetQty(n); } }; }); }
+      else if (s === 'name') q = 'আপনার নাম কী?';
+      else if (s === 'phone') q = 'ফোন নম্বর দিন (যেমন 01XXXXXXXXX), ডেলিভারির আগে যোগাযোগের জন্য।';
+      else if (s === 'district') q = 'কোন জেলায় ডেলিভারি নেবেন? (যেমন ঢাকা, খুলনা, সিলেট)';
+      else if (s === 'area') q = 'জেলার ভেতরে এলাকা বা থানা কোনটি? (যেমন মিরপুর, সাভার, সদর)';
+      else if (s === 'address') q = 'পূর্ণ ঠিকানা লিখুন (বাসা, রোড, ব্লক বা গ্রাম)।';
+      else if (s === 'note') { q = 'কোনো বিশেষ নোট আছে? (যেমন ডেলিভারির সময়)। না থাকলে নিচের বাটনে চাপুন।'; b = [{ t: 'কোনো নোট নেই', fn: function () { d.note = ''; d.noteDone = true; oNext(); } }]; }
+      else if (s === 'consent') {
+        q = oSummary();
+        b = [
+          { t: '✅ হ্যাঁ, ফর্ম পূরণ করুন', fn: oFill },
+          { t: '✏️ কিছু বদলাব', alt: true, fn: oEditAsk },
+          { t: '✖ বাতিল', alt: true, fn: oCancel }
+        ];
+      }
+      botSay((pre || '') + q, b);
+    }
+    function oEditAsk() {
+      O.step = 'edit'; oSave();
+      var d = O.d;
+      function re(label, fn) { return { t: label, alt: true, fn: function () { fn(); oNext(); } }; }
+      botSay('কোনটি বদলাবেন?', [
+        re('পণ্য', function () { d.prod = null; }),
+        re('সংখ্যা', function () { d.qty = 0; }),
+        re('নাম', function () { d.name = ''; }),
+        re('ফোন', function () { d.phone = ''; }),
+        re('ঠিকানা', function () { d.district = ''; d.area = ''; d.address = ''; }),
+        re('নোট', function () { d.noteDone = false; })
+      ]);
+    }
+    function oCancel() {
+      O = null; oSave();
+      botSay('ঠিক আছে, অর্ডার বাতিল করলাম। আবার অর্ডার করতে চাইলে "অর্ডার করতে চাই" লিখুন। আর কিছু জানার থাকলে নির্দ্বিধায় জিজ্ঞেস করুন 🍫');
+    }
+    function aiPass() { O.ai = true; oSave(); return false; }
+    function oAfterAI() {
+      if (O && O.on && O.ai) { O.ai = false; setTimeout(function () { if (O && O.on) oAsk('অর্ডারটা চালিয়ে যাই 🍫\n\n'); }, 1800); }
+    }
+    function oHandle(text) {
+      clearOActs();
+      var t = String(text).trim();
+      if (!O || !O.on) { if (orderIntent(t)) { oStart(t); return true; } return false; }
+      if (CANCEL.test(t)) { oCancel(); return true; }
+      return oStep(t);
+    }
+    function oStep(t) {
+      var s = O.step, d = O.d, v, strongQ = /[?？]/.test(t);
+      if (s === 'prod') {
+        v = findProduct(t);
+        if (!v) { if (looksQ(t)) return aiPass(); botSay('পণ্যটা বুঝতে পারিনি। নিচের তালিকা থেকে বেছে নিন:', prodBtns()); return true; }
+        if (v.special) { botSay('White Chocolate আলাদাভাবে নিতে চাইলে দাম জানতে আমাদের টিমকে WhatsApp করুন: 01764491395। Chocolate Gift Box-এর ভেতরে White Chocolate পাবেন। অন্য কোন পণ্যটি নেবেন?', prodBtns()); return true; }
+        d.prod = v; oNext(v.price ? '✓ ' + v.n + ' — ৳' + v.price + '\n\n' : ''); return true;
+      }
+      if (s === 'size') {
+        v = findSize(t);
+        if (v) { oSetSize(d.prod.fam, v); return true; }
+        if (looksQ(t)) return aiPass();
+        oAsk('সাইজ বুঝতে পারিনি।\n\n'); return true;
+      }
+      if (s === 'qty') {
+        v = parseQty(t, true);
+        if (v == null) { if (looksQ(t)) return aiPass(); botSay('সংখ্যাটা সংখ্যায় লিখুন, যেমন ২।'); return true; }
+        if (v < 1) { botSay('কমপক্ষে ১টি নিতে হবে। কয়টি নেবেন?'); return true; }
+        if (v > 50) { botSay('৫০টির বেশি অর্ডার হলে আমাদের টিমকে WhatsApp-এ জানান: 01764491395। এখানে কয়টি নেবেন?'); return true; }
+        oSetQty(v); return true;
+      }
+      if (s === 'name') {
+        if (strongQ) return aiPass();
+        v = extractName(t) || t.replace(/^আমি\s+/, '').trim();
+        if (v.length < 2 || v.length > 60 || /\d/.test(v)) { botSay('নামটা ঠিকমতো বুঝতে পারিনি। শুধু নামটা লিখুন, যেমন: রাহিম আহমেদ।'); return true; }
+        d.name = v; oNext('ধন্যবাদ ' + v + '! '); return true;
+      }
+      if (s === 'phone') {
+        v = parsePhone(t);
+        if (!v) { if (looksQ(t)) return aiPass(); botSay('নম্বরটা ঠিক মনে হচ্ছে না। ১১ ডিজিটের নম্বর দিন, যেমন 01XXXXXXXXX।'); return true; }
+        d.phone = v; oNext('✓ নম্বর নিলাম।\n\n'); return true;
+      }
+      if (s === 'district') {
+        v = findDistrict(t);
+        if (!v) { if (looksQ(t)) return aiPass(); botSay('জেলা বুঝতে পারিনি। জেলার নাম লিখুন, যেমন ঢাকা, খুলনা, সিলেট।'); return true; }
+        d.district = v.n; d.division = v.dv; oNext('✓ ' + v.bn + ' (' + v.dv + ' বিভাগ)\n\n'); return true;
+      }
+      if (s === 'area') {
+        if (strongQ) return aiPass();
+        if (t.length < 2 || t.length > 80) { botSay('এলাকা বা থানার নাম লিখুন, যেমন মিরপুর, সাভার, সদর।'); return true; }
+        d.area = t; oNext(); return true;
+      }
+      if (s === 'address') {
+        if (strongQ) return aiPass();
+        if (t.length < 5) { botSay('ঠিকানাটা আর একটু বিস্তারিত লিখুন (বাসা, রোড, ব্লক বা গ্রাম)।'); return true; }
+        d.address = t.slice(0, 250); oNext(); return true;
+      }
+      if (s === 'note') {
+        if (strongQ) return aiPass();
+        d.note = NONOTE.test(t) ? '' : t.slice(0, 300); d.noteDone = true; oNext(); return true;
+      }
+      if (s === 'consent') {
+        if (YES.test(t)) { oFill(); return true; }
+        if (NO.test(t)) { oEditAsk(); return true; }
+        v = parseLast4(t);
+        if (v) { d.last4 = v; oSave(); oAsk('✓ শেষ ৪ ডিজিট নিলাম।\n\n'); return true; }
+        if (looksQ(t)) return aiPass();
+        botSay('ফর্ম পূরণ করে দেব কি? "হ্যাঁ", "বদলাব" বা "বাতিল" লিখুন, অথবা নিচের বাটন চাপুন।', [
+          { t: '✅ হ্যাঁ, ফর্ম পূরণ করুন', fn: oFill }, { t: '✏️ কিছু বদলাব', alt: true, fn: oEditAsk }, { t: '✖ বাতিল', alt: true, fn: oCancel }
+        ]);
+        return true;
+      }
+      if (s === 'edit') { oEditAsk(); return true; }
+      return false;
+    }
+
+    /* ----- fill the real order form on the page ----- */
+    function oCss() {
+      if (document.getElementById('araOrderCss')) return;
+      var st = document.createElement('style'); st.id = 'araOrderCss';
+      st.textContent = '@keyframes araGlow{0%,100%{box-shadow:0 0 0 0 rgba(200,16,46,0)}50%{box-shadow:0 0 0 6px rgba(200,16,46,.28)}}' +
+        '.ara-glow{outline:2px solid #C8102E!important;outline-offset:3px;animation:araGlow 1.1s ease-in-out 5}' +
+        '#araOrderToast{position:fixed;left:50%;top:calc(env(safe-area-inset-top,0px) + 10px);transform:translate(-50%,-14px);opacity:0;width:min(92vw,440px);z-index:500;box-sizing:border-box;padding:14px 44px 14px 16px;border-radius:14px;background:#241209;color:#F6F1E6;font:600 14px/1.55 Archivo,system-ui,sans-serif;box-shadow:0 14px 34px rgba(36,18,9,.35);transition:opacity .4s ease,transform .45s cubic-bezier(.2,.8,.2,1)}' +
+        '#araOrderToast.on{opacity:1;transform:translate(-50%,0)}#araOrderToast button{position:absolute;top:8px;right:8px;width:30px;height:30px;border:0;border-radius:50%;background:rgba(255,255,255,.14);color:#fff;font-size:15px;cursor:pointer}';
+      document.head.appendChild(st);
+    }
+    function oToast(msg) {
+      oCss();
+      var old = document.getElementById('araOrderToast'); if (old) old.parentNode.removeChild(old);
+      var t = document.createElement('div'); t.id = 'araOrderToast'; t.setAttribute('role', 'status');
+      t.appendChild(document.createTextNode(msg));
+      var x = document.createElement('button'); x.type = 'button'; x.setAttribute('aria-label', 'Close'); x.textContent = '✕';
+      var kill = function () { t.classList.remove('on'); setTimeout(function () { if (t.parentNode) t.parentNode.removeChild(t); }, 450); };
+      x.addEventListener('click', kill); t.appendChild(x);
+      document.body.appendChild(t);
+      requestAnimationFrame(function () { requestAnimationFrame(function () { t.classList.add('on'); }); });
+      setTimeout(kill, 16000);
+    }
+    function oTypeInto(id, val, dur) {
+      var e = document.getElementById(id); if (!e) return;
+      var chars = Array.from(String(val)), n = chars.length, i = 0, step = Math.max(10, Math.floor(dur / Math.max(1, n)));
+      e.classList.remove('ofgeo-flash'); void e.offsetWidth; e.classList.add('ofgeo-flash');
+      e.value = '';
+      if (!n) return;
+      var iv = setInterval(function () {
+        i++; e.value = chars.slice(0, i).join('');
+        if (i >= n) { clearInterval(iv); e.dispatchEvent(new Event('input', { bubbles: true })); }
+      }, step);
+    }
+    function oPutDistrict(d) {
+      var e = document.getElementById('oDistrictSearch'), hit = null;
+      try { if (typeof window.araSetDistrict === 'function') hit = window.araSetDistrict([d.district]); } catch (err) {}
+      if (!hit && e) {
+        e.value = d.district;
+        var h = document.getElementById('oDistrict'), v = document.getElementById('oDivision');
+        if (h) h.value = d.district; if (v) v.value = d.division;
+        try { e.setCustomValidity(''); } catch (err2) {}
+      }
+      if (e) { e.classList.remove('ofgeo-flash'); void e.offsetWidth; e.classList.add('ofgeo-flash'); }
+    }
+    function oFill() {
+      var d = O.d, p = d.prod, tot = p.price * d.qty, adv = Math.round(tot * 0.2);
+      O.on = false; oSave();
+      var doneMsg = 'ফর্ম পূরণ হয়ে গেছে ✅ এখন অগ্রিম **৳' + adv + '** bKash 01799403099 বা Nagad 01577203389-এ পাঠান, ফর্মে শেষ ৪ ডিজিট লিখুন, তারপর **Submit Order** চাপলেই অর্ডার কনফার্ম হবে।';
+      botSay('ঠিক আছে! ✨ এখন ফর্ম পূরণ করছি। আমি শুধু তথ্য বসাব, অর্ডার কনফার্ম করবেন আপনি নিজে Submit চেপে।');
+      setTimeout(function () { setOpen(false); }, 2000);
+      setTimeout(function () { try { window.openOrderChoice(p.n, '৳ ' + p.price); } catch (e) {} }, 2350);
+      setTimeout(function () { try { window.openOrderForm(); } catch (e) {} }, 3000);
+      setTimeout(function () {
+        var q = document.getElementById('oQty');
+        if (!q) { addMsg('bot', 'ফর্ম খুলতে পারলাম না। পণ্যের পাশের Order বাটনে চেপে ফর্ম খুলুন।', true); return; }
+        q.value = d.qty; try { window.updateOrderTotal(); } catch (e) {}
+        oTypeInto('oName', d.name, 350);
+        setTimeout(function () { oTypeInto('oPhone', d.phone, 350); }, 380);
+        setTimeout(function () { oPutDistrict(d); }, 760);
+        setTimeout(function () { oTypeInto('oArea', d.area, 300); }, 1000);
+        setTimeout(function () { oTypeInto('oDetailedAddress', d.address, 500); }, 1350);
+        if (d.note) setTimeout(function () { oTypeInto('oNotes', d.note, 300); }, 1900);
+        if (d.last4) setTimeout(function () { oTypeInto('oPaymentLast4', d.last4, 250); }, 2250);
+        setTimeout(function () {
+          oCss();
+          var box = document.querySelector('#orderForm .nf-adv'), l4 = document.getElementById('oPaymentLast4'), sb = document.querySelector('#orderForm .complaints-submit');
+          if (box && box.scrollIntoView) box.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          if (!d.last4 && l4) l4.classList.add('ara-glow');
+          if (sb) sb.classList.add('ara-glow');
+          oToast(d.last4
+            ? '✓ সব তথ্য বসে গেছে। সব ঠিক থাকলে নিচের Submit Order চাপুন।'
+            : '✓ ফর্ম পূরণ হয়েছে। ১) অগ্রিম ৳' + adv + ' পাঠান ২) শেষ ৪ ডিজিট লিখুন ৩) Submit Order চাপুন।');
+          addMsg('bot', doneMsg, true); history.push({ role: 'bot', text: doneMsg }); save();
+        }, 2600);
+      }, 3700);
     }
 
     /* ----- open / close + keyboard-safe sizing ----- */
@@ -3550,6 +3942,7 @@ this.reset();
       var c = el('button', 'chip', q); c.type = 'button'; c.setAttribute('data-q', q); chips.appendChild(c);
     });
     history = load();
+    try { var so = JSON.parse(sessionStorage.getItem(OKEY) || 'null'); if (so && so.on && so.d) O = so; } catch (e) {}
     if (history.length) {
       history.forEach(function (h) { addMsg(h.role, h.text, true); });
       toBottom();
