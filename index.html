@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-title-design="glass">
 <head>
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-V183FH99YQ"></script>
@@ -937,6 +937,31 @@ html.order-open:not(:has(.order-form-overlay.open)) .nf-dot::after{animation-pla
 .ambient-glow-layer{transition:opacity .28s ease;}
 html.ara-chat-open .ambient-glow-layer{opacity:0;}
 </style>
+<style id="ara-title-glass">
+/* ==========================================================================
+   TITLE BAR DESIGN SWITCH  (<html data-title-design="...">)
+   "glass"   = NEW: chat-box glass title bar (background blur + water ripple +
+               distorted light rays + RGB colour dispersion, same as chat box/launcher)
+   "classic" = ORIGINAL title bar (solid cream). The original rule is kept untouched in
+               the main stylesheet:  header{position:sticky;top:0;z-index:50;
+               background:var(--cream-2);border-bottom:1px solid var(--line);}
+   To restore the first design: change data-title-design="glass" to "classic".
+   ========================================================================== */
+html[data-title-design="glass"] header{background:transparent}
+html[data-title-design="glass"] header::before{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background:radial-gradient(ellipse 34% 55% at 18% 0%,rgba(255,255,255,.7) 0%,rgba(255,255,255,0) 100%),radial-gradient(ellipse 40% 60% at 82% 100%,rgba(255,255,255,.4) 0%,rgba(255,255,255,0) 100%),linear-gradient(120deg,rgba(255,140,170,.2) 0%,rgba(255,235,150,.16) 30%,rgba(150,230,255,.18) 62%,rgba(190,150,255,.2) 100%),rgba(246,241,230,.88);
+  background-size:100% 100%,100% 100%,260% 260%,100% 100%;
+  -webkit-backdrop-filter:blur(14px) saturate(1.2);backdrop-filter:blur(14px) saturate(1.2);
+  box-shadow:inset 0 1px 1px rgba(255,255,255,.95),inset 3px 0 5px rgba(255,90,140,.24),inset -3px 0 5px rgba(90,205,255,.24),inset 0 -6px 12px rgba(255,255,255,.3);
+  animation:araHdGlint 7s ease-in-out infinite alternate;animation-play-state:paused}
+html[data-title-design="glass"][data-title-water="on"] header::before{
+  background:radial-gradient(ellipse 34% 55% at 18% 0%,rgba(255,255,255,.55) 0%,rgba(255,255,255,0) 100%),radial-gradient(ellipse 40% 60% at 82% 100%,rgba(255,255,255,.3) 0%,rgba(255,255,255,0) 100%),linear-gradient(120deg,rgba(255,140,170,.2) 0%,rgba(255,235,150,.16) 30%,rgba(150,230,255,.18) 62%,rgba(190,150,255,.2) 100%),rgba(246,241,230,.5);
+  background-size:100% 100%,100% 100%,260% 260%,100% 100%;
+  -webkit-backdrop-filter:none;backdrop-filter:url(#ara-water-hd) blur(3.2px) saturate(1.3) contrast(1.04)}
+html[data-title-design="glass"][data-title-fx="run"] header::before{animation-play-state:running}
+@keyframes araHdGlint{from{background-position:0 0,0 0,0% 0%,0 0}to{background-position:0 0,0 0,100% 100%,0 0}}
+@media(prefers-reduced-motion:reduce){html[data-title-design="glass"] header::before{animation:none}}
+</style>
 </head>
 <body>
 
@@ -974,6 +999,7 @@ html.ara-chat-open .ambient-glow-layer{opacity:0;}
   <g transform="translate(246.2,17.7) rotate(8) scale(1.35)"><path d="M0,-4 L0,1" stroke="#4A3318" stroke-width="2.2" stroke-linecap="round"/><path d="M0,0 C8,4 10,17 5.5,27 Q2.5,33 0,36 Q-2.5,33 -5.5,27 C-10,17 -8,4 0,0Z" fill="url(#podY)" stroke="#4A2410" stroke-width="0.5"/><path d="M0,1 C3.5,11 3.5,24 0,35" fill="none" stroke="#000" stroke-width="0.7" opacity="0.28"/><path d="M0,1 C-3.5,11 -3.5,24 0,35" fill="none" stroke="#000" stroke-width="0.7" opacity="0.28"/><path d="M0,1 C7,9 7,20 4,29" fill="none" stroke="#000" stroke-width="0.7" opacity="0.28"/><path d="M0,1 C-7,9 -7,20 -4,29" fill="none" stroke="#000" stroke-width="0.7" opacity="0.28"/><path d="M-4,5 C-5,12 -4.5,19 -3,24" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" opacity="0.28"/></g><g transform="translate(194.9,36.5) rotate(-8) scale(1.25)"><path d="M0,-4 L0,1" stroke="#4A3318" stroke-width="2.2" stroke-linecap="round"/><path d="M0,0 C8,4 10,17 5.5,27 Q2.5,33 0,36 Q-2.5,33 -5.5,27 C-10,17 -8,4 0,0Z" fill="url(#podR)" stroke="#4A2410" stroke-width="0.5"/><path d="M0,1 C3.5,11 3.5,24 0,35" fill="none" stroke="#000" stroke-width="0.7" opacity="0.28"/><path d="M0,1 C-3.5,11 -3.5,24 0,35" fill="none" stroke="#000" stroke-width="0.7" opacity="0.28"/><path d="M0,1 C7,9 7,20 4,29" fill="none" stroke="#000" stroke-width="0.7" opacity="0.28"/><path d="M0,1 C-7,9 -7,20 -4,29" fill="none" stroke="#000" stroke-width="0.7" opacity="0.28"/><path d="M-4,5 C-5,12 -4.5,19 -3,24" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" opacity="0.28"/></g><g transform="translate(136.3,59.6) rotate(10) scale(1.1)"><path d="M0,-4 L0,1" stroke="#4A3318" stroke-width="2.2" stroke-linecap="round"/><path d="M0,0 C8,4 10,17 5.5,27 Q2.5,33 0,36 Q-2.5,33 -5.5,27 C-10,17 -8,4 0,0Z" fill="url(#podG)" stroke="#4A2410" stroke-width="0.5"/><path d="M0,1 C3.5,11 3.5,24 0,35" fill="none" stroke="#000" stroke-width="0.7" opacity="0.28"/><path d="M0,1 C-3.5,11 -3.5,24 0,35" fill="none" stroke="#000" stroke-width="0.7" opacity="0.28"/><path d="M0,1 C7,9 7,20 4,29" fill="none" stroke="#000" stroke-width="0.7" opacity="0.28"/><path d="M0,1 C-7,9 -7,20 -4,29" fill="none" stroke="#000" stroke-width="0.7" opacity="0.28"/><path d="M-4,5 C-5,12 -4.5,19 -3,24" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" opacity="0.28"/></g><g transform="translate(69.1,90.5) rotate(-6) scale(0.9)"><path d="M0,-4 L0,1" stroke="#4A3318" stroke-width="2.2" stroke-linecap="round"/><path d="M0,0 C8,4 10,17 5.5,27 Q2.5,33 0,36 Q-2.5,33 -5.5,27 C-10,17 -8,4 0,0Z" fill="url(#podY)" stroke="#4A2410" stroke-width="0.5"/><path d="M0,1 C3.5,11 3.5,24 0,35" fill="none" stroke="#000" stroke-width="0.7" opacity="0.28"/><path d="M0,1 C-3.5,11 -3.5,24 0,35" fill="none" stroke="#000" stroke-width="0.7" opacity="0.28"/><path d="M0,1 C7,9 7,20 4,29" fill="none" stroke="#000" stroke-width="0.7" opacity="0.28"/><path d="M0,1 C-7,9 -7,20 -4,29" fill="none" stroke="#000" stroke-width="0.7" opacity="0.28"/><path d="M-4,5 C-5,12 -4.5,19 -3,24" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" opacity="0.28"/></g><g transform="translate(134.3,98.0) rotate(6) scale(1.15)"><path d="M0,-4 L0,1" stroke="#4A3318" stroke-width="2.2" stroke-linecap="round"/><path d="M0,0 C8,4 10,17 5.5,27 Q2.5,33 0,36 Q-2.5,33 -5.5,27 C-10,17 -8,4 0,0Z" fill="url(#podO)" stroke="#4A2410" stroke-width="0.5"/><path d="M0,1 C3.5,11 3.5,24 0,35" fill="none" stroke="#000" stroke-width="0.7" opacity="0.28"/><path d="M0,1 C-3.5,11 -3.5,24 0,35" fill="none" stroke="#000" stroke-width="0.7" opacity="0.28"/><path d="M0,1 C7,9 7,20 4,29" fill="none" stroke="#000" stroke-width="0.7" opacity="0.28"/><path d="M0,1 C-7,9 -7,20 -4,29" fill="none" stroke="#000" stroke-width="0.7" opacity="0.28"/><path d="M-4,5 C-5,12 -4.5,19 -3,24" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" opacity="0.28"/></g><g transform="translate(101.7,145.0) rotate(-10) scale(0.95)"><path d="M0,-4 L0,1" stroke="#4A3318" stroke-width="2.2" stroke-linecap="round"/><path d="M0,0 C8,4 10,17 5.5,27 Q2.5,33 0,36 Q-2.5,33 -5.5,27 C-10,17 -8,4 0,0Z" fill="url(#podG)" stroke="#4A2410" stroke-width="0.5"/><path d="M0,1 C3.5,11 3.5,24 0,35" fill="none" stroke="#000" stroke-width="0.7" opacity="0.28"/><path d="M0,1 C-3.5,11 -3.5,24 0,35" fill="none" stroke="#000" stroke-width="0.7" opacity="0.28"/><path d="M0,1 C7,9 7,20 4,29" fill="none" stroke="#000" stroke-width="0.7" opacity="0.28"/><path d="M0,1 C-7,9 -7,20 -4,29" fill="none" stroke="#000" stroke-width="0.7" opacity="0.28"/><path d="M-4,5 C-5,12 -4.5,19 -3,24" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" opacity="0.28"/></g><g transform="translate(248.2,75.9) rotate(5) scale(1.0)"><path d="M0,-4 L0,1" stroke="#4A3318" stroke-width="2.2" stroke-linecap="round"/><path d="M0,0 C8,4 10,17 5.5,27 Q2.5,33 0,36 Q-2.5,33 -5.5,27 C-10,17 -8,4 0,0Z" fill="url(#podR)" stroke="#4A2410" stroke-width="0.5"/><path d="M0,1 C3.5,11 3.5,24 0,35" fill="none" stroke="#000" stroke-width="0.7" opacity="0.28"/><path d="M0,1 C-3.5,11 -3.5,24 0,35" fill="none" stroke="#000" stroke-width="0.7" opacity="0.28"/><path d="M0,1 C7,9 7,20 4,29" fill="none" stroke="#000" stroke-width="0.7" opacity="0.28"/><path d="M0,1 C-7,9 -7,20 -4,29" fill="none" stroke="#000" stroke-width="0.7" opacity="0.28"/><path d="M-4,5 C-5,12 -4.5,19 -3,24" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" opacity="0.28"/></g><g transform="translate(92.6,48.5) rotate(8) scale(0.9)"><path d="M0,-4 L0,1" stroke="#4A3318" stroke-width="2.2" stroke-linecap="round"/><path d="M0,0 C8,4 10,17 5.5,27 Q2.5,33 0,36 Q-2.5,33 -5.5,27 C-10,17 -8,4 0,0Z" fill="url(#podO)" stroke="#4A2410" stroke-width="0.5"/><path d="M0,1 C3.5,11 3.5,24 0,35" fill="none" stroke="#000" stroke-width="0.7" opacity="0.28"/><path d="M0,1 C-3.5,11 -3.5,24 0,35" fill="none" stroke="#000" stroke-width="0.7" opacity="0.28"/><path d="M0,1 C7,9 7,20 4,29" fill="none" stroke="#000" stroke-width="0.7" opacity="0.28"/><path d="M0,1 C-7,9 -7,20 -4,29" fill="none" stroke="#000" stroke-width="0.7" opacity="0.28"/><path d="M-4,5 C-5,12 -4.5,19 -3,24" fill="none" stroke="#fff" stroke-width="1.6" stroke-linecap="round" opacity="0.28"/></g>
 </svg>
 
+<svg id="ara-hd-svg" width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute;width:0;height:0;overflow:hidden"><defs><filter id="ara-water-hd" x="-8%" y="-40%" width="116%" height="180%" color-interpolation-filters="sRGB"><feTurbulence type="fractalNoise" baseFrequency="0.018 0.03" numOctaves="2" seed="5" result="n"><animate attributeName="baseFrequency" dur="9s" values="0.018 0.03;0.028 0.02;0.018 0.03" repeatCount="indefinite"/></feTurbulence><feColorMatrix in="SourceGraphic" type="matrix" values="1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0" result="r"/><feColorMatrix in="SourceGraphic" type="matrix" values="0 0 0 0 0 0 1 0 0 0 0 0 0 0 0 0 0 0 1 0" result="g"/><feColorMatrix in="SourceGraphic" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0 0 1 0" result="b"/><feDisplacementMap in="r" in2="n" scale="30" xChannelSelector="R" yChannelSelector="G" result="rd"/><feDisplacementMap in="g" in2="n" scale="20" xChannelSelector="R" yChannelSelector="G" result="gd"/><feDisplacementMap in="b" in2="n" scale="10" xChannelSelector="R" yChannelSelector="G" result="bd"/><feComposite in="rd" in2="gd" operator="arithmetic" k1="0" k2="1" k3="1" k4="0" result="rg"/><feComposite in="rg" in2="bd" operator="arithmetic" k1="0" k2="1" k3="1" k4="0"/></filter></defs></svg>
 <header>
   <div class="nav">
     <div class="brand"><img src="images/logo.png" alt="Ara Chocolates Logo" class="logo-img" width="34" height="34" fetchpriority="high" onerror="this.style.display='none'">Ara Chocolates</div>
@@ -3101,7 +3127,7 @@ this.reset();
     'button:focus-visible,a:focus-visible{outline:2px solid #B8873A;outline-offset:2px}',
 
     /* launcher */
-    '.launcher{position:fixed;right:16px;bottom:16px;width:58px;height:58px;border-radius:50%;background:radial-gradient(ellipse 46% 30% at 32% 20%,rgba(255,255,255,.92) 0%,rgba(255,255,255,0) 100%),radial-gradient(circle at 70% 88%,rgba(255,255,255,.5) 0%,rgba(255,255,255,0) 45%),linear-gradient(135deg,rgba(255,140,170,.16) 0%,rgba(255,235,150,.12) 38%,rgba(150,230,255,.14) 72%,rgba(190,150,255,.14) 100%),rgba(255,255,255,.10);background-size:100% 100%,100% 100%,230% 230%,100% 100%;-webkit-backdrop-filter:blur(2.5px) saturate(1.25);backdrop-filter:blur(2.5px) saturate(1.25);display:grid;place-items:center;box-shadow:0 10px 24px rgba(36,18,9,.22),0 2px 6px rgba(36,18,9,.12),0 0 0 1px rgba(255,255,255,.8),inset 0 1px 1px rgba(255,255,255,.95),inset 2px 0 4px rgba(255,90,140,.22),inset -2px 0 4px rgba(90,205,255,.22),inset 0 -8px 14px rgba(255,255,255,.3);transition:transform .2s ease,opacity .2s ease;animation:pop .5s .9s cubic-bezier(.2,.9,.3,1.2) backwards,glint 7s ease-in-out infinite alternate}',
+    '.launcher{position:fixed;right:22px;bottom:22px;width:58px;height:58px;border-radius:50%;background:radial-gradient(ellipse 46% 30% at 32% 20%,rgba(255,255,255,.92) 0%,rgba(255,255,255,0) 100%),radial-gradient(circle at 70% 88%,rgba(255,255,255,.5) 0%,rgba(255,255,255,0) 45%),linear-gradient(135deg,rgba(255,140,170,.16) 0%,rgba(255,235,150,.12) 38%,rgba(150,230,255,.14) 72%,rgba(190,150,255,.14) 100%),rgba(255,255,255,.10);background-size:100% 100%,100% 100%,230% 230%,100% 100%;-webkit-backdrop-filter:blur(2.5px) saturate(1.25);backdrop-filter:blur(2.5px) saturate(1.25);display:grid;place-items:center;box-shadow:0 10px 24px rgba(36,18,9,.22),0 2px 6px rgba(36,18,9,.12),0 0 0 1px rgba(255,255,255,.8),inset 0 1px 1px rgba(255,255,255,.95),inset 2px 0 4px rgba(255,90,140,.22),inset -2px 0 4px rgba(90,205,255,.22),inset 0 -8px 14px rgba(255,255,255,.3);transition:transform .2s ease,opacity .2s ease;animation:pop .5s .9s cubic-bezier(.2,.9,.3,1.2) backwards,glint 7s ease-in-out infinite alternate}',
     '@keyframes glint{from{background-position:0 0,0 0,0% 0%,0 0}to{background-position:0 0,0 0,100% 100%,0 0}}',
     '.water .launcher{-webkit-backdrop-filter:none;backdrop-filter:url(#ara-water-ico) saturate(1.3) contrast(1.04)}',
     '.launcher svg{position:relative;opacity:.92;filter:drop-shadow(0 1px 0 rgba(255,255,255,.9)) drop-shadow(0 2px 3px rgba(36,18,9,.25))}',
@@ -3113,14 +3139,14 @@ this.reset();
     '@keyframes pop{from{transform:scale(.5);opacity:0}}',
 
     /* teaser (shows once per session) */
-    '.teaser{position:fixed;right:16px;bottom:86px;max-width:230px;background:#fff;border-radius:14px 14px 4px 14px;box-shadow:0 8px 24px rgba(36,18,9,.18),0 0 0 1px rgba(36,18,9,.1);opacity:0;visibility:hidden;transform:translateY(8px);transition:opacity .25s ease,transform .25s ease,visibility 0s .25s}',
+    '.teaser{position:fixed;right:22px;bottom:92px;max-width:230px;background:#fff;border-radius:14px 14px 4px 14px;box-shadow:0 8px 24px rgba(36,18,9,.18),0 0 0 1px rgba(36,18,9,.1);opacity:0;visibility:hidden;transform:translateY(8px);transition:opacity .25s ease,transform .25s ease,visibility 0s .25s}',
     '.teaser.show{opacity:1;visibility:visible;transform:none;transition:opacity .25s ease,transform .25s ease,visibility 0s}',
     '.teaser .tt{display:block;text-align:left;padding:11px 34px 11px 14px;font-size:14px;color:#241209}',
     '.teaser .tx{position:absolute;top:2px;right:2px;width:30px;height:30px;display:grid;place-items:center;color:#7A6552}',
     '.teaser .tx svg{width:14px;height:14px}',
 
     /* panel */
-    '.panel{position:fixed;right:16px;bottom:90px;width:384px;height:560px;height:min(640px,calc(100vh - 112px));height:min(640px,calc(100dvh - 112px));display:flex;flex-direction:column;background:rgba(246,241,230,.9);-webkit-backdrop-filter:blur(14px) saturate(1.1);backdrop-filter:blur(14px) saturate(1.1);border-radius:20px;overflow:hidden;isolation:isolate;box-shadow:0 18px 50px rgba(36,18,9,.3),0 0 0 1px rgba(36,18,9,.14);opacity:0;visibility:hidden;pointer-events:none;transform:translateY(14px);transition:opacity .22s ease,transform .22s cubic-bezier(.2,.8,.2,1),visibility 0s .22s}',
+    '.panel{position:fixed;right:22px;bottom:96px;width:384px;height:560px;height:min(640px,calc(100vh - 112px));height:min(640px,calc(100dvh - 112px));display:flex;flex-direction:column;background:rgba(246,241,230,.9);-webkit-backdrop-filter:blur(14px) saturate(1.1);backdrop-filter:blur(14px) saturate(1.1);border-radius:20px;overflow:hidden;isolation:isolate;box-shadow:0 18px 50px rgba(36,18,9,.3),0 0 0 1px rgba(36,18,9,.14);opacity:0;visibility:hidden;pointer-events:none;transform:translateY(14px);transition:opacity .22s ease,transform .22s cubic-bezier(.2,.8,.2,1),visibility 0s .22s}',
     '.open .panel{opacity:1;visibility:visible;pointer-events:auto;transform:none;transition:opacity .22s ease,transform .22s cubic-bezier(.2,.8,.2,1),visibility 0s}',
 
     /* water mode (Chromium only): page text behind the panel ripples like seen through water */
@@ -3150,7 +3176,7 @@ this.reset();
     '.m.instant{animation:none}',
 
     /* premium reveal: the whole answer is laid out at once (no jumping), words start softly blurred and sharpen top to bottom, quickly */
-    '.w{animation:wr .5s ease-out both}',
+    '.w{animation:wr .3s ease-out both}',
     '@keyframes wr{from{opacity:.18;filter:blur(4px)}to{opacity:1;filter:blur(0)}}',
     '.calm .w{animation-name:wr2}',
     '@keyframes wr2{from{opacity:.1}to{opacity:1}}',
@@ -3164,6 +3190,14 @@ this.reset();
     '.dots i{width:8px;height:8px;border-radius:50%;background:linear-gradient(135deg,#EFD08F,#B8873A);opacity:.4;transform:scale(.7);animation:dot 1.15s ease-in-out infinite}',
     '.dots i:nth-child(2){animation-delay:.18s}.dots i:nth-child(3){animation-delay:.36s}',
     '@keyframes dot{0%,70%,100%{opacity:.4;transform:scale(.7);box-shadow:0 0 0 0 rgba(184,135,58,0)}35%{opacity:1;transform:scale(1.15);box-shadow:0 0 0 4px rgba(184,135,58,.18)}}',
+
+    /* typing: soft shimmering text lines (replaces the old bouncing dots) */
+    '.sk{display:flex;flex-direction:column;gap:7px;width:136px;padding:5px 0 3px}',
+    '.sk i{display:block;height:8px;border-radius:5px;background:linear-gradient(90deg,rgba(36,18,9,.08) 0%,rgba(36,18,9,.08) 38%,rgba(184,135,58,.55) 50%,rgba(36,18,9,.08) 62%,rgba(36,18,9,.08) 100%);background-size:200% 100%;animation:sk 1.25s linear infinite}',
+    '.sk i:nth-child(1){width:100%}',
+    '.sk i:nth-child(2){width:78%;animation-delay:.14s}',
+    '.sk i:nth-child(3){width:46%;animation-delay:.28s}',
+    '@keyframes sk{from{background-position:100% 0}to{background-position:0 0}}',
 
     /* error actions */
     '.acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}',
@@ -3189,6 +3223,33 @@ this.reset();
     '.geobtn.busy .gp{background:#38bdf8;animation-duration:.8s}',
     '@keyframes gp{0%{box-shadow:0 0 0 0 rgba(34,197,94,.55)}100%{box-shadow:0 0 0 9px rgba(34,197,94,0)}}',
 
+    /* location picker popup (two locations, the more accurate one is bold + highlighted) */
+    '.hd{position:relative;z-index:7}',
+    '.lp{position:absolute;inset:0;z-index:6;display:flex;align-items:center;justify-content:center;padding:72px 14px 14px;background:rgba(36,18,9,.55);animation:lpf .22s ease-out}',
+    '.lp[hidden]{display:none}',
+    '@keyframes lpf{from{opacity:0}}',
+    '@keyframes lpu{from{opacity:0;transform:translateY(14px) scale(.97)}}',
+    '.lpbox{width:100%;max-width:356px;max-height:100%;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;background:linear-gradient(165deg,#F6F1E6 0%,#EDE4D0 100%);border-radius:18px;border-top:4px solid #B8873A;padding:16px 13px 13px;box-shadow:0 24px 60px rgba(36,18,9,.42);animation:lpu .3s cubic-bezier(.2,.8,.2,1)}',
+    '.lph{text-align:center;margin-bottom:12px}',
+    '.lph b{display:block;font-size:17px;font-weight:700}',
+    '.lph span{display:block;font-size:12.5px;color:#7A6552;margin-top:3px;line-height:1.45}',
+    '.lpl{display:flex;flex-direction:column;gap:10px}',
+    '.lc{display:block;width:100%;text-align:left;padding:12px 13px;border-radius:14px;background:#fff;box-shadow:inset 0 0 0 1px rgba(36,18,9,.16);font-size:13px;line-height:1.45;color:#4A2C1A;transition:transform .15s ease}',
+    '.lc:active{transform:scale(.985)}',
+    '.lc.best{background:linear-gradient(160deg,#FFF8E6 0%,#FBEBC2 100%);box-shadow:inset 0 0 0 2px #B8873A,0 6px 16px rgba(184,135,58,.35);color:#241209;font-weight:700}',
+    '.lct{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:6px}',
+    '.lct b{font-size:14.5px;font-weight:700;color:#241209}',
+    '.lct em{font-style:normal;font-size:11px;font-weight:700;background:#B8873A;color:#fff;padding:2px 9px;border-radius:999px;white-space:nowrap}',
+    '.lcr{display:flex;gap:8px;padding:3px 0;border-top:1px dashed rgba(36,18,9,.14)}',
+    '.lcr span:first-child{flex:none;width:64px;color:#7A6552;font-weight:500}',
+    '.lc.best .lcr span:first-child{color:#8A5F1E;font-weight:700}',
+    '.lcr span:last-child{flex:1;min-width:0;overflow-wrap:anywhere}',
+    '.lcgo{margin-top:9px;text-align:center;font-size:13px;font-weight:700;color:#F6F1E6;background:#241209;border-radius:999px;padding:9px 8px}',
+    '.lc.best .lcgo{background:linear-gradient(135deg,#C8963F,#8A5F1E)}',
+    '.lw{padding:13px;border-radius:14px;background:rgba(255,255,255,.6);box-shadow:inset 0 0 0 1px rgba(36,18,9,.14);display:flex;flex-direction:column;gap:6px;font-size:12.5px;color:#7A6552}',
+    '.lpre{display:block;width:100%;margin-top:10px;min-height:42px;border-radius:999px;font-size:13.5px;font-weight:600;color:#4A2C1A;box-shadow:inset 0 0 0 1px rgba(36,18,9,.3)}',
+    '.lpre:active{background:#EDE4D0}',
+
     /* composer — no transitions here on purpose (no lag/flicker while typing) */
     '.cm{flex:none;display:flex;align-items:flex-end;gap:8px;padding:10px 12px;background:rgba(255,255,255,.86);border-top:1px solid rgba(36,18,9,.12)}',
     '.cm textarea{flex:1;min-width:0;display:block;resize:none;border:1px solid rgba(36,18,9,.25);border-radius:21px;padding:10px 15px;font:inherit;font-size:16px;line-height:1.4;min-height:44px;max-height:112px;background:#F6F1E6;color:#241209;outline:none;-webkit-appearance:none;appearance:none;overflow-y:auto}',
@@ -3204,12 +3265,13 @@ this.reset();
     '@media (max-width:520px){',
     '.panel{left:0;right:0;bottom:auto;width:auto;top:var(--vt,0px);height:100%;height:var(--vh,100dvh);border-radius:0;box-shadow:none}',
     '.hd{padding-top:calc(13px + env(safe-area-inset-top,0px))}',
+    '.lp{padding-top:calc(78px + env(safe-area-inset-top,0px))}',
     '.cm{padding-bottom:calc(10px + env(safe-area-inset-bottom,0px))}',
-    '.launcher{right:14px;bottom:14px}',
-    '.teaser{right:14px;bottom:84px}',
+    '.launcher{right:20px;bottom:20px}',
+    '.teaser{right:20px;bottom:90px}',
     '}',
 
-    '@media (prefers-reduced-motion:reduce){.launcher,.panel,.teaser,.m,.dots i,.launcher::before,.launcher::after{animation:none!important;transition:none!important}.dots i{opacity:.7;transform:none}.w{animation:none!important}}'
+    '@media (prefers-reduced-motion:reduce){.launcher,.panel,.teaser,.m,.sk i,.dots i,.launcher::before,.launcher::after{animation:none!important;transition:none!important}.sk i{background:rgba(36,18,9,.12)}.dots i{opacity:.7;transform:none}.w{animation:none!important}}'
   ].join('\n');
 
   /* ---------- tiny helpers ---------- */
@@ -3304,6 +3366,13 @@ this.reset();
             '<button class="send" type="submit" aria-label="পাঠান / Send">' + ICON_SEND + '</button>' +
           '</form>' +
           '<div class="note">' + T.note + ' <a href="' + WA_URL + '" target="_blank" rel="noopener noreferrer">' + T.noteLink + '</a></div>' +
+          '<div class="lp" hidden role="dialog" aria-modal="true" aria-label="লোকেশন বেছে নিন">' +
+            '<div class="lpbox">' +
+              '<div class="lph"><b>আপনার লোকেশন বেছে নিন</b><span class="lps"></span></div>' +
+              '<div class="lpl"></div>' +
+              '<button class="lpre" type="button">📍 আবার লোকেশন নিন</button>' +
+            '</div>' +
+          '</div>' +
         '</section>' +
       '</div>';
 
@@ -3317,6 +3386,7 @@ this.reset();
     var chips = sh.querySelector('.chips');
     var form = sh.querySelector('.cm');
     var geoBar = sh.querySelector('.geo'), geoBtn = sh.querySelector('.geobtn'), geoLbl = sh.querySelector('.geobtn .gl'), geoBusy = false, geoTok = 0, geoHandle = null;
+    var lpEl = sh.querySelector('.lp'), lpSub = sh.querySelector('.lps'), lpList = sh.querySelector('.lpl'), lpRe = sh.querySelector('.lpre'), lpBox = sh.querySelector('.lpbox'), geoPending = false;
     var ta = sh.querySelector('textarea');
     var sendBtn = sh.querySelector('.send');
     var wsvg = sh.querySelector('.wsvg');
@@ -3417,9 +3487,26 @@ this.reset();
       m.appendChild(d); msgs.appendChild(m); toBottom();
       return m;
     }
+    /* server down / AI unavailable: reply in the customer's own style (Bangla, English or Banglish) */
+    var DOWN = {
+      bn: 'এই মুহূর্তে সার্ভার মেইনটেনেন্স চলার কারণে আর্টিফিশিয়াল ইন্টেলিজেন্স ব্যবহার করতে পারছি না। আপনি আমাকে বলুন, আপনাকে কীভাবে সাহায্য করতে পারি?',
+      en: "Due to server maintenance right now, I can't use artificial intelligence. Please tell me how I can help you.",
+      bl: 'Ei muhurte server maintenance cholar karone artificial intelligence use korte parchi na. Apni amake bolun, apnake kivabe sahajjo korte pari?'
+    };
+    var BANGLISH = /\b(ami|amar|amake|apni|apnar|apnake|tumi|tomar|kemon|kemone|kivabe|kibhabe|koto|dam|daam|chai|chaibo|ache|achhe|nei|kore|korbo|korte|korun|kora|lagbe|hobe|hoy|hocche|na|ki|kon|kothay|pathan|pathabo|dite|den|din|nite|niye|bolun|bolo|jante|jani|jonno|ekta|duita|tin|taka|dhonnobad|valo|bhalo|thik|accha|hmm|hae|ha|jii|ji|boro|choto|box|gift|order|delivery|chocolate|chocolet)\b/i;
+    function lastUserText() {
+      for (var i = history.length - 1; i >= 0; i--) if (history[i] && history[i].role === 'user') return String(history[i].text || '');
+      return '';
+    }
+    function downMsg() {
+      var t = lastUserText();
+      if (/[\u0980-\u09FF]/.test(t)) return DOWN.bn;
+      if (t && BANGLISH.test(t)) return DOWN.bl;
+      return t ? DOWN.en : DOWN.bn;
+    }
     function showError(kind, code) {
       var m = el('div', 'm bot');
-      m.appendChild(el('p', '', (T.errs && T.errs[kind]) || T.err));
+      m.appendChild(el('p', '', kind === 'noep' ? T.errs.noep : downMsg()));
       if (code) m.appendChild(el('p', 'ec', 'কোড: ' + code));
       var acts = el('div', 'acts');
       var retry = el('button', 'btn', T.retry); retry.type = 'button';
@@ -3486,14 +3573,14 @@ this.reset();
           flush();
           node.parentNode.replaceChild(frag, node);
         });
-        var step = Math.max(14, Math.min(60, 2400 / spans.length));
+        var step = Math.max(8, Math.min(32, 1400 / spans.length));
         spans.forEach(function (sp, i) { sp.style.animationDelay = Math.round(i * step) + 'ms'; });
         var ended = false, tm = 0;
         var end = function () {
           if (ended) return; ended = true; clearTimeout(tm);
           m.classList.add('wdone'); curType = null;
         };
-        tm = setTimeout(end, spans.length * step + 700);
+        tm = setTimeout(end, spans.length * step + 450);
         curType = { finish: end };
         follow(m);
       } catch (e) { curType = null; try { m.textContent = reply; } catch (e2) {} }
@@ -3780,14 +3867,9 @@ this.reset();
         q = 'অর্ডার নিশ্চিত করতে মোট ৳' + ptot + '-এর ২০% অগ্রিম, অর্থাৎ **৳' + padv + '**, bKash 01799403099 বা Nagad 01577203389-এ পাঠান।\n\nটাকা পাঠানো হয়ে গেলে, **যে নম্বর থেকে টাকা পাঠিয়েছেন তার শেষ ৪ ডিজিট** লিখুন (যেমন 4491)।';
       }
       else if (s === 'locpick') {
-        var la = d.locA, lb = d.locB;
-        q = 'আপনার লোকেশন দুইটা সার্ভার থেকে পেয়েছি, দুইটার দূরত্ব প্রায় ' + Math.round(distM(la, lb)) + ' মিটার। যেটা আপনার সঠিক মনে হয় সেটা বেছে নিন, ওটা দিয়েই ফর্ম পূরণ করব।\n\n' +
-          locDesc('১) লোকেশন ১ (দ্রুত)', la) + '\n\n' + locDesc('২) লোকেশন ২ (নিখুঁত GPS)', lb);
-        b = [
-          { t: '১) দ্রুত · ' + locShort(la), fn: function () { oPickLoc('locA'); } },
-          { t: '২) নিখুঁত GPS · ' + locShort(lb), fn: function () { oPickLoc('locB'); } },
-          { t: '📍 আবার লোকেশন নিন', alt: true, fn: oChangeLoc }
-        ];
+        if (pre && pre.trim()) noteSay(pre.trim());
+        setTimeout(function () { if (O && O.on && O.step === 'locpick') locSelShow(); }, 350);
+        return;
       }
       else if (s === 'consent') {
         q = oSummary();
@@ -3814,6 +3896,7 @@ this.reset();
       ]);
     }
     function oCancel() {
+      locSelHide(); geoStop(); geoTok++;
       O = null; oSave();
       botSay('ঠিক আছে, অর্ডার বাতিল করলাম। আবার অর্ডার করতে চাইলে "অর্ডার করতে চাই" লিখুন। আর কিছু জানার থাকলে নির্দ্বিধায় জিজ্ঞেস করুন 🍫');
     }
@@ -3864,7 +3947,7 @@ this.reset();
       d.locA = null; d.locB = null; d.locPicked = false;
     }
     function needLocPick(d) {
-      return !!(d.geo && d.locA && d.locB && !d.locPicked && distM(d.locA, d.locB) > 25);
+      return !!(d.geo && !d.locPicked && ((d.locA && d.locB) || (geoPending && (d.locA || d.locB))));
     }
     function locShort(l) { return (l.area || '—') + (l.dn ? ', ' + l.dn : '') + ' · ±' + l.acc + ' মি'; }
     function locDesc(title, l) {
@@ -3878,12 +3961,66 @@ this.reset();
     }
     function oPickLoc(key) {
       var d = O.d, loc = d[key];
+      locSelHide();
       if (!loc) { oNext(); return; }
       d.locPicked = true; applyLoc(loc);
+      geoStop();
       oNext('✓ ' + (key === 'locA' ? 'দ্রুত' : 'নিখুঁত GPS') + ' লোকেশনটি নিলাম।\n\n');
+    }
+
+    /* ----- location picker popup: both locations in detail, the more accurate one bold + highlighted ----- */
+    function accOf(l) { return l && l.acc > 0 ? l.acc : 1e9; }
+    function geoStop() {
+      if (geoHandle) { try { geoHandle.cancel(); } catch (e) {} geoHandle = null; }
+      geoPending = false;
+    }
+    function locSelHide() { if (lpEl) lpEl.hidden = true; }
+    function locCard(k, l, isBest) {
+      var c = el('button', 'lc' + (isBest ? ' best' : '')); c.type = 'button';
+      var top = el('div', 'lct');
+      top.appendChild(el('b', '', k === 'locB' ? 'নিখুঁত GPS লোকেশন' : 'দ্রুত লোকেশন'));
+      if (isBest) top.appendChild(el('em', '', '★ সবচেয়ে নিখুঁত'));
+      c.appendChild(top);
+      var rows = [['জেলা', l.dn || 'অটো পাওয়া যায়নি'], ['এলাকা', l.area || 'অটো পাওয়া যায়নি']];
+      if (l.line) rows.push(['ঠিকানা', l.line]);
+      rows.push(['GPS', l.lat.toFixed(6) + ', ' + l.lon.toFixed(6)]);
+      rows.push(['নিখুঁততা', l.acc ? '±' + l.acc + ' মিটার' : 'অজানা']);
+      rows.forEach(function (r) {
+        var row = el('div', 'lcr'); row.appendChild(el('span', '', r[0])); row.appendChild(el('span', '', r[1])); c.appendChild(row);
+      });
+      c.appendChild(el('div', 'lcgo', 'এটি ব্যবহার করুন'));
+      c.addEventListener('click', function () {
+        if (!O || !O.on) return;
+        locSelHide();
+        userSay((k === 'locB' ? 'নিখুঁত GPS' : 'দ্রুত') + ' লোকেশনটি ব্যবহার করুন');
+        oPickLoc(k);
+      });
+      return c;
+    }
+    function locSelShow() {
+      if (!lpEl || !O || !O.on) return;
+      var d = O.d, a = d.locA, b = d.locB, both = !!(a && b), best = '', order;
+      if (!a && !b) return;
+      if (!both && !geoPending) { oPickLoc(a ? 'locA' : 'locB'); return; } /* only one location exists: nothing to choose */
+      if (both) { best = accOf(b) <= accOf(a) ? 'locB' : 'locA'; order = best === 'locB' ? ['locB', 'locA'] : ['locA', 'locB']; }
+      else order = [a ? 'locA' : 'locB'];
+      lpSub.textContent = both
+        ? 'দুই সার্ভার থেকে দুটো লোকেশন পেয়েছি। যেটা বেশি নিখুঁত সেটা বোল্ড করে দেখানো হয়েছে। যেটা ঠিক, সেটা বেছে নিন, ওটা দিয়েই ফর্ম পূরণ হবে।'
+        : 'একটি লোকেশন পেয়েছি, আরেকটি খুঁজছি… একটু অপেক্ষা করুন।';
+      lpList.textContent = '';
+      order.forEach(function (k) { lpList.appendChild(locCard(k, d[k], k === best)); });
+      if (!both) {
+        var w = el('div', 'lw'), sk = el('span', 'sk');
+        sk.appendChild(el('i')); sk.appendChild(el('i')); sk.appendChild(el('i'));
+        w.appendChild(sk); w.appendChild(el('span', '', 'আরেকটি লোকেশন খোঁজা হচ্ছে…'));
+        lpList.appendChild(w);
+      }
+      lpEl.hidden = false;
+      if (lpBox) lpBox.scrollTop = 0;
     }
     /* the customer may ask for a new location at ANY step: clear it and offer the 📍 button again */
     function oChangeLoc() {
+      locSelHide(); geoPending = false;
       geoTok++;
       if (geoHandle) { try { geoHandle.cancel(); } catch (e) {} geoHandle = null; }
       geoBusySet(false);
@@ -3896,6 +4033,7 @@ this.reset();
       userSay('📍 আমার লোকেশন দিন');
       var tok = ++geoTok, typing = showTyping();
       O.d.locA = null; O.d.locB = null; O.d.locPicked = false;
+      geoPending = true; locSelHide();
       geoBusySet(true);
       busy = true; updSend();
       var endBusy = function () {
@@ -3929,15 +4067,22 @@ this.reset();
         /* second answer: keep it; the customer chooses between both at the very end of the order */
         onSecond: function (r) {
           if (tok !== geoTok || !O || !O.on) return;
-          var d = O.d, loc = toLoc(r), other = r.src === 'precise' ? d.locA : d.locB, nm = r.src === 'precise' ? 'নিখুঁত GPS' : 'দ্রুত';
+          var d = O.d, loc = toLoc(r), nm = r.src === 'precise' ? 'নিখুঁত GPS' : 'দ্রুত';
           d[r.src === 'precise' ? 'locB' : 'locA'] = loc;
-          if (!d.geo) return; /* the customer typed their own address meanwhile */
-          if (other && distM(other, loc) <= 25) { noteSay('✓ ' + nm + ' লোকেশনেও একই জায়গা পেয়েছি, লোকেশন মিলে গেছে।'); return; }
+          oSave();
+          if (!d.geo || d.locPicked) return; /* the customer typed their own address, or already chose */
+          if (O.step === 'locpick') { locSelShow(); return; } /* popup is already open: add the second location live */
           noteSay('🎯 আরও একটি লোকেশন পেয়েছি (' + nm + ', ±' + loc.acc + ' মিটার): ' + (loc.area || '—') + (loc.dn ? ', ' + loc.dn : '') + '।\nঅর্ডারের শেষে দুইটার মধ্যে থেকে আপনি বেছে নিতে পারবেন।');
           if (O.step === 'consent') oNext('');
         },
+        onEnd: function () {
+          if (tok !== geoTok) return;
+          geoPending = false;
+          if (O && O.on && O.step === 'locpick') locSelShow(); /* if only one location ever came, it is used automatically */
+        },
         onError: function (e) {
           if (tok !== geoTok) return;
+          geoPending = false;
           endBusy();
           botSay(geoErr(e));
         }
@@ -3975,6 +4120,10 @@ this.reset();
       oNext('ঠিক আছে, ' + lbl + ' বদলে নিচ্ছি।\n\n');
     }
     if (geoBtn) geoBtn.addEventListener('click', oLocate);
+    if (lpRe) lpRe.addEventListener('click', function () {
+      if (!O || !O.on) return;
+      locSelHide(); userSay('📍 আবার লোকেশন নিন'); oChangeLoc();
+    });
     function aiPass() { O.ai = true; oSave(); return false; }
     function oAfterAI() {
       if (O && O.on && O.ai) { O.ai = false; setTimeout(function () { if (O && O.on) oAsk('অর্ডারটা চালিয়ে যাই 🍫\n\n'); }, 1800); }
@@ -4232,8 +4381,21 @@ this.reset();
     });
     ta.addEventListener('input', function () { updSend(); fit(); });
     /* phones: freeze the ripple while typing so the keyboard never competes with it */
-    ta.addEventListener('focus', function () { if (isMobile()) waterRun(false); });
-    ta.addEventListener('blur', function () { if (open && isMobile()) waterRun(true); });
+    ta.addEventListener('focus', function () { if (isMobile()) { waterRun(false); syncBurst(); } });
+    ta.addEventListener('blur', function () { if (open && isMobile()) { waterRun(true); syncBurst(); } });
+    /* keyboard animation: re-measure several times so the panel/composer never stays low */
+    var burstT = [];
+    function syncBurst() {
+      burstT.forEach(clearTimeout); burstT = [];
+      [0, 60, 150, 300, 500, 800, 1200].forEach(function (ms) {
+        burstT.push(setTimeout(function () {
+          if (!open || !isMobile()) return;
+          syncVV();
+          if (document.activeElement === ta && ta.scrollIntoView) { try { ta.scrollIntoView({ block: 'nearest' }); } catch (e) {} }
+        }, ms));
+      });
+    }
+    ta.addEventListener('touchstart', function () { if (isMobile()) syncBurst(); }, { passive: true });
 
     chips.addEventListener('click', function (e) {
       var t = e.target;
@@ -4279,6 +4441,7 @@ this.reset();
     history = load();
     try { var so = JSON.parse(sessionStorage.getItem(OKEY) || 'null'); if (so && so.on && so.d) O = so; } catch (e) {}
     geoSync();
+    if (O && O.on && O.step === 'locpick') setTimeout(function () { if (O && O.on && O.step === 'locpick') locSelShow(); }, 0);
     if (history.length) {
       history.forEach(function (h) { addMsg(h.role, h.text, true); });
       toBottom();
@@ -4301,6 +4464,26 @@ this.reset();
   if (document.body) ready(); else document.addEventListener('DOMContentLoaded', ready);
 })();
 
+</script>
+<script>
+/* Title bar glass: same water/blur/colour-dispersion as the chat box (Chromium only; others get frosted glass) */
+(function(){var d=document.documentElement,s=document.getElementById('ara-hd-svg');
+if(d.getAttribute('data-title-design')!=='glass'||!s)return;
+var ua=navigator.userAgent||'',W=window;
+function lite(){try{return sessionStorage.getItem('ara_lite')==='1'}catch(e){return false}}
+var water=!(/iPhone|iPad|iPod|CriOS|FxiOS|EdgiOS|Firefox/.test(ua)||!/Chrome[/]|Chromium[/]/.test(ua)||!(W.CSS&&CSS.supports&&CSS.supports('backdrop-filter','blur(1px)'))||lite());
+if(water)d.setAttribute('data-title-water','on');
+var calm=(W.matchMedia&&W.matchMedia('(prefers-reduced-motion: reduce)').matches)||(navigator.deviceMemory&&navigator.deviceMemory<=2)||(navigator.hardwareConcurrency&&navigator.hardwareConcurrency<=2);
+function run(on){try{on?s.unpauseAnimations():s.pauseAnimations()}catch(e){}if(on)d.setAttribute('data-title-fx','run');else d.removeAttribute('data-title-fx')}
+run(false);if(calm||!s.pauseAnimations)return;
+var q=0;
+function tick(){q=0;if(water&&lite()){water=false;d.setAttribute('data-title-water','off')}
+run(!d.classList.contains('ara-chat-open')&&!document.hidden&&(W.pageYOffset||d.scrollTop)>2)}
+function sched(){if(!q)q=requestAnimationFrame(tick)}
+W.addEventListener('scroll',sched,{passive:true});
+document.addEventListener('visibilitychange',sched);
+if(W.MutationObserver)new MutationObserver(sched).observe(d,{attributes:true,attributeFilter:['class']});
+sched()})();
 </script>
 </body>
 </html>
