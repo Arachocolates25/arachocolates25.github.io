@@ -2915,6 +2915,28 @@ this.reset();
     return {dist:dist,area:area};
   }
 
+  /* Used by the chat's location button: SAME GPS + reverse-geocode + address building as the form button,
+     but it only RETURNS the data (the chat decides what to fill). */
+  window.araGeoLookup=function(){
+    return getPosition().then(function(pos){
+      var lat=pos.coords.latitude, lon=pos.coords.longitude, acc=pos.coords.accuracy;
+      return reverseGeocode(lat,lon).catch(function(){return null;}).then(function(data){
+        var ad=(data&&data.address)||{};
+        var cands=[ad.state_district,ad.county,ad.city,ad.town,ad.municipality,ad.region,ad.state_district&&ad.state_district.replace(/\s*District$/i,'')];
+        if(data&&data.display_name) cands=cands.concat(data.display_name.split(',').map(function(x){return x.trim();}));
+        var area=ad.suburb||ad.neighbourhood||ad.city_district||ad.quarter||ad.village||ad.town||ad.municipality||String(ad.county||'').replace(/\s*(Upazila|Upazilla|Thana)$/i,'');
+        var parts=uniq([
+          [ad.house_number,ad.road].filter(Boolean).join(', '),
+          ad.neighbourhood, ad.suburb, ad.quarter, ad.hamlet, ad.village, ad.city_district
+        ]);
+        var line=parts.join(', ');
+        var mapLink='https://www.google.com/maps?q='+lat.toFixed(6)+','+lon.toFixed(6);
+        var addr=(line?line+'\n':'')+'GPS: '+lat.toFixed(6)+', '+lon.toFixed(6)+(acc?' (±'+Math.round(acc)+'m)':'')+'\n'+mapLink;
+        return {lat:lat,lon:lon,acc:acc,cands:cands,area:area||'',line:line,addr:addr};
+      });
+    });
+  };
+
   btn.addEventListener('click',function(){
     ok=false; startT=Date.now(); say('',''); busy(true);
     say('লোকেশন খোঁজা হচ্ছে… একটু অপেক্ষা করুন / Finding your location…','');
@@ -3058,6 +3080,16 @@ this.reset();
     '.chip:active{background:#EDE4D0}',
     '@media (hover:hover){.chip:hover{background:#EDE4D0}}',
 
+    /* location quick-button (only visible while the order assistant asks for district / area / address) */
+    '.geo{flex:none;display:flex;justify-content:flex-end;padding:6px 12px 2px;background:rgba(255,255,255,.86);border-top:1px solid rgba(36,18,9,.08)}',
+    '.geo[hidden]{display:none}',
+    '.geobtn{display:inline-flex;align-items:center;gap:7px;min-height:40px;padding:0 15px;border-radius:999px;background:linear-gradient(180deg,#fffdf8 0%,#f3e9d2 100%);box-shadow:inset 0 0 0 1.5px rgba(184,135,58,.75),0 2px 0 #c9b283;color:#241209;font-size:13.5px;font-weight:700}',
+    '.geobtn:active{transform:translateY(1px)}',
+    '.geobtn:disabled{opacity:.7;cursor:progress}',
+    '.geobtn .gp{width:9px;height:9px;border-radius:50%;background:#22c55e;box-shadow:0 0 0 0 rgba(34,197,94,.6);animation:gp 1.6s ease-out infinite}',
+    '.geobtn.busy .gp{background:#38bdf8;animation-duration:.8s}',
+    '@keyframes gp{0%{box-shadow:0 0 0 0 rgba(34,197,94,.55)}100%{box-shadow:0 0 0 9px rgba(34,197,94,0)}}',
+
     /* composer — no transitions here on purpose (no lag/flicker while typing) */
     '.cm{flex:none;display:flex;align-items:flex-end;gap:8px;padding:10px 12px;background:rgba(255,255,255,.86);border-top:1px solid rgba(36,18,9,.12)}',
     '.cm textarea{flex:1;min-width:0;display:block;resize:none;border:1px solid rgba(36,18,9,.25);border-radius:21px;padding:10px 15px;font:inherit;font-size:16px;line-height:1.4;min-height:44px;max-height:112px;background:#F6F1E6;color:#241209;outline:none;-webkit-appearance:none;appearance:none;overflow-y:auto}',
@@ -3166,6 +3198,7 @@ this.reset();
           '</header>' +
           '<div class="msgs" role="log" aria-live="polite" aria-relevant="additions"></div>' +
           '<div class="chips"></div>' +
+          '<div class="geo" hidden><button class="geobtn" type="button" aria-label="আপনার লোকেশন দিন"><span class="gp" aria-hidden="true"></span><span class="gl">📍 আপনার লোকেশন দিন · এক ক্লিকে বসান</span></button></div>' +
           '<form class="cm" autocomplete="off">' +
             '<textarea rows="1" maxlength="500" enterkeyhint="send" autocomplete="off" autocapitalize="sentences" spellcheck="false" aria-label="' + T.placeholder + '" placeholder="' + T.placeholder + '"></textarea>' +
             '<button class="send" type="submit" aria-label="পাঠান / Send">' + ICON_SEND + '</button>' +
@@ -3183,6 +3216,7 @@ this.reset();
     var msgs = sh.querySelector('.msgs');
     var chips = sh.querySelector('.chips');
     var form = sh.querySelector('.cm');
+    var geoBar = sh.querySelector('.geo'), geoBtn = sh.querySelector('.geobtn'), geoLbl = sh.querySelector('.geobtn .gl'), geoBusy = false;
     var ta = sh.querySelector('textarea');
     var sendBtn = sh.querySelector('.send');
     var wsvg = sh.querySelector('.wsvg');
@@ -3537,7 +3571,11 @@ this.reset();
       { t: 'Pure Dark Chocolate', f: { fam: 'dark' } }
     ];
 
-    function oSave() { try { if (O && O.on) sessionStorage.setItem(OKEY, JSON.stringify(O)); else sessionStorage.removeItem(OKEY); } catch (e) {} }
+    function geoSync() {
+      var on = !!(O && O.on && (O.step === 'district' || O.step === 'area' || O.step === 'address'));
+      if (geoBar) geoBar.hidden = !on;
+    }
+    function oSave() { try { if (O && O.on) sessionStorage.setItem(OKEY, JSON.stringify(O)); else sessionStorage.removeItem(OKEY); } catch (e) {} geoSync(); }
     function clearOActs() {
       var a = msgs.querySelectorAll('.oacts'), i;
       for (i = 0; i < a.length; i++) if (a[i].parentNode) a[i].parentNode.removeChild(a[i]);
@@ -3602,7 +3640,7 @@ this.reset();
     function oNext(pre) {
       var d = O.d;
       O.step = !d.prod ? 'prod' : !d.prod.price ? 'size' : !d.qty ? 'qty' : !d.name ? 'name' : !d.phone ? 'phone' :
-        !d.district ? 'district' : !d.area ? 'area' : !d.address ? 'address' : !d.noteDone ? 'note' : 'consent';
+        !d.district ? 'district' : !d.area ? 'area' : !d.address ? 'address' : (d.geo && !d.addrPlusDone) ? 'addrplus' : !d.noteDone ? 'note' : !d.last4 ? 'pay' : 'consent';
       oSave(); oAsk(pre || '');
     }
     function oSummary() {
@@ -3612,11 +3650,10 @@ this.reset();
         '- **মোট:** ৳' + tot + ' (ডেলিভারি ফ্রি)\n' +
         '- **নাম:** ' + d.name + '\n' +
         '- **ফোন:** ' + d.phone + '\n' +
-        '- **ঠিকানা:** ' + d.area + ', ' + d.district + ' (' + d.division + ' বিভাগ), ' + d.address +
+        '- **ঠিকানা:** ' + d.area + ', ' + d.district + ' (' + d.division + ' বিভাগ), ' + String(d.address).replace(/\s*\n\s*/g, ' · ') +
         (d.note ? '\n- **নোট:** ' + d.note : '') +
-        (d.last4 ? '\n- **পেমেন্টের শেষ ৪ ডিজিট:** ' + d.last4 : '') +
-        '\n\nঅর্ডার নিশ্চিত করতে মোট দামের ২০% অগ্রিম, অর্থাৎ **৳' + adv + '**, bKash 01799403099 বা Nagad 01577203389-এ পাঠাতে হবে। ' +
-        (d.last4 ? '' : 'পাঠানো হয়ে গেলে যে নম্বর থেকে পাঠিয়েছেন তার শেষ ৪ ডিজিট এখানে লিখলে আমি ফর্মে বসিয়ে দেব। না লিখলে ফর্মে নিজে লিখবেন।') +
+        '\n- **পেমেন্টের শেষ ৪ ডিজিট:** ' + d.last4 +
+        '\n\nঅগ্রিম (মোট দামের ২০%) **৳' + adv + '**, bKash 01799403099 বা Nagad 01577203389-এ পাঠাতে হবে।' +
         '\n\nআমি কি এই তথ্য দিয়ে আপনার হয়ে অর্ডার ফর্ম পূরণ করে দেব?';
     }
     function oAsk(pre) {
@@ -3630,10 +3667,15 @@ this.reset();
       else if (s === 'qty') { q = 'কয়টি নেবেন?'; b = [1, 2, 3].map(function (n) { return { t: n + 'টি', fn: function () { oSetQty(n); } }; }); }
       else if (s === 'name') q = 'আপনার নাম কী?';
       else if (s === 'phone') q = 'ফোন নম্বর দিন (যেমন 01XXXXXXXXX), ডেলিভারির আগে যোগাযোগের জন্য।';
-      else if (s === 'district') q = 'কোন জেলায় ডেলিভারি নেবেন? (যেমন ঢাকা, খুলনা, সিলেট)';
-      else if (s === 'area') q = 'জেলার ভেতরে এলাকা বা থানা কোনটি? (যেমন মিরপুর, সাভার, সদর)';
-      else if (s === 'address') q = 'পূর্ণ ঠিকানা লিখুন (বাসা, রোড, ব্লক বা গ্রাম)।';
+      else if (s === 'district') q = 'কোন জেলায় ডেলিভারি নেবেন? জেলার নাম লিখুন (যেমন ঢাকা, খুলনা, সিলেট), অথবা নিচের 📍 বাটনে চেপে এক ক্লিকে আপনার লোকেশন বসান।';
+      else if (s === 'area') q = 'জেলার ভেতরে এলাকা বা থানা কোনটি? লিখুন (যেমন মিরপুর, সাভার, সদর), অথবা নিচের 📍 বাটনে চেপে লোকেশন বসান।';
+      else if (s === 'address') q = 'পূর্ণ ঠিকানা লিখুন (বাসা, রোড, ব্লক বা গ্রাম), অথবা নিচের 📍 বাটনে চেপে লোকেশন বসান।';
+      else if (s === 'addrplus') { q = 'লোকেশন থেকে ঠিকানা নিয়েছি। বাড়ি/ফ্ল্যাট নম্বর বা চেনার মতো কিছু যোগ করতে চাইলে লিখুন। না চাইলে নিচের বাটনে চাপুন।'; b = [{ t: 'কিছু যোগ করব না', fn: function () { d.addrPlusDone = true; oNext(); } }]; }
       else if (s === 'note') { q = 'কোনো বিশেষ নোট আছে? (যেমন ডেলিভারির সময়)। না থাকলে নিচের বাটনে চাপুন।'; b = [{ t: 'কোনো নোট নেই', fn: function () { d.note = ''; d.noteDone = true; oNext(); } }]; }
+      else if (s === 'pay') {
+        var ptot = d.prod.price * d.qty, padv = Math.round(ptot * 0.2);
+        q = 'অর্ডার নিশ্চিত করতে মোট ৳' + ptot + '-এর ২০% অগ্রিম, অর্থাৎ **৳' + padv + '**, bKash 01799403099 বা Nagad 01577203389-এ পাঠান।\n\nটাকা পাঠানো হয়ে গেলে, **যে নম্বর থেকে টাকা পাঠিয়েছেন তার শেষ ৪ ডিজিট** লিখুন (যেমন 4491)।';
+      }
       else if (s === 'consent') {
         q = oSummary();
         b = [
@@ -3653,14 +3695,73 @@ this.reset();
         re('সংখ্যা', function () { d.qty = 0; }),
         re('নাম', function () { d.name = ''; }),
         re('ফোন', function () { d.phone = ''; }),
-        re('ঠিকানা', function () { d.district = ''; d.area = ''; d.address = ''; }),
-        re('নোট', function () { d.noteDone = false; })
+        re('ঠিকানা', function () { d.district = ''; d.area = ''; d.address = ''; d.geo = false; d.addrPlusDone = false; }),
+        re('নোট', function () { d.noteDone = false; }),
+        re('পেমেন্টের ৪ ডিজিট', function () { d.last4 = ''; })
       ]);
     }
     function oCancel() {
       O = null; oSave();
       botSay('ঠিক আছে, অর্ডার বাতিল করলাম। আবার অর্ডার করতে চাইলে "অর্ডার করতে চাই" লিখুন। আর কিছু জানার থাকলে নির্দ্বিধায় জিজ্ঞেস করুন 🍫');
     }
+    /* ----- location button: same data the form's "auto-fill my location" button uses ----- */
+    var DALIAS2 = { khagrachari: 'Khagrachhari', netrakona: 'Netrokona', jaipurhat: 'Joypurhat', laxmipur: 'Lakshmipur', jhalokati: 'Jhalokathi', jhalakati: 'Jhalokathi' };
+    function distFromCand(v) {
+      if (!v || /division/i.test(v)) return null;
+      var k = normL(v).replace(/(district|division|zilla|zila|city|corporation|metropolitan|sadar|upazila|upazilla|thana|north|south)/g, '');
+      if (!k) return null;
+      var i;
+      for (i = 0; i < DIST.length; i++) if (DIST[i].k === k) return DIST[i];
+      if (DALIAS[k]) return distByName(DALIAS[k]);
+      if (DALIAS2[k]) return distByName(DALIAS2[k]);
+      return null;
+    }
+    function geoBusySet(on) {
+      geoBusy = on;
+      if (!geoBtn) return;
+      geoBtn.disabled = on; geoBtn.classList.toggle('busy', on);
+      if (geoLbl) geoLbl.textContent = on ? '📍 লোকেশন খোঁজা হচ্ছে…' : '📍 আপনার লোকেশন দিন · এক ক্লিকে বসান';
+    }
+    function geoErr(e) {
+      var c = e && e.code;
+      if (c === 1) return 'লোকেশন পারমিশন দেওয়া হয়নি। ব্রাউজারের Settings থেকে Location \"Allow\" করে আবার 📍 বাটনে চাপুন, অথবা হাতে লিখে দিন।';
+      if (c === 3) return 'লোকেশন পেতে বেশি সময় লাগছে। ফোনের Location (GPS) অন আছে কিনা দেখে আবার চেষ্টা করুন, অথবা হাতে লিখে দিন।';
+      if (c === -1) return 'এই ব্রাউজারে লোকেশন সাপোর্ট নেই। দয়া করে হাতে লিখে দিন।';
+      return 'লোকেশন পাওয়া যায়নি। ফোনের Location অন করে আবার চেষ্টা করুন, অথবা হাতে লিখে দিন। Facebook/Messenger থেকে ঢুকলে Chrome-এ খুলুন।';
+    }
+    function oLocate() {
+      if (!O || !O.on || busy || geoBusy) return;
+      if (typeof window.araGeoLookup !== 'function') { botSay('এই ব্রাউজারে লোকেশন বসানো যাচ্ছে না। দয়া করে হাতে লিখে দিন।'); return; }
+      userSay('📍 আমার লোকেশন দিন');
+      geoBusySet(true);
+      busy = true; updSend();
+      var typing = showTyping();
+      window.araGeoLookup().then(function (r) {
+        if (typing.parentNode) typing.parentNode.removeChild(typing);
+        busy = false; geoBusySet(false);
+        if (!O || !O.on) return;
+        var d = O.d, ds = null, i;
+        for (i = 0; i < r.cands.length && !ds; i++) ds = distFromCand(r.cands[i]);
+        if (ds) { d.district = ds.n; d.division = ds.dv; }
+        if (r.area) d.area = r.area;
+        d.address = r.addr; d.geo = true; d.addrPlusDone = false;
+        var lines = ['✓ আপনার লোকেশন নিয়েছি:'];
+        lines.push('- **জেলা:** ' + (ds ? ds.n : 'অটো পাওয়া যায়নি'));
+        lines.push('- **এলাকা:** ' + (r.area || 'অটো পাওয়া যায়নি'));
+        if (r.line) lines.push('- **ঠিকানা:** ' + r.line);
+        lines.push('- **GPS:** ' + r.lat.toFixed(6) + ', ' + r.lon.toFixed(6) + (r.acc ? ' (±' + Math.round(r.acc) + ' মিটার)' : ''));
+        var tail = '';
+        if (r.acc > 300) tail += '\nএটা আনুমানিক এলাকার লোকেশন, প্রায় ' + Math.round(r.acc) + ' মিটার ব্যবধান হতে পারে।';
+        if (!ds) tail += '\nজেলা নিজে থেকে পাওয়া যায়নি, তাই জেলার নাম লিখে দিন।';
+        else if (!r.area) tail += '\nএলাকা নিজে থেকে পাওয়া যায়নি, তাই এলাকা বা থানা লিখে দিন।';
+        oNext(lines.join('\n') + tail + '\n\n');
+      }).catch(function (e) {
+        if (typing.parentNode) typing.parentNode.removeChild(typing);
+        busy = false; updSend(); geoBusySet(false);
+        botSay(geoErr(e));
+      });
+    }
+    if (geoBtn) geoBtn.addEventListener('click', oLocate);
     function aiPass() { O.ai = true; oSave(); return false; }
     function oAfterAI() {
       if (O && O.on && O.ai) { O.ai = false; setTimeout(function () { if (O && O.on) oAsk('অর্ডারটা চালিয়ে যাই 🍫\n\n'); }, 1800); }
@@ -3695,7 +3796,7 @@ this.reset();
       }
       if (s === 'name') {
         if (strongQ) return aiPass();
-        v = extractName(t) || t.replace(/^আমি\s+/, '').trim();
+        v = extractName(t) || t.trim();
         if (v.length < 2 || v.length > 60 || /\d/.test(v)) { botSay('নামটা ঠিকমতো বুঝতে পারিনি। শুধু নামটা লিখুন, যেমন: রাহিম আহমেদ।'); return true; }
         d.name = v; oNext('ধন্যবাদ ' + v + '! '); return true;
       }
@@ -3712,16 +3813,28 @@ this.reset();
       if (s === 'area') {
         if (strongQ) return aiPass();
         if (t.length < 2 || t.length > 80) { botSay('এলাকা বা থানার নাম লিখুন, যেমন মিরপুর, সাভার, সদর।'); return true; }
-        d.area = t; oNext(); return true;
+        d.area = t; d.geo = false; oNext(); return true;
       }
       if (s === 'address') {
         if (strongQ) return aiPass();
         if (t.length < 5) { botSay('ঠিকানাটা আর একটু বিস্তারিত লিখুন (বাসা, রোড, ব্লক বা গ্রাম)।'); return true; }
-        d.address = t.slice(0, 250); oNext(); return true;
+        d.address = t; d.geo = false; oNext(); return true;
       }
       if (s === 'note') {
         if (strongQ) return aiPass();
-        d.note = NONOTE.test(t) ? '' : t.slice(0, 300); d.noteDone = true; oNext(); return true;
+        d.note = NONOTE.test(t) ? '' : t; d.noteDone = true; oNext(); return true;
+      }
+      if (s === 'addrplus') {
+        if (strongQ) return aiPass();
+        if (NONOTE.test(t)) { d.addrPlusDone = true; oNext(); return true; }
+        d.address = t + '\n' + d.address; d.addrPlusDone = true; oNext('✓ যোগ করে নিলাম।\n\n'); return true;
+      }
+      if (s === 'pay') {
+        v = parseLast4(t);
+        if (v) { d.last4 = v; oNext('✓ শেষ ৪ ডিজিট নিলাম: ' + v + '\n\n'); return true; }
+        if (looksQ(t)) return aiPass();
+        botSay('শেষ ৪ ডিজিট বুঝতে পারিনি। যে নম্বর থেকে টাকা পাঠিয়েছেন তার শেষ ৪টি সংখ্যা লিখুন, যেমন 4491। টাকা এখনো না পাঠালে আগে পাঠিয়ে নিন, তারপর লিখুন।');
+        return true;
       }
       if (s === 'consent') {
         if (YES.test(t)) { oFill(); return true; }
@@ -3764,6 +3877,7 @@ this.reset();
       var e = document.getElementById(id); if (!e) return;
       var chars = Array.from(String(val)), n = chars.length, i = 0, step = Math.max(10, Math.floor(dur / Math.max(1, n)));
       e.classList.remove('ofgeo-flash'); void e.offsetWidth; e.classList.add('ofgeo-flash');
+      if (e.tagName === 'TEXTAREA' && /\n/.test(String(val))) e.rows = 4;
       e.value = '';
       if (!n) return;
       var iv = setInterval(function () {
@@ -3783,9 +3897,10 @@ this.reset();
       if (e) { e.classList.remove('ofgeo-flash'); void e.offsetWidth; e.classList.add('ofgeo-flash'); }
     }
     function oFill() {
+      if (!O.d.last4) { O.step = 'pay'; oSave(); oAsk(''); return; }
       var d = O.d, p = d.prod, tot = p.price * d.qty, adv = Math.round(tot * 0.2);
       O.on = false; oSave();
-      var doneMsg = 'ফর্ম পূরণ হয়ে গেছে ✅ এখন অগ্রিম **৳' + adv + '** bKash 01799403099 বা Nagad 01577203389-এ পাঠান, ফর্মে শেষ ৪ ডিজিট লিখুন, তারপর **Submit Order** চাপলেই অর্ডার কনফার্ম হবে।';
+      var doneMsg = 'ফর্ম পূরণ হয়ে গেছে ✅ আপনার দেওয়া সব তথ্য, শেষ ৪ ডিজিটসহ, হুবহু বসে গেছে। অগ্রিম **৳' + adv + '** bKash 01799403099 বা Nagad 01577203389-এ পাঠানো না হয়ে থাকলে পাঠান, তারপর ফর্ম একবার দেখে **Submit Order** চাপলেই অর্ডার কনফার্ম হবে।';
       botSay('ঠিক আছে! ✨ এখন ফর্ম পূরণ করছি। আমি শুধু তথ্য বসাব, অর্ডার কনফার্ম করবেন আপনি নিজে Submit চেপে।');
       setTimeout(function () { setOpen(false); }, 2000);
       setTimeout(function () { try { window.openOrderChoice(p.n, '৳ ' + p.price); } catch (e) {} }, 2350);
@@ -3800,16 +3915,13 @@ this.reset();
         setTimeout(function () { oTypeInto('oArea', d.area, 300); }, 1000);
         setTimeout(function () { oTypeInto('oDetailedAddress', d.address, 500); }, 1350);
         if (d.note) setTimeout(function () { oTypeInto('oNotes', d.note, 300); }, 1900);
-        if (d.last4) setTimeout(function () { oTypeInto('oPaymentLast4', d.last4, 250); }, 2250);
+        setTimeout(function () { oTypeInto('oPaymentLast4', d.last4, 250); }, 2250);
         setTimeout(function () {
           oCss();
           var box = document.querySelector('#orderForm .nf-adv'), l4 = document.getElementById('oPaymentLast4'), sb = document.querySelector('#orderForm .complaints-submit');
           if (box && box.scrollIntoView) box.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          if (!d.last4 && l4) l4.classList.add('ara-glow');
           if (sb) sb.classList.add('ara-glow');
-          oToast(d.last4
-            ? '✓ সব তথ্য বসে গেছে। সব ঠিক থাকলে নিচের Submit Order চাপুন।'
-            : '✓ ফর্ম পূরণ হয়েছে। ১) অগ্রিম ৳' + adv + ' পাঠান ২) শেষ ৪ ডিজিট লিখুন ৩) Submit Order চাপুন।');
+          oToast('✓ সব তথ্য, শেষ ৪ ডিজিটসহ, বসে গেছে। সব ঠিক থাকলে নিচের Submit Order চাপুন।');
           addMsg('bot', doneMsg, true); history.push({ role: 'bot', text: doneMsg }); save();
         }, 2600);
       }, 3700);
@@ -3943,6 +4055,7 @@ this.reset();
     });
     history = load();
     try { var so = JSON.parse(sessionStorage.getItem(OKEY) || 'null'); if (so && so.on && so.d) O = so; } catch (e) {}
+    geoSync();
     if (history.length) {
       history.forEach(function (h) { addMsg(h.role, h.text, true); });
       toBottom();
