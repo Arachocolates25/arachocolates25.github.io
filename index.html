@@ -2868,22 +2868,27 @@ this.reset();
     });
   }
 
-  function reverseGeocode(lat,lon){
+  function reverseGeocode(lat,lon,precise){
     function timed(url,ms){
       var ctl=new AbortController(), t=setTimeout(function(){ctl.abort();},ms);
       return fetch(url,{signal:ctl.signal,headers:{'Accept':'application/json'}})
         .then(function(r){ clearTimeout(t); if(!r.ok) throw new Error('geo'); return r.json(); });
     }
-    var p1=timed('https://nominatim.openstreetmap.org/reverse?format=jsonv2&addressdetails=1&zoom=18&accept-language=en&lat='+lat+'&lon='+lon,5000);
-    var p2=timed('https://api.bigdatacloud.net/data/reverse-geocode-client?latitude='+lat+'&longitude='+lon+'&localityLanguage=en',5000)
-      .then(function(d){
-        var names=[];
-        try{ ((d.localityInfo&&d.localityInfo.administrative)||[]).forEach(function(x){ if(x&&x.name) names.push(x.name); }); }catch(e){}
-        var loc=d.locality||d.city||'';
-        if(!loc&&!names.length) throw new Error('geo');
-        return {address:{suburb:loc||undefined,city:d.city||undefined},display_name:[loc].concat(names.slice().reverse()).filter(Boolean).join(', ')};
-      });
-    /* first one that answers wins; if both fail -> null */
+    function nom(ms){ return timed('https://nominatim.openstreetmap.org/reverse?format=jsonv2&addressdetails=1&zoom=18&accept-language=en&lat='+lat+'&lon='+lon,ms); }
+    function bdc(ms){
+      return timed('https://api.bigdatacloud.net/data/reverse-geocode-client?latitude='+lat+'&longitude='+lon+'&localityLanguage=en',ms)
+        .then(function(d){
+          var names=[];
+          try{ ((d.localityInfo&&d.localityInfo.administrative)||[]).forEach(function(x){ if(x&&x.name) names.push(x.name); }); }catch(e){}
+          var loc=d.locality||d.city||'';
+          if(!loc&&!names.length) throw new Error('geo');
+          return {address:{suburb:loc||undefined,city:d.city||undefined},display_name:[loc].concat(names.slice().reverse()).filter(Boolean).join(', ')};
+        });
+    }
+    /* precise lane: detailed street-level server first, the other one only as a backup */
+    if(precise) return nom(7000).catch(function(){ return bdc(5000); }).catch(function(){ return null; });
+    /* fast lane: first one that answers wins; if both fail -> null */
+    var p1=nom(5000), p2=bdc(5000);
     return new Promise(function(resolve){
       var n=0;
       [p1,p2].forEach(function(p){ p.then(resolve,function(){ if(++n>=2) resolve(null); }); });
@@ -2935,6 +2940,86 @@ this.reset();
         return {lat:lat,lon:lon,acc:acc,cands:cands,area:area||'',line:line,addr:addr};
       });
     });
+  };
+
+  /* Chat: TWO locations at once.
+     "fast"    = quick network/cached position (usually answers first)
+     "precise" = real GPS, refined for a few seconds, detailed street-level address
+     first answer -> h.onFirst(info), the other -> h.onSecond(info), both fail -> h.onError(err). cancel() stops everything. */
+  function buildInfo(src,pos,data){
+    var lat=pos.coords.latitude, lon=pos.coords.longitude, acc=pos.coords.accuracy;
+    var ad=(data&&data.address)||{};
+    var cands=[ad.state_district,ad.county,ad.city,ad.town,ad.municipality,ad.region,ad.state_district&&ad.state_district.replace(/\s*District$/i,'')];
+    if(data&&data.display_name) cands=cands.concat(data.display_name.split(',').map(function(x){return x.trim();}));
+    var area=ad.suburb||ad.neighbourhood||ad.city_district||ad.quarter||ad.village||ad.town||ad.municipality||String(ad.county||'').replace(/\s*(Upazila|Upazilla|Thana)$/i,'');
+    var parts=uniq([
+      [ad.house_number,ad.road].filter(Boolean).join(', '),
+      ad.neighbourhood, ad.suburb, ad.quarter, ad.hamlet, ad.village, ad.city_district
+    ]);
+    var line=parts.join(', ');
+    var mapLink='https://www.google.com/maps?q='+lat.toFixed(6)+','+lon.toFixed(6);
+    var addr=(line?line+'\n':'')+'GPS: '+lat.toFixed(6)+', '+lon.toFixed(6)+(acc?' (±'+Math.round(acc)+'m)':'')+'\n'+mapLink;
+    return {src:src,lat:lat,lon:lon,acc:acc,cands:cands,area:area||'',line:line,addr:addr};
+  }
+  window.araGeoDual=function(h){
+    var dead=false, got=0, fin={fast:false,precise:false}, errs={}, watchId=null, timers=[], best=null, lastErr=null, pDone=false;
+    function stopWatch(){ if(watchId!=null){ try{ navigator.geolocation.clearWatch(watchId); }catch(e){} watchId=null; } }
+    function stop(){ dead=true; stopWatch(); timers.forEach(clearTimeout); timers=[]; }
+    function end(){ if(fin.fast&&fin.precise&&got&&h.onEnd) h.onEnd(); }
+    function fail(src,e){
+      if(fin[src]) return;
+      fin[src]=true; errs[src]=e||{code:2};
+      if(fin.fast&&fin.precise){
+        if(!got&&!dead){
+          stop();
+          var denied=(errs.fast&&errs.fast.code===1)||(errs.precise&&errs.precise.code===1);
+          if(h.onError) h.onError(denied?{code:1}:(errs.precise||errs.fast));
+        } else end();
+      }
+    }
+    function deliver(src,pos,precise){
+      reverseGeocode(pos.coords.latitude,pos.coords.longitude,precise).catch(function(){return null;}).then(function(data){
+        if(dead) return;
+        fin[src]=true; got++;
+        var info=buildInfo(src,pos,data);
+        if(got===1){ if(h.onFirst) h.onFirst(info); } else { if(h.onSecond) h.onSecond(info); }
+        end();
+      });
+    }
+    var finishPrecise=function(){
+      if(pDone||dead) return;
+      pDone=true; stopWatch();
+      if(best) deliver('precise',best,true); else fail('precise',lastErr||{code:3});
+    };
+    if(!navigator.geolocation){
+      setTimeout(function(){ if(!dead&&h.onError) h.onError({code:-1}); },0);
+      return {cancel:stop};
+    }
+    try{
+      navigator.geolocation.getCurrentPosition(
+        function(p){ if(!dead) deliver('fast',p,false); },
+        function(e){ if(!dead) fail('fast',e); },
+        {enableHighAccuracy:false,timeout:10000,maximumAge:600000}
+      );
+      watchId=navigator.geolocation.watchPosition(
+        function(p){
+          if(dead||pDone) return;
+          if(!best||p.coords.accuracy<best.coords.accuracy) best=p;
+          if(p.coords.accuracy<=30) finishPrecise();
+        },
+        function(e){
+          if(dead||pDone) return;
+          lastErr=e;
+          if(e&&e.code===1){ pDone=true; stopWatch(); fail('precise',e); }
+        },
+        {enableHighAccuracy:true,timeout:20000,maximumAge:0}
+      );
+      timers.push(setTimeout(function(){ if(best) finishPrecise(); },12000));
+      timers.push(setTimeout(finishPrecise,24000));
+    }catch(err){
+      pDone=true; fail('fast',{code:2}); fail('precise',{code:2});
+    }
+    return {cancel:stop};
   };
 
   btn.addEventListener('click',function(){
@@ -3004,6 +3089,7 @@ this.reset();
 
   var ICON_CHAT = '<svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6 4.5h12A2.5 2.5 0 0 1 20.5 7v7.5a2.5 2.5 0 0 1-2.5 2.5h-6.2L8 20.5V17H6a2.5 2.5 0 0 1-2.5-2.5V7A2.5 2.5 0 0 1 6 4.5z" stroke="#2B1A10" stroke-width="1.4" stroke-linejoin="round"/><path d="M12 7.4l1 2.7 2.7 1-2.7 1-1 2.7-1-2.7-2.7-1 2.7-1z" fill="#2B1A10"/></svg>';
   var ICON_X = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+  var ICON_BACK = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>';
   var ICON_SEND = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D9AE62" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg>';
 
   var CSS = [
@@ -3041,11 +3127,16 @@ this.reset();
     '.water .panel{background:rgba(246,241,230,.64);-webkit-backdrop-filter:none;backdrop-filter:url(#ara-water) blur(3.2px) saturate(1.05)}',
 
     /* header */
-    '.hd{flex:none;display:flex;align-items:center;gap:8px;padding:12px 6px 12px 18px;background:#F6F1E6;color:#241209;border-bottom:1px solid rgba(36,18,9,.12);touch-action:none}',
+    '.hd{flex:none;display:flex;align-items:center;gap:10px;padding:10px 12px 10px 10px;background:#F6F1E6;color:#241209;border-bottom:1px solid rgba(36,18,9,.12);touch-action:none}',
     '.ti{flex:1;min-width:0}',
     '.ti b{display:block;font-size:16px;font-weight:600;line-height:1.3}',
     '.ti span{display:block;font-size:13px;color:#7A6552;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}',
-    '.x{flex:none;width:44px;height:44px;display:grid;place-items:center;border-radius:50%;color:#4A2C1A}',
+    '.bk,.x{flex:none;width:42px;height:42px;display:grid;place-items:center;border-radius:50%;transition:transform .2s ease,box-shadow .2s ease}',
+    '.bk{color:#2B1A10;background:radial-gradient(circle at 30% 22%,rgba(255,255,255,.78) 0%,rgba(255,255,255,0) 55%),linear-gradient(135deg,#F8E0A4 0%,#E3BA68 52%,#C8963F 100%);box-shadow:0 0 0 1px rgba(184,135,58,.6),0 4px 12px rgba(200,150,63,.5),inset 0 1px 1px rgba(255,255,255,.9)}',
+    '.bk:active{transform:scale(.9)}',
+    '.x{color:#4A2C1A;background:linear-gradient(180deg,#fffdf8 0%,#f3e9d2 100%);box-shadow:inset 0 0 0 1.5px rgba(184,135,58,.7),0 2px 0 #c9b283,0 5px 10px rgba(36,18,9,.1)}',
+    '.x:active{transform:scale(.9) rotate(90deg)}',
+    '@media (hover:hover){.bk:hover{transform:translateX(-2px);box-shadow:0 0 0 1px rgba(184,135,58,.8),0 6px 16px rgba(200,150,63,.62),inset 0 1px 1px rgba(255,255,255,.9)}.x:hover{transform:rotate(90deg)}}',
 
     /* messages */
     '.msgs{position:relative;flex:1 1 auto;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding:16px 16px 8px;display:flex;flex-direction:column;gap:10px;scrollbar-width:thin;scrollbar-color:rgba(36,18,9,.25) transparent}',
@@ -3057,20 +3148,28 @@ this.reset();
     '.m li+li{margin-top:3px}',
     '.m a{color:#8A5F1E;text-decoration:underline;text-underline-offset:2px}',
     '.m.instant{animation:none}',
+
+    /* premium reveal: the whole answer is laid out at once (no jumping), words start softly blurred and sharpen top to bottom, quickly */
+    '.w{animation:wr .5s ease-out both}',
+    '@keyframes wr{from{opacity:.18;filter:blur(4px)}to{opacity:1;filter:blur(0)}}',
+    '.calm .w{animation-name:wr2}',
+    '@keyframes wr2{from{opacity:.1}to{opacity:1}}',
+    '.wdone .w{animation:none;opacity:1;filter:none}',
     '.m .ec{font-size:12px;color:#7A6552;margin-top:4px}',
     '.kb .chips{display:none}',
     '@keyframes in{from{opacity:0;transform:translateY(6px)}}',
 
     /* typing dots */
-    '.dots{display:flex;gap:5px;padding:5px 2px}',
-    '.dots i{width:7px;height:7px;border-radius:50%;background:#B8873A;opacity:.35;animation:dot 1s ease-in-out infinite}',
-    '.dots i:nth-child(2){animation-delay:.15s}.dots i:nth-child(3){animation-delay:.3s}',
-    '@keyframes dot{0%,80%,100%{opacity:.35;transform:translateY(0)}40%{opacity:1;transform:translateY(-3px)}}',
+    '.dots{display:flex;align-items:center;gap:6px;padding:6px 3px}',
+    '.dots i{width:8px;height:8px;border-radius:50%;background:linear-gradient(135deg,#EFD08F,#B8873A);opacity:.4;transform:scale(.7);animation:dot 1.15s ease-in-out infinite}',
+    '.dots i:nth-child(2){animation-delay:.18s}.dots i:nth-child(3){animation-delay:.36s}',
+    '@keyframes dot{0%,70%,100%{opacity:.4;transform:scale(.7);box-shadow:0 0 0 0 rgba(184,135,58,0)}35%{opacity:1;transform:scale(1.15);box-shadow:0 0 0 4px rgba(184,135,58,.18)}}',
 
     /* error actions */
     '.acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}',
     '.btn{display:inline-flex;align-items:center;min-height:38px;padding:0 15px;border-radius:999px;font-size:13.5px;font-weight:600;background:#241209;color:#F6F1E6;text-decoration:none!important}',
     '.btn.alt{background:transparent;color:#4A2C1A!important;box-shadow:inset 0 0 0 1px rgba(36,18,9,.3)}',
+    '.oacts .btn{max-width:100%;height:auto;white-space:normal;text-align:left;line-height:1.35;padding-top:8px;padding-bottom:8px}',
 
     /* chips */
     '.chips{flex:none;display:flex;gap:8px;padding:2px 16px 12px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;touch-action:pan-x;overscroll-behavior-x:contain;transform:translateZ(0)}',
@@ -3110,7 +3209,7 @@ this.reset();
     '.teaser{right:14px;bottom:84px}',
     '}',
 
-    '@media (prefers-reduced-motion:reduce){.launcher,.panel,.teaser,.m,.dots i,.launcher::before,.launcher::after{animation:none!important;transition:none!important}.dots i{opacity:.7}}'
+    '@media (prefers-reduced-motion:reduce){.launcher,.panel,.teaser,.m,.dots i,.launcher::before,.launcher::after{animation:none!important;transition:none!important}.dots i{opacity:.7;transform:none}.w{animation:none!important}}'
   ].join('\n');
 
   /* ---------- tiny helpers ---------- */
@@ -3193,6 +3292,7 @@ this.reset();
         '<div class="teaser" role="status"><button class="tt" type="button">' + T.teaser + '</button><button class="tx" type="button" aria-label="বন্ধ করুন">' + ICON_X + '</button></div>' +
         '<section class="panel" role="dialog" aria-label="Ara Chocolates chat" inert>' +
           '<header class="hd">' +
+            '<button class="bk" type="button" aria-label="মেইন পেজে ফিরুন / Back to main page">' + ICON_BACK + '</button>' +
             '<div class="ti"><b>' + T.title + '</b><span>' + T.sub + '</span></div>' +
             '<button class="x" type="button" aria-label="চ্যাট বন্ধ করুন / Close chat">' + ICON_X + '</button>' +
           '</header>' +
@@ -3216,7 +3316,7 @@ this.reset();
     var msgs = sh.querySelector('.msgs');
     var chips = sh.querySelector('.chips');
     var form = sh.querySelector('.cm');
-    var geoBar = sh.querySelector('.geo'), geoBtn = sh.querySelector('.geobtn'), geoLbl = sh.querySelector('.geobtn .gl'), geoBusy = false;
+    var geoBar = sh.querySelector('.geo'), geoBtn = sh.querySelector('.geobtn'), geoLbl = sh.querySelector('.geobtn .gl'), geoBusy = false, geoTok = 0, geoHandle = null;
     var ta = sh.querySelector('textarea');
     var sendBtn = sh.querySelector('.send');
     var wsvg = sh.querySelector('.wsvg');
@@ -3229,6 +3329,7 @@ this.reset();
     var calm = (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) ||
       (navigator.deviceMemory && navigator.deviceMemory <= 2) || (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 2);
     var waterMove = WATER && !calm && !!(wsvg && wsvg.pauseAnimations);
+    if (calm) root.classList.add('calm');
     if (WATER) { root.classList.add('water'); try { if (wsvg.pauseAnimations) wsvg.pauseAnimations(); } catch (e) {} }
     function waterRun(on) {
       if (!waterMove) return;
@@ -3354,7 +3455,7 @@ this.reset();
       });
     }
 
-    /* ----- typewriter: bot replies appear word by word ----- */
+    /* ----- reveal: the answer is laid out in full at once; words start softly blurred and sharpen from top to bottom ----- */
     var reduceMotion = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
     var curType = null;
     function finishType() { if (curType) curType.finish(); }
@@ -3364,36 +3465,37 @@ this.reset();
     }
     function typeReply(reply) {
       var m = addMsg('bot', reply);
-      if (reduceMotion || !window.requestAnimationFrame || !document.createTreeWalker) { follow(m); return m; }
+      if (reduceMotion || !document.createTreeWalker) { follow(m); return m; }
       try {
-        var nodes = [], tw = document.createTreeWalker(m, NodeFilter.SHOW_TEXT), n;
+        var nodes = [], tw = document.createTreeWalker(m, NodeFilter.SHOW_TEXT), n, words = 0;
         while ((n = tw.nextNode())) nodes.push(n);
-        var toks = [];
+        nodes.forEach(function (x) { words += (x.nodeValue.match(/\S+/g) || []).length; });
+        if (!words) { follow(m); return m; }
+        var g = Math.max(1, Math.ceil(words / 110)), spans = [];
         nodes.forEach(function (node) {
-          var parts = node.nodeValue.match(/\S+\s*|\s+/g) || [];
-          node.nodeValue = '';
-          parts.forEach(function (t) { toks.push({ n: node, t: t }); });
+          var toks = node.nodeValue.match(/\S+\s*|\s+/g) || [], frag = document.createDocumentFragment(), buf = '', c = 0;
+          var flush = function () {
+            if (!buf) return;
+            var sp = document.createElement('span'); sp.className = 'w'; sp.textContent = buf;
+            frag.appendChild(sp); spans.push(sp); buf = ''; c = 0;
+          };
+          toks.forEach(function (t) {
+            if (/^\s+$/.test(t)) { if (buf) buf += t; else frag.appendChild(document.createTextNode(t)); return; }
+            buf += t; if (++c >= g) flush();
+          });
+          flush();
+          node.parentNode.replaceChild(frag, node);
         });
-        var N = toks.length;
-        if (!N) { follow(m); return m; }
-        var delay = Math.max(16, Math.min(55, 6000 / N)), start = 0, shown = 0, raf = 0, ended = false, lastF = 0;
+        var step = Math.max(14, Math.min(60, 2400 / spans.length));
+        spans.forEach(function (sp, i) { sp.style.animationDelay = Math.round(i * step) + 'ms'; });
+        var ended = false, tm = 0;
         var end = function () {
-          if (ended) return; ended = true; cancelAnimationFrame(raf);
-          while (shown < N) { var k = toks[shown++]; k.n.nodeValue += k.t; }
-          follow(m); curType = null;
+          if (ended) return; ended = true; clearTimeout(tm);
+          m.classList.add('wdone'); curType = null;
         };
-        var step = function (ts) {
-          if (ended) return;
-          if (!start) start = ts;
-          var target = Math.min(N, Math.floor((ts - start) / delay) + 1);
-          if (target > shown) {
-            while (shown < target) { var k = toks[shown++]; k.n.nodeValue += k.t; }
-            if (ts - lastF > 90) { lastF = ts; follow(m); }
-          }
-          if (shown < N) raf = requestAnimationFrame(step); else { ended = true; curType = null; }
-        };
+        tm = setTimeout(end, spans.length * step + 700);
         curType = { finish: end };
-        raf = requestAnimationFrame(step);
+        follow(m);
       } catch (e) { curType = null; try { m.textContent = reply; } catch (e2) {} }
       return m;
     }
@@ -3572,7 +3674,7 @@ this.reset();
     ];
 
     function geoSync() {
-      var on = !!(O && O.on && (O.step === 'district' || O.step === 'area' || O.step === 'address'));
+      var on = !!(O && O.on && (O.locAsk || O.step === 'district' || O.step === 'area' || O.step === 'address'));
       if (geoBar) geoBar.hidden = !on;
     }
     function oSave() { try { if (O && O.on) sessionStorage.setItem(OKEY, JSON.stringify(O)); else sessionStorage.removeItem(OKEY); } catch (e) {} geoSync(); }
@@ -3639,8 +3741,9 @@ this.reset();
     }
     function oNext(pre) {
       var d = O.d;
+      if (d.district && d.area && d.address) O.locAsk = false;
       O.step = !d.prod ? 'prod' : !d.prod.price ? 'size' : !d.qty ? 'qty' : !d.name ? 'name' : !d.phone ? 'phone' :
-        !d.district ? 'district' : !d.area ? 'area' : !d.address ? 'address' : (d.geo && !d.addrPlusDone) ? 'addrplus' : !d.noteDone ? 'note' : !d.last4 ? 'pay' : 'consent';
+        !d.district ? 'district' : !d.area ? 'area' : !d.address ? 'address' : (d.geo && !d.addrPlusDone) ? 'addrplus' : !d.noteDone ? 'note' : !d.last4 ? 'pay' : needLocPick(d) ? 'locpick' : 'consent';
       oSave(); oAsk(pre || '');
     }
     function oSummary() {
@@ -3670,11 +3773,21 @@ this.reset();
       else if (s === 'district') q = 'কোন জেলায় ডেলিভারি নেবেন? জেলার নাম লিখুন (যেমন ঢাকা, খুলনা, সিলেট), অথবা নিচের 📍 বাটনে চেপে এক ক্লিকে আপনার লোকেশন বসান।';
       else if (s === 'area') q = 'জেলার ভেতরে এলাকা বা থানা কোনটি? লিখুন (যেমন মিরপুর, সাভার, সদর), অথবা নিচের 📍 বাটনে চেপে লোকেশন বসান।';
       else if (s === 'address') q = 'পূর্ণ ঠিকানা লিখুন (বাসা, রোড, ব্লক বা গ্রাম), অথবা নিচের 📍 বাটনে চেপে লোকেশন বসান।';
-      else if (s === 'addrplus') { q = 'লোকেশন থেকে ঠিকানা নিয়েছি। বাড়ি/ফ্ল্যাট নম্বর বা চেনার মতো কিছু যোগ করতে চাইলে লিখুন। না চাইলে নিচের বাটনে চাপুন।'; b = [{ t: 'কিছু যোগ করব না', fn: function () { d.addrPlusDone = true; oNext(); } }]; }
+      else if (s === 'addrplus') { q = 'লোকেশন থেকে ঠিকানা নিয়েছি। বাড়ি/ফ্ল্যাট নম্বর বা চেনার মতো কিছু যোগ করতে চাইলে লিখুন। না চাইলে নিচের বাটনে চাপুন।'; b = [{ t: 'কিছু যোগ করব না', fn: function () { d.addrPlusDone = true; oNext(); } }, { t: '📍 লোকেশন বদলাব', alt: true, fn: oChangeLoc }]; }
       else if (s === 'note') { q = 'কোনো বিশেষ নোট আছে? (যেমন ডেলিভারির সময়)। না থাকলে নিচের বাটনে চাপুন।'; b = [{ t: 'কোনো নোট নেই', fn: function () { d.note = ''; d.noteDone = true; oNext(); } }]; }
       else if (s === 'pay') {
         var ptot = d.prod.price * d.qty, padv = Math.round(ptot * 0.2);
         q = 'অর্ডার নিশ্চিত করতে মোট ৳' + ptot + '-এর ২০% অগ্রিম, অর্থাৎ **৳' + padv + '**, bKash 01799403099 বা Nagad 01577203389-এ পাঠান।\n\nটাকা পাঠানো হয়ে গেলে, **যে নম্বর থেকে টাকা পাঠিয়েছেন তার শেষ ৪ ডিজিট** লিখুন (যেমন 4491)।';
+      }
+      else if (s === 'locpick') {
+        var la = d.locA, lb = d.locB;
+        q = 'আপনার লোকেশন দুইটা সার্ভার থেকে পেয়েছি, দুইটার দূরত্ব প্রায় ' + Math.round(distM(la, lb)) + ' মিটার। যেটা আপনার সঠিক মনে হয় সেটা বেছে নিন, ওটা দিয়েই ফর্ম পূরণ করব।\n\n' +
+          locDesc('১) লোকেশন ১ (দ্রুত)', la) + '\n\n' + locDesc('২) লোকেশন ২ (নিখুঁত GPS)', lb);
+        b = [
+          { t: '১) দ্রুত · ' + locShort(la), fn: function () { oPickLoc('locA'); } },
+          { t: '২) নিখুঁত GPS · ' + locShort(lb), fn: function () { oPickLoc('locB'); } },
+          { t: '📍 আবার লোকেশন নিন', alt: true, fn: oChangeLoc }
+        ];
       }
       else if (s === 'consent') {
         q = oSummary();
@@ -3695,7 +3808,7 @@ this.reset();
         re('সংখ্যা', function () { d.qty = 0; }),
         re('নাম', function () { d.name = ''; }),
         re('ফোন', function () { d.phone = ''; }),
-        re('ঠিকানা', function () { d.district = ''; d.area = ''; d.address = ''; d.geo = false; d.addrPlusDone = false; }),
+        re('ঠিকানা / লোকেশন', function () { geoTok++; if (geoHandle) { try { geoHandle.cancel(); } catch (e) {} geoHandle = null; } resetLoc(d); O.locAsk = true; }),
         re('নোট', function () { d.noteDone = false; }),
         re('পেমেন্টের ৪ ডিজিট', function () { d.last4 = ''; })
       ]);
@@ -3729,37 +3842,137 @@ this.reset();
       if (c === -1) return 'এই ব্রাউজারে লোকেশন সাপোর্ট নেই। দয়া করে হাতে লিখে দিন।';
       return 'লোকেশন পাওয়া যায়নি। ফোনের Location অন করে আবার চেষ্টা করুন, অথবা হাতে লিখে দিন। Facebook/Messenger থেকে ঢুকলে Chrome-এ খুলুন।';
     }
+    /* ----- two locations: "fast" (answers first, used right away) + "precise" (real GPS, arrives later) ----- */
+    function distM(a, b) {
+      var x = (b.lon - a.lon) * Math.PI / 180 * Math.cos((a.lat + b.lat) / 2 * Math.PI / 180), y = (b.lat - a.lat) * Math.PI / 180;
+      return Math.sqrt(x * x + y * y) * 6371000;
+    }
+    function toLoc(r) {
+      var ds = null, i;
+      for (i = 0; i < r.cands.length && !ds; i++) ds = distFromCand(r.cands[i]);
+      return { src: r.src, lat: r.lat, lon: r.lon, acc: Math.round(r.acc || 0), dn: ds ? ds.n : '', dv: ds ? ds.dv : '', area: r.area || '', line: r.line || '', addr: r.addr };
+    }
+    function applyLoc(loc) {
+      var d = O.d;
+      d.district = loc.dn; d.division = loc.dv; d.area = loc.area;
+      d.address = (d.addrExtra ? d.addrExtra + '\n' : '') + loc.addr;
+      d.geo = true;
+    }
+    function resetLoc(d) {
+      d.district = ''; d.division = ''; d.area = ''; d.address = '';
+      d.geo = false; d.addrPlusDone = false; d.addrExtra = '';
+      d.locA = null; d.locB = null; d.locPicked = false;
+    }
+    function needLocPick(d) {
+      return !!(d.geo && d.locA && d.locB && !d.locPicked && distM(d.locA, d.locB) > 25);
+    }
+    function locShort(l) { return (l.area || '—') + (l.dn ? ', ' + l.dn : '') + ' · ±' + l.acc + ' মি'; }
+    function locDesc(title, l) {
+      return '**' + title + '**\n- **জেলা:** ' + (l.dn || 'অটো পাওয়া যায়নি') + '\n- **এলাকা:** ' + (l.area || 'অটো পাওয়া যায়নি') +
+        (l.line ? '\n- **ঠিকানা:** ' + l.line : '') + '\n- **GPS:** ' + l.lat.toFixed(6) + ', ' + l.lon.toFixed(6) + ' (±' + l.acc + ' মিটার)';
+    }
+    function noteSay(text) {
+      finishType();
+      history.push({ role: 'bot', text: text }); save();
+      typeReply(text);
+    }
+    function oPickLoc(key) {
+      var d = O.d, loc = d[key];
+      if (!loc) { oNext(); return; }
+      d.locPicked = true; applyLoc(loc);
+      oNext('✓ ' + (key === 'locA' ? 'দ্রুত' : 'নিখুঁত GPS') + ' লোকেশনটি নিলাম।\n\n');
+    }
+    /* the customer may ask for a new location at ANY step: clear it and offer the 📍 button again */
+    function oChangeLoc() {
+      geoTok++;
+      if (geoHandle) { try { geoHandle.cancel(); } catch (e) {} geoHandle = null; }
+      geoBusySet(false);
+      resetLoc(O.d); O.locAsk = true;
+      oNext('ঠিক আছে, লোকেশন নতুন করে নিচ্ছি। নিচের 📍 বাটনে চেপে আবার নিখুঁত লোকেশন বসাতে পারেন।\n\n');
+    }
     function oLocate() {
       if (!O || !O.on || busy || geoBusy) return;
-      if (typeof window.araGeoLookup !== 'function') { botSay('এই ব্রাউজারে লোকেশন বসানো যাচ্ছে না। দয়া করে হাতে লিখে দিন।'); return; }
+      if (typeof window.araGeoDual !== 'function') { botSay('এই ব্রাউজারে লোকেশন বসানো যাচ্ছে না। দয়া করে হাতে লিখে দিন।'); return; }
       userSay('📍 আমার লোকেশন দিন');
+      var tok = ++geoTok, typing = showTyping();
+      O.d.locA = null; O.d.locB = null; O.d.locPicked = false;
       geoBusySet(true);
       busy = true; updSend();
-      var typing = showTyping();
-      window.araGeoLookup().then(function (r) {
+      var endBusy = function () {
         if (typing.parentNode) typing.parentNode.removeChild(typing);
-        busy = false; geoBusySet(false);
-        if (!O || !O.on) return;
-        var d = O.d, ds = null, i;
-        for (i = 0; i < r.cands.length && !ds; i++) ds = distFromCand(r.cands[i]);
-        if (ds) { d.district = ds.n; d.division = ds.dv; }
-        if (r.area) d.area = r.area;
-        d.address = r.addr; d.geo = true; d.addrPlusDone = false;
-        var lines = ['✓ আপনার লোকেশন নিয়েছি:'];
-        lines.push('- **জেলা:** ' + (ds ? ds.n : 'অটো পাওয়া যায়নি'));
-        lines.push('- **এলাকা:** ' + (r.area || 'অটো পাওয়া যায়নি'));
-        if (r.line) lines.push('- **ঠিকানা:** ' + r.line);
-        lines.push('- **GPS:** ' + r.lat.toFixed(6) + ', ' + r.lon.toFixed(6) + (r.acc ? ' (±' + Math.round(r.acc) + ' মিটার)' : ''));
-        var tail = '';
-        if (r.acc > 300) tail += '\nএটা আনুমানিক এলাকার লোকেশন, প্রায় ' + Math.round(r.acc) + ' মিটার ব্যবধান হতে পারে।';
-        if (!ds) tail += '\nজেলা নিজে থেকে পাওয়া যায়নি, তাই জেলার নাম লিখে দিন।';
-        else if (!r.area) tail += '\nএলাকা নিজে থেকে পাওয়া যায়নি, তাই এলাকা বা থানা লিখে দিন।';
-        oNext(lines.join('\n') + tail + '\n\n');
-      }).catch(function (e) {
-        if (typing.parentNode) typing.parentNode.removeChild(typing);
-        busy = false; updSend(); geoBusySet(false);
-        botSay(geoErr(e));
+        busy = false; geoBusySet(false); updSend();
+      };
+      geoHandle = window.araGeoDual({
+        /* first answer (normally the fast one): use it right away so the order keeps moving */
+        onFirst: function (r) {
+          if (tok !== geoTok) return;
+          endBusy();
+          if (!O || !O.on) return;
+          var d = O.d, loc = toLoc(r), keepD = d.district, keepV = d.division, keepA = d.area;
+          d[r.src === 'precise' ? 'locB' : 'locA'] = loc;
+          O.locAsk = false; d.addrExtra = ''; d.addrPlusDone = false; d.locPicked = false;
+          applyLoc(loc);
+          if (!loc.dn && keepD) { d.district = keepD; d.division = keepV; }
+          if (!loc.area && keepA) d.area = keepA;
+          var lines = [r.src === 'precise' ? '✓ আপনার নিখুঁত GPS লোকেশন নিয়েছি:' : '✓ আপনার লোকেশন নিয়েছি:'];
+          lines.push('- **জেলা:** ' + (d.district || 'অটো পাওয়া যায়নি'));
+          lines.push('- **এলাকা:** ' + (d.area || 'অটো পাওয়া যায়নি'));
+          if (loc.line) lines.push('- **ঠিকানা:** ' + loc.line);
+          lines.push('- **GPS:** ' + loc.lat.toFixed(6) + ', ' + loc.lon.toFixed(6) + (loc.acc ? ' (±' + loc.acc + ' মিটার)' : ''));
+          var tail = '';
+          if (r.src !== 'precise') tail += '\n🎯 আরও নিখুঁত GPS লোকেশন খুঁজছি, পেলে জানাব।';
+          if (loc.acc > 300) tail += '\nএটা আনুমানিক এলাকার লোকেশন, প্রায় ' + loc.acc + ' মিটার ব্যবধান হতে পারে।';
+          if (!d.district) tail += '\nজেলা নিজে থেকে পাওয়া যায়নি, তাই জেলার নাম লিখে দিন।';
+          else if (!d.area) tail += '\nএলাকা নিজে থেকে পাওয়া যায়নি, তাই এলাকা বা থানা লিখে দিন।';
+          oNext(lines.join('\n') + tail + '\n\n');
+        },
+        /* second answer: keep it; the customer chooses between both at the very end of the order */
+        onSecond: function (r) {
+          if (tok !== geoTok || !O || !O.on) return;
+          var d = O.d, loc = toLoc(r), other = r.src === 'precise' ? d.locA : d.locB, nm = r.src === 'precise' ? 'নিখুঁত GPS' : 'দ্রুত';
+          d[r.src === 'precise' ? 'locB' : 'locA'] = loc;
+          if (!d.geo) return; /* the customer typed their own address meanwhile */
+          if (other && distM(other, loc) <= 25) { noteSay('✓ ' + nm + ' লোকেশনেও একই জায়গা পেয়েছি, লোকেশন মিলে গেছে।'); return; }
+          noteSay('🎯 আরও একটি লোকেশন পেয়েছি (' + nm + ', ±' + loc.acc + ' মিটার): ' + (loc.area || '—') + (loc.dn ? ', ' + loc.dn : '') + '।\nঅর্ডারের শেষে দুইটার মধ্যে থেকে আপনি বেছে নিতে পারবেন।');
+          if (O.step === 'consent') oNext('');
+        },
+        onError: function (e) {
+          if (tok !== geoTok) return;
+          endBusy();
+          botSay(geoErr(e));
+        }
       });
+    }
+
+    /* ----- change ANY earlier answer at ANY step ("নাম বদলাব", "ফোন নম্বর ভুল", "লোকেশন পরিবর্তন করতে চাই") ----- */
+    function changeTarget(t) {
+      var s = String(t);
+      if (s.length > 90) return null;
+      var verb = /বদল|পরিবর্তন|চেঞ্জ|change|সংশোধন|edit|update|bodol|poriborton|ভুল/i;
+      var weak = /আবার|আরেক|আরও|নতুন|এড|add|again|new|another|হয়নি|হয় নি|ঠিক\s*না/i;
+      if (/লোকেশন|location/i.test(s) && (verb.test(s) || weak.test(s))) return 'loc';
+      if (/ঠিকানা|জেলা|এলাকা|থানা|address|district/i.test(s) && verb.test(s)) return 'loc';
+      if (!verb.test(s)) return null;
+      if (/ফোন|নম্বর|নাম্বার|মোবাইল|phone|number|mobile/i.test(s)) return 'phone';
+      if (/নাম(?:টা|টি|ও)?(?![\u0980-\u09FF])|name/i.test(s)) return 'name';
+      if (/সাইজ|size|গ্রাম|gram/i.test(s)) return 'size';
+      if (/সংখ্যা|কয়টি|কয়টা|পরিমাণ|quantity|qty/i.test(s)) return 'qty';
+      if (/পণ্য|প্রোডাক্ট|product|চকলেট|chocolate|আইটেম|item/i.test(s)) return 'prod';
+      if (/নোট|note/i.test(s)) return 'note';
+      if (/ডিজিট|digit|পেমেন্ট|payment|bkash|nagad|বিকাশ|নগদ/i.test(s)) return 'pay';
+      return null;
+    }
+    function oChange(k) {
+      var d = O.d, lbl = '';
+      if (k === 'loc') { oChangeLoc(); return; }
+      if (k === 'prod') { d.prod = null; lbl = 'পণ্য'; }
+      else if (k === 'size') { d.prod = (d.prod && d.prod.fam) ? { fam: d.prod.fam, n: SZ[d.prod.fam].n, price: 0 } : null; lbl = 'সাইজ'; }
+      else if (k === 'qty') { d.qty = 0; lbl = 'সংখ্যা'; }
+      else if (k === 'name') { d.name = ''; lbl = 'নাম'; }
+      else if (k === 'phone') { d.phone = ''; lbl = 'ফোন নম্বর'; }
+      else if (k === 'note') { d.noteDone = false; d.note = ''; lbl = 'নোট'; }
+      else if (k === 'pay') { d.last4 = ''; lbl = 'পেমেন্টের শেষ ৪ ডিজিট'; }
+      oNext('ঠিক আছে, ' + lbl + ' বদলে নিচ্ছি।\n\n');
     }
     if (geoBtn) geoBtn.addEventListener('click', oLocate);
     function aiPass() { O.ai = true; oSave(); return false; }
@@ -3771,6 +3984,8 @@ this.reset();
       var t = String(text).trim();
       if (!O || !O.on) { if (orderIntent(t)) { oStart(t); return true; } return false; }
       if (CANCEL.test(t)) { oCancel(); return true; }
+      var ch = changeTarget(t);
+      if (ch) { oChange(ch); return true; }
       return oStep(t);
     }
     function oStep(t) {
@@ -3827,7 +4042,7 @@ this.reset();
       if (s === 'addrplus') {
         if (strongQ) return aiPass();
         if (NONOTE.test(t)) { d.addrPlusDone = true; oNext(); return true; }
-        d.address = t + '\n' + d.address; d.addrPlusDone = true; oNext('✓ যোগ করে নিলাম।\n\n'); return true;
+        d.address = t + '\n' + d.address; d.addrExtra = t; d.addrPlusDone = true; oNext('✓ যোগ করে নিলাম।\n\n'); return true;
       }
       if (s === 'pay') {
         v = parseLast4(t);
@@ -3835,6 +4050,13 @@ this.reset();
         if (looksQ(t)) return aiPass();
         botSay('শেষ ৪ ডিজিট বুঝতে পারিনি। যে নম্বর থেকে টাকা পাঠিয়েছেন তার শেষ ৪টি সংখ্যা লিখুন, যেমন 4491। টাকা এখনো না পাঠালে আগে পাঠিয়ে নিন, তারপর লিখুন।');
         return true;
+      }
+      if (s === 'locpick') {
+        var x = bn2en(t).trim();
+        if (/^(?:1|প্রথম|দ্রুত|first|fast)/i.test(x)) { oPickLoc('locA'); return true; }
+        if (/^(?:2|দ্বিতীয়|নিখুঁত|সঠিক|gps|second|precise)/i.test(x)) { oPickLoc('locB'); return true; }
+        if (looksQ(t)) return aiPass();
+        oAsk('একটা বেছে নিন: ১ বা ২ লিখুন, অথবা নিচের বাটন চাপুন।\n\n'); return true;
       }
       if (s === 'consent') {
         if (YES.test(t)) { oFill(); return true; }
@@ -3988,6 +4210,7 @@ this.reset();
     /* ----- events ----- */
     launcher.addEventListener('click', function () { setOpen(true); });
     sh.querySelector('.x').addEventListener('click', function () { setOpen(false); });
+    sh.querySelector('.bk').addEventListener('click', function () { setOpen(false); });
     sh.querySelector('.tt').addEventListener('click', function () { setOpen(true); });
     sh.querySelector('.tx').addEventListener('click', hideTeaser);
 
