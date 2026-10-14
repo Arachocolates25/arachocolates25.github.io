@@ -3366,12 +3366,21 @@ this.reset();
     '.geobtn.busy .gp{background:#A5F3FC;animation-duration:.8s}',
     '@keyframes gp2{0%{box-shadow:0 0 0 0 rgba(255,255,255,.6)}100%{box-shadow:0 0 0 9px rgba(255,255,255,0)}}',
     /* thinking indicator: black orb (replaces the three bouncing dots) */
-    '.dots{position:relative;width:26px;height:26px;padding:0;gap:0;margin:3px 5px}',
-    '.dots i{display:none}',
-    '.dots::before{content:"";position:absolute;inset:5px;background:#0A0A0A;border-radius:50%;animation:orb 1.6s ease-in-out infinite}',
-    '.dots::after{content:"";position:absolute;inset:0;border-radius:50%;border:2px solid transparent;border-top-color:#0A0A0A;border-right-color:rgba(10,10,10,.22);animation:orbs 1s linear infinite}',
-    '@keyframes orb{0%,100%{transform:scale(.62);border-radius:50%}35%{transform:scale(1);border-radius:46% 54% 50% 50%/54% 46% 54% 46%}70%{transform:scale(.8);border-radius:54% 46% 46% 54%/46% 54% 46% 54%}}',
-    '@keyframes orbs{to{transform:rotate(360deg)}}',
+    '.m.bot.think{display:flex;align-items:center;gap:9px;background:none;box-shadow:none;border-radius:0;padding:2px 2px;max-width:100%;color:#4B5563;font-size:13px;font-weight:500;letter-spacing:.005em;font-variant-numeric:tabular-nums}',
+    '.th-logo{flex:none;width:24px;height:24px;display:block;color:#111}',
+    '.th-logo circle,.th-logo line{fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}',
+    '.th-ring{transform-box:fill-box;transform-origin:50% 50%;stroke-dasharray:46 7.4;animation:thspin 1.5s linear infinite}',
+    '.th-slash{stroke-dasharray:20;animation:thdraw 1.5s cubic-bezier(.6,0,.3,1) infinite}',
+    '.th-t{display:flex;align-items:center;gap:6px;min-width:0}',
+    '.th-bulb{flex:none;width:15px;height:15px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;animation:thbulb 1.5s ease-in-out infinite}',
+    '@keyframes thspin{0%{transform:rotate(0deg);stroke-dasharray:46 7.4}50%{transform:rotate(180deg);stroke-dasharray:28 25.4}100%{transform:rotate(360deg);stroke-dasharray:46 7.4}}',
+    '@keyframes thdraw{0%{stroke-dashoffset:20}45%,65%{stroke-dashoffset:0}100%{stroke-dashoffset:-20}}',
+    '@keyframes thbulb{0%,100%{opacity:.45}50%{opacity:1}}',
+    '.m.bot.think.done{color:#6B7280}',
+    '.m.bot.think.done .th-ring{animation:none;stroke-dasharray:46 7.4}',
+    '.m.bot.think.done .th-slash{animation:none;stroke-dashoffset:0}',
+    '.m.bot.think.done .th-bulb{animation:none;opacity:.85}',
+    '@media (prefers-reduced-motion:reduce){.th-ring,.th-slash,.th-bulb{animation:none!important}.th-slash{stroke-dashoffset:0}}',
     '.sk i{background:linear-gradient(90deg,rgba(15,23,42,.07) 0%,rgba(15,23,42,.07) 38%,rgba(99,102,241,.5) 50%,rgba(15,23,42,.07) 62%,rgba(15,23,42,.07) 100%);background-size:200% 100%}',
     /* location popup recolor */
     '.lp{background:radial-gradient(80% 60% at 50% 0%,rgba(79,70,229,.35) 0%,rgba(15,23,42,.75) 100%)}',
@@ -3615,11 +3624,45 @@ this.reset();
       msgs.appendChild(m);
       return m;
     }
+    /* "Thinking for N seconds" live timer (logo + bulb, no bubble); turns into "Thought for N seconds" when the reply has finished typing */
+    var thk = null;
+    var THINK_HTML = '<svg class="th-logo" viewBox="0 0 24 24" aria-hidden="true"><circle class="th-ring" cx="12" cy="12" r="8.5"/><line class="th-slash" x1="6" y1="18" x2="19.5" y2="4.5"/></svg>' +
+      '<span class="th-t"><svg class="th-bulb" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg><span class="tx"></span></span>';
+    function thkFmt(sec) {
+      if (sec < 60) return sec + (sec === 1 ? ' second' : ' seconds');
+      var mn = Math.floor(sec / 60), r = sec % 60;
+      return mn + (mn === 1 ? ' minute' : ' minutes') + (r ? ' ' + r + (r === 1 ? ' second' : ' seconds') : '');
+    }
+    function thkSecs(t) { return Math.max(1, Math.floor((Date.now() - t.t0) / 1000)); }
+    function thkStop(t) { if (t && t.iv) { clearInterval(t.iv); t.iv = 0; } }
+    function thkTick() {
+      var t = thk; if (!t || t.done) return;
+      if (!t.adopted && !t.el.isConnected) {
+        if (!t.lost) t.lost = Date.now();
+        else if (Date.now() - t.lost > 1500) { thkStop(t); thk = null; }
+        return;
+      }
+      t.tx.textContent = 'Thinking for ' + thkFmt(thkSecs(t));
+    }
+    function thkAdopt(m) {
+      var t = thk; if (!t || t.done || !m || !m.parentNode) return;
+      t.adopted = true; t.el.classList.add('instant');
+      m.parentNode.insertBefore(t.el, m);
+    }
+    function thkFinish() {
+      var t = thk; if (!t) return;
+      thkStop(t); thk = null; t.done = true;
+      t.tx.textContent = 'Thought for ' + thkFmt(thkSecs(t));
+      t.el.classList.add('done');
+    }
     function showTyping() {
-      var m = el('div', 'm bot');
+      if (thk) { thkStop(thk); thk = null; }
+      var m = el('div', 'm bot think');
       m.setAttribute('aria-label', 'টাইপ করছে');
-      var d = el('span', 'dots'); d.appendChild(el('i')); d.appendChild(el('i')); d.appendChild(el('i'));
-      m.appendChild(d); msgs.appendChild(m); toBottom();
+      m.innerHTML = THINK_HTML;
+      msgs.appendChild(m); toBottom();
+      thk = { el: m, tx: m.querySelector('.tx'), t0: Date.now(), iv: 0, adopted: false, done: false, lost: 0 };
+      thkTick(); thk.iv = setInterval(thkTick, 250);
       return m;
     }
     /* server down / AI unavailable: reply in the customer's own style (Bangla, English or Banglish) */
@@ -3687,12 +3730,13 @@ this.reset();
     }
     function typeReply(reply) {
       var m = addMsg('bot', reply);
-      if (reduceMotion || !document.createTreeWalker) { follow(m); return m; }
+      thkAdopt(m);
+      if (reduceMotion || !document.createTreeWalker) { thkFinish(); follow(m); return m; }
       try {
         var nodes = [], tw = document.createTreeWalker(m, NodeFilter.SHOW_TEXT), n, words = 0;
         while ((n = tw.nextNode())) nodes.push(n);
         nodes.forEach(function (x) { words += (x.nodeValue.match(/\S+/g) || []).length; });
-        if (!words) { follow(m); return m; }
+        if (!words) { thkFinish(); follow(m); return m; }
         var g = Math.max(1, Math.ceil(words / 110)), spans = [];
         nodes.forEach(function (node) {
           var toks = node.nodeValue.match(/\S+\s*|\s+/g) || [], frag = document.createDocumentFragment(), buf = '', c = 0;
@@ -3713,12 +3757,12 @@ this.reset();
         var ended = false, tm = 0;
         var end = function () {
           if (ended) return; ended = true; clearTimeout(tm);
-          m.classList.add('wdone'); curType = null;
+          thkFinish(); m.classList.add('wdone'); curType = null;
         };
         tm = setTimeout(end, spans.length * step + 450);
         curType = { finish: end };
         follow(m);
-      } catch (e) { curType = null; try { m.textContent = reply; } catch (e2) {} }
+      } catch (e) { curType = null; thkFinish(); try { m.textContent = reply; } catch (e2) {} }
       return m;
     }
 
@@ -3740,7 +3784,7 @@ this.reset();
       var typing = showTyping();
       var ctrl = window.AbortController ? new AbortController() : null;
       var timedOut = false;
-      var timer = setTimeout(function () { timedOut = true; if (ctrl) ctrl.abort(); }, 25000);
+      var timer = 0; /* no time limit: keep thinking (timer running) until the reply arrives */
       var done = function () { clearTimeout(timer); if (typing.parentNode) typing.parentNode.removeChild(typing); };
       var fail = function (kind, code) { var e = new Error(kind); e.kind = kind; e.code = code; return e; };
 
