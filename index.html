@@ -894,6 +894,8 @@ textarea.nf-in{height:auto;min-height:64px;padding:10px 12px;line-height:1.45;re
 .nf-dot::after{content:"";position:absolute;inset:0;border-radius:50%;background:#E5233B;opacity:.55;transform:scale(1);animation:nfDotPulse 1.6s cubic-bezier(.2,.6,.3,1) infinite;will-change:transform,opacity;}
 @keyframes nfDotPulse{0%{transform:scale(1);opacity:.55;}80%,100%{transform:scale(3.2);opacity:0;}}
 html.order-open:not(:has(.order-form-overlay.open)) .nf-dot::after{animation-play-state:paused;}
+/* closed order form: pause only the endless decorative loops (nothing visible, no logic touched) */
+.order-form-overlay:not(.open) .nf-dot::after,.order-form-overlay:not(.open) .ofgeo-light,.order-form-overlay:not(.open) .ofgeo-light::before,.order-form-overlay:not(.open) .ofgeo-light::after,.order-form-overlay:not(.open) .ofgeo-btn.busy::before,.order-form-overlay:not(.open) .ofgeo-btn.busy .ofgeo-ico::before,.order-form-overlay:not(.open) .ofgeo-btn.busy .ofgeo-ico::after,.order-form-overlay:not(.open) .ofgeo-btn.busy .ofgeo-ico .pin{animation-play-state:paused;}
 @media(prefers-reduced-motion:reduce){.nf-dot::after{animation:none !important;opacity:0;}}
 
 /* ===== v15: product pages (Chocolate Gift Box / Pure Dark Chocolate Bar) — compact, organised ===== */
@@ -2315,6 +2317,11 @@ this.autoSlideInterval = null;
 },
 resumeAutoSlide: function() {
 if (this.isAutoSliding && !this.autoSlideInterval) {
+if ('IntersectionObserver' in window) {
+if (document.hidden) return;
+const r = this.grid.getBoundingClientRect();
+if (!(r.top <= window.innerHeight && r.bottom >= 0)) return;
+}
 this.autoSlideInterval = setInterval(() => {
 let nextIndex = this.currentIndex + 1;
 if (nextIndex >= this.cards.length) {
@@ -3415,6 +3422,7 @@ this.reset();
     '.teaser{right:20px;bottom:90px}',
     '}',
 
+    '.root:not(.open) .panel .ti span::before,.root:not(.open) .panel .dots i,.root:not(.open) .panel .sk i,.root:not(.open) .panel .geobtn::after,.root:not(.open) .panel .geobtn .gp,.root:not(.open) .panel .th-ring,.root:not(.open) .panel .th-slash,.root:not(.open) .panel .th-bulb{animation-play-state:paused}',
     '@media (prefers-reduced-motion:reduce){.launcher,.panel,.teaser,.m,.sk i,.dots i,.launcher::before,.launcher::after{animation:none!important;transition:none!important}.sk i{background:rgba(36,18,9,.12)}.dots i{opacity:.7;transform:none}.w{animation:none!important}}'
   ].join('\n');
 
