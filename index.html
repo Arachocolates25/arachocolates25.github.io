@@ -1,6 +1,19 @@
 <!DOCTYPE html>
 <html lang="en" data-title-design="classic">
 <head>
+<!--
+  LOW-END DEVICE OPTIMIZATION — INDEX (search this file for "LOW-END DEVICE OPTIMIZATION — START")
+  Only code between a START and its matching END marker is low-end-only. There are 3 blocks, all inside script code (so the markers use JS comment syntax):
+    1) chatbot script        — turns off the SVG water backdrop on devices with <=2 GB memory or <=2 CPU cores
+    2) title-bar glass script — same rule (dormant while data-title-design="classic")
+    3) falling-leaf script    — at most 8 leaves, one every ~2 s, 3 at load (normal devices: 24 / ~1 s / 7)
+  To remove all low-end changes: delete the text from each START to its END. Nothing else needs editing.
+  NOT low-end-only (general optimizations — keep them when reverting the above):
+    - Step 5/A slider auto-slide guard, 5/B slider resize via requestAnimationFrame,
+    - 5/C pause of .choco-help-dot / .socials animations off-screen (the ara-step5-offscreen script + the .ara-offscreen CSS rule),
+    - 5/D .hw-done releases will-change on hero letters.
+  Pre-existing adaptive chat code (calm / ara_lite / goLite) is original design, not part of these blocks.
+-->
 <!-- Google tag (gtag.js) -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-V183FH99YQ"></script>
 <script>
@@ -11,19 +24,34 @@
   gtag('config', 'G-V183FH99YQ');
 </script>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, interactive-widget=resizes-content">
-<title>Ara Chocolates — Absolute Richness Chocolate</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, interactive-widget=resizes-content">
+<!-- OLD TITLE BACKUP (to revert, just ask):
+     Original <title>:        Ara Chocolates — Absolute Richness Chocolate
+     Original og:title:       Ara Chocolates — Absolute Richness Chocolate
+     To go back, replace the <title> text and the og:title content below with the original text above. -->
+<title>Ara Chocolates | Premium Handmade Chocolate in Bangladesh</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍫</text></svg>">
-<meta name="description" content="Swiss-inspired handmade chocolate & gift boxes in Bangladesh. Perfect for Eid, birthdays & corporate gifting.">
-<meta property="og:title" content="Ara Chocolates — Absolute Richness Chocolate">
-<meta property="og:description" content="Swiss-inspired handmade chocolate & gift boxes in Bangladesh. Perfect for Eid, birthdays & corporate gifting.">
+<meta name="description" content="Swiss-inspired handmade chocolate &amp; gift boxes in Bangladesh. Order the Chocolate Gift Box (৳1499) or Pure Dark Bar (৳390) online or on WhatsApp.">
+<meta property="og:title" content="Ara Chocolates | Premium Handmade Chocolate in Bangladesh">
+<meta property="og:description" content="Swiss-inspired handmade chocolate &amp; gift boxes in Bangladesh. Order the Chocolate Gift Box (৳1499) or Pure Dark Bar (৳390) online or on WhatsApp.">
 <meta property="og:url" content="https://arachocolates25.github.io/">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://arachocolates25.github.io/images/combo-box.png">
+<meta property="og:site_name" content="Ara Chocolates">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Ara Chocolates | Premium Handmade Chocolate in Bangladesh">
+<meta name="twitter:description" content="Swiss-inspired handmade chocolate &amp; gift boxes in Bangladesh. Order the Chocolate Gift Box (৳1499) or Pure Dark Bar (৳390) online or on WhatsApp.">
+<meta name="twitter:image" content="https://arachocolates25.github.io/images/combo-box.png">
+<meta name="robots" content="index, follow, max-image-preview:large">
+<link rel="canonical" href="https://arachocolates25.github.io/">
+<!-- SEO foundation: canonical = the og:url already declared above. Structured data below only repeats facts printed on the page (name, URL, logo file, phone, email, Facebook pages). No ratings, reviews, hours or address are claimed. -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Organization","name":"Ara Chocolates","url":"https://arachocolates25.github.io/","logo":"https://arachocolates25.github.io/images/logo.png","description":"Swiss-inspired handmade chocolate & gift boxes in Bangladesh.","sameAs":["https://www.facebook.com/share/1CcmDGtsqY/","https://www.facebook.com/share/1DU33Dr6UX/"],"contactPoint":[{"@type":"ContactPoint","contactType":"customer service","telephone":"+8801403896475","email":"rayhan120y@gmail.com","areaServed":"BD","availableLanguage":["en","bn"]}]}
+</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Archivo+Expanded:wght@700&family=Noto+Sans+Bengali:wght@400;600&display=swap" rel="stylesheet">
-<style>:root{--cocoa-dark:#241209;--cocoa:#4A2C1A;--cream:#EDE4D0;--cream-2:#F6F1E6;--gold:#B8873A;--swiss-red:#C8102E;--white:#FFFFFF;--line:rgba(36,18,9,0.16);}*{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;scrollbar-gutter:stable;}body{font-family:'Archivo',sans-serif;background:radial-gradient(ellipse 1200px 600px at 50% 0%,rgba(184,135,58,0.05) 0%,transparent 60%),var(--cream-2);color:var(--cocoa-dark);font-weight:400;-webkit-font-smoothing:antialiased;}img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}.wrap{max-width:1120px;margin:0 auto;padding:0 24px;}header{position:sticky;top:0;z-index:50;background:var(--cream-2);border-bottom:1px solid var(--line);}.nav{display:flex;align-items:center;justify-content:space-between;padding:18px 24px;max-width:1120px;margin:0 auto;}.brand{font-family:'Archivo Expanded',sans-serif;font-weight:700;font-size:1.3rem;letter-spacing:0.01em;display:flex;align-items:center;gap:10px;}.brand .logo-img{width:34px;height:34px;object-fit:contain;flex:none;}nav.links{display:flex;gap:28px;font-size:0.95rem;}nav.links a{text-decoration:none;padding-bottom:3px;position:relative;}nav.links a::after{content:"";position:absolute;left:0;bottom:0;width:100%;height:1px;background:var(--cocoa-dark);transform:scaleX(0);transform-origin:left;transition:transform .3s cubic-bezier(.2,.8,.2,1);}nav.links a:hover::after{transform:scaleX(1);}.nav-toggle{display:none;background:none;border:none;font-size:1.6rem;cursor:pointer;color:var(--cocoa-dark);}@media(max-width:720px){nav.links{position:fixed;top:64px;left:0;right:0;background:var(--cream-2);flex-direction:column;gap:0;border-bottom:1px solid var(--line);max-height:0;overflow:hidden;transition:max-height .3s ease;}nav.links.open{max-height:400px;}nav.links a{padding:16px 24px;border-bottom:1px solid var(--line);}.nav-toggle{display:block;}}.hero{border-bottom:1px solid var(--line);padding:64px 0 0;}.hero-grid{display:grid;grid-template-columns:1.5fr 1fr;gap:40px;align-items:end;padding-bottom:48px;}.hero-tag{font-size:0.85rem;color:var(--gold);letter-spacing:0.02em;margin-bottom:18px;font-weight:600;}.hero h1{font-family:'Archivo Expanded',sans-serif;font-weight:700;font-size:clamp(2.4rem,6vw,4.6rem);line-height:0.98;letter-spacing:-0.01em;}.hero-title-mask{overflow:hidden;padding-bottom:0.08em;}.hero h1 em{font-style:normal;color:var(--swiss-red);}.hero-side{border-left:1px solid var(--line);padding-left:28px;display:flex;flex-direction:column;gap:18px;}.hero-side p{font-size:1rem;line-height:1.6;color:var(--cocoa);}.hero-cta{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,var(--cocoa) 0%,var(--cocoa-dark) 100%);color:var(--white);padding:14px 24px;font-weight:600;font-size:0.95rem;letter-spacing:0.01em;width:fit-content;box-shadow:0 8px 20px rgba(36,18,9,0.22);transition:background .25s ease,transform .15s ease,box-shadow .25s ease;border:none;cursor:pointer;}.hero-cta span.arrow{display:inline-block;transition:transform .25s cubic-bezier(.2,.8,.2,1);}.hero-cta:hover{background:linear-gradient(135deg,var(--swiss-red) 0%,#8f0c22 100%);box-shadow:0 10px 24px rgba(200,16,46,0.28);}.hero-cta:hover span.arrow{transform:translateX(4px);}.hero-cta:active{transform:scale(.97);}.hero-strip{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);}.hero-strip div{padding:20px 20px;border-right:1px solid var(--line);text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:78px;transition:background .25s ease;}.hero-strip div:hover{background:rgba(184,135,58,0.07);}.hero-strip div:last-child{border-right:none;}.hero-strip .num{font-family:'Archivo Expanded',sans-serif;font-weight:700;font-size:1.4rem;color:var(--cocoa-dark);font-variant-numeric:tabular-nums;}.hero-strip .lbl{font-size:0.8rem;color:var(--cocoa);margin-top:4px;}@media(max-width:720px){.hero-grid{grid-template-columns:1fr;gap:28px;}.hero-side{border-left:none;padding-left:0;border-top:1px solid var(--line);padding-top:20px;}.hero-strip{grid-template-columns:repeat(2,1fr);}.hero-strip div:nth-child(2){border-right:none;}.hero-strip div:nth-child(3),.hero-strip div:nth-child(4){border-top:1px solid var(--line);}}.section{padding:72px 0;border-bottom:1px solid var(--line);}.section-head{display:grid;grid-template-columns:1fr 2fr;gap:24px;margin-bottom:44px;}.section-head .label{font-weight:600;color:var(--gold);font-size:0.9rem;}.section-head h2{font-family:'Archivo Expanded',sans-serif;font-weight:700;font-size:clamp(1.8rem,4vw,2.6rem);line-height:1.08;}@media(max-width:720px){.section-head{grid-template-columns:1fr;gap:10px;}}.about-body{display:grid;grid-template-columns:1fr 1fr;gap:48px;}.about-body p{font-size:1.05rem;line-height:1.75;color:var(--cocoa);margin-bottom:18px;}.about-visual{aspect-ratio:4/5;background:linear-gradient(135deg,var(--cocoa-dark) 0%,var(--cocoa) 55%,var(--gold) 100%);position:relative;overflow:hidden;}.about-visual::after{content:"";position:absolute;inset:0;background-image:repeating-linear-gradient(45deg,rgba(255,255,255,0.04) 0 2px,transparent 2px 18px);}.about-visual .cross{position:absolute;bottom:28px;right:28px;width:34px;height:34px;}.about-visual .cross::before,.about-visual .cross::after{content:"";position:absolute;background:var(--cream-2);}.about-visual .cross::before{left:50%;top:0;width:6px;height:100%;transform:translateX(-50%);}.about-visual .cross::after{top:50%;left:0;height:6px;width:100%;transform:translateY(-50%);}@media(max-width:720px){.about-body{grid-template-columns:1fr;}.about-visual{order:-1;aspect-ratio:16/9;}}.products{display:flex;flex-direction:column;gap:40px;}.product{background:linear-gradient(165deg,var(--cream-2) 0%,var(--cream) 100%);padding:40px 32px;display:flex;flex-direction:column;gap:16px;cursor:pointer;border-radius:12px;border:1px solid var(--line);box-shadow:0 2px 6px rgba(36,18,9,0.06),0 10px 28px rgba(36,18,9,0.07);transition:box-shadow .35s cubic-bezier(.2,.8,.2,1),transform .35s cubic-bezier(.2,.8,.2,1),border-color .35s;}.product:hover{box-shadow:0 6px 14px rgba(36,18,9,0.08),0 20px 40px rgba(36,18,9,0.12);transform:translateY(-4px);border-color:rgba(184,135,58,0.4);}.view-details{align-self:flex-start;background:none;border:none;padding:0;font-family:'Archivo',sans-serif;font-weight:600;font-size:0.88rem;color:var(--gold);cursor:pointer;transition:color .2s;}.view-details:hover{color:var(--swiss-red);}.view-details span.arrow{display:inline-block;transition:transform .25s cubic-bezier(.2,.8,.2,1);}.view-details:hover span.arrow{transform:translateX(3px);}.product .ph{aspect-ratio:1/1;background:var(--cocoa-dark);position:relative;overflow:hidden;border-radius:8px;box-shadow:inset 0 0 0 1px rgba(184,135,58,0.22);}.product .ph::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(160deg,rgba(184,135,58,0.08) 0%,transparent 40%,rgba(36,18,9,0.14) 100%);}.product .ph img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s cubic-bezier(.2,.8,.2,1);}.product:hover .ph img{transform:scale(1.06);}.product h3{font-family:'Archivo Expanded',sans-serif;font-weight:700;font-size:1.5rem;margin-top:8px;}.product .desc{color:var(--cocoa);font-size:0.98rem;line-height:1.6;}.product .row{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--line);padding-top:16px;margin-top:auto;}.product .price{font-family:'Archivo Expanded',sans-serif;font-weight:700;font-size:1.3rem;}.product .order{font-weight:600;font-size:0.85rem;background:linear-gradient(135deg,var(--cocoa) 0%,var(--cocoa-dark) 100%);border:none;color:var(--white);padding:10px 20px;border-radius:6px;cursor:pointer;font-family:'Archivo',sans-serif;box-shadow:0 4px 12px rgba(36,18,9,0.18);transition:background .25s ease,transform .15s ease,box-shadow .25s ease;}.product .order:hover{background:linear-gradient(135deg,var(--swiss-red) 0%,#8f0c22 100%);box-shadow:0 6px 16px rgba(200,16,46,0.24);}.product .order:active{transform:scale(.95);}@media(min-width:721px){.product{flex-direction:row;align-items:stretch;gap:32px;}.product .ph{width:280px;flex:none;aspect-ratio:1/1;}.product > div.pbody{flex:1;display:flex;flex-direction:column;gap:16px;}}.product-modal-overlay{position:fixed;inset:0;background:rgba(36,18,9,0.55);display:flex;align-items:center;justify-content:center;padding:24px;z-index:200;opacity:0;visibility:hidden;transition:opacity .25s ease,visibility .25s ease;backface-visibility:hidden;}.product-modal-overlay.open{opacity:1;visibility:visible;}.product-modal{background:var(--cream-2);max-width:680px;width:100%;max-height:90vh;overflow-y:auto;border-radius:10px;position:relative;padding:44px;transform:translateY(18px) scale(.97);transition:transform .35s cubic-bezier(.2,.8,.2,1);will-change:transform;backface-visibility:hidden;}.product-modal-overlay.open .product-modal{transform:translateY(0) scale(1);}.product-modal-close{position:absolute;top:16px;right:16px;width:36px;height:36px;background:none;border:none;font-size:1.2rem;color:var(--cocoa);cursor:pointer;transition:color .2s;z-index:2;}.product-modal-close:hover{color:var(--swiss-red);}.product-modal-tabs{display:flex;gap:1px;background:var(--line);margin-bottom:24px;border-radius:6px;overflow:hidden;}.product-tab{flex:1;background:var(--cream);border:none;padding:14px;font-family:'Archivo',sans-serif;font-weight:600;font-size:0.95rem;color:var(--cocoa);cursor:pointer;transition:background .2s,color .2s;}.product-tab.active{background:var(--cocoa-dark);color:var(--white);}.pm-swipeport{position:relative;overflow:hidden;touch-action:pan-y;transition:height .3s cubic-bezier(.2,.8,.2,1);backface-visibility:hidden;}.pm-track{display:flex;transition:transform .34s cubic-bezier(.22,.8,.28,1);will-change:transform;backface-visibility:hidden;}.product-modal-panel{flex:none;width:100%;box-sizing:border-box;}.pm-head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:12px;}.pm-head h3{font-family:'Archivo Expanded',sans-serif;font-weight:700;font-size:1.6rem;}.pm-price{font-family:'Archivo Expanded',sans-serif;font-weight:700;font-size:1.3rem;color:var(--swiss-red);}.pm-intro{color:var(--cocoa);line-height:1.6;margin-bottom:24px;}.pm-flavors{display:flex;flex-direction:column;gap:16px;margin-bottom:28px;}.pm-flavor{display:flex;gap:16px;padding:16px;background:var(--cream);border-radius:8px;}.pm-flavor-tag{font-family:'Archivo Expanded',sans-serif;font-weight:700;color:var(--gold);font-size:1.1rem;flex:none;width:26px;}.pm-flavor h4{font-size:1.05rem;font-weight:600;margin-bottom:4px;}.pm-flavor p{font-size:0.92rem;color:var(--cocoa);line-height:1.5;}.pm-order{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--cocoa) 0%,var(--cocoa-dark) 100%);color:var(--white);padding:14px 24px;font-weight:600;font-size:0.95rem;border:none;cursor:pointer;transition:background .25s ease,transform .15s ease,box-shadow .25s ease;box-shadow:0 8px 18px rgba(36,18,9,0.2);}.pm-order:hover{background:linear-gradient(135deg,var(--swiss-red) 0%,#8f0c22 100%);box-shadow:0 10px 22px rgba(200,16,46,0.26);}.pm-order:active{transform:scale(.97);}@media(max-width:720px){.product-modal-overlay{padding:12px;}.product-modal{padding:26px 18px 30px;max-height:92vh;border-radius:14px;}.pm-head{flex-direction:column;align-items:flex-start;gap:6px;}}.order-choice-overlay,.order-form-overlay{position:fixed;inset:0;background:rgba(36,18,9,0.55);display:flex;align-items:center;justify-content:center;padding:24px;z-index:300;opacity:0;visibility:hidden;transition:opacity .25s ease,visibility .25s ease;backface-visibility:hidden;}.order-choice-overlay.open,.order-form-overlay.open{opacity:1;visibility:visible;}.order-choice-box{background:linear-gradient(165deg,var(--cream-2) 0%,var(--cream) 100%);max-width:380px;width:100%;border-radius:14px;position:relative;padding:40px 30px 34px;text-align:center;box-shadow:0 24px 60px rgba(36,18,9,0.28);border-top:4px solid var(--gold);transform:translateY(18px) scale(.97);transition:transform .35s cubic-bezier(.2,.8,.2,1);will-change:transform;backface-visibility:hidden;}.order-choice-overlay.open .order-choice-box{transform:translateY(0) scale(1);}.order-choice-box h3{font-family:'Archivo Expanded',sans-serif;font-weight:700;font-size:1.3rem;margin-bottom:8px;}.order-choice-box p{color:var(--cocoa);font-size:0.92rem;margin-bottom:24px;}.order-choice-box .oc-btn{display:block;width:100%;padding:14px 20px;margin-bottom:12px;font-weight:600;font-size:0.95rem;border-radius:6px;border:none;cursor:pointer;font-family:'Archivo',sans-serif;transition:opacity .2s,transform .15s ease;}.order-choice-box .oc-btn:hover{opacity:0.88;}.order-choice-box .oc-btn:active{transform:scale(.97);}.oc-whatsapp{background:#25D366;color:#fff;box-shadow:0 6px 16px rgba(37,211,102,0.25);}.oc-website{background:linear-gradient(135deg,var(--cocoa) 0%,var(--cocoa-dark) 100%);color:#fff;box-shadow:0 6px 16px rgba(36,18,9,0.22);}.order-choice-close,.order-form-close{position:absolute;top:14px;right:14px;width:34px;height:34px;background:none;border:none;border-radius:50%;font-size:1.1rem;color:var(--cocoa);cursor:pointer;transition:background .2s ease,color .2s ease;}.order-choice-close:hover,.order-form-close:hover{background:rgba(36,18,9,0.08);color:var(--swiss-red);}.order-form-box{background:linear-gradient(165deg,var(--cream-2) 0%,var(--cream) 100%);max-width:480px;width:100%;max-height:88vh;overflow-y:auto;border-radius:14px;position:relative;padding:40px 32px 36px;box-shadow:0 24px 60px rgba(36,18,9,0.28);border-top:4px solid var(--gold);transform:translateY(18px) scale(.97);transition:transform .35s cubic-bezier(.2,.8,.2,1);will-change:transform;backface-visibility:hidden;}.order-form-overlay.open .order-form-box{transform:translateY(0) scale(1);}.order-form-box h3{font-family:'Archivo Expanded',sans-serif;font-weight:700;font-size:1.4rem;margin-bottom:6px;}.order-form-box .oform-sub{color:var(--cocoa);font-size:0.88rem;margin-bottom:22px;}#orderForm{display:flex;flex-direction:column;gap:16px;}.qty-btn{width:40px;height:40px;border:1px solid var(--line);background:var(--white);font-size:1.2rem;font-weight:700;cursor:pointer;border-radius:8px;color:var(--cocoa-dark);transition:transform .15s ease,border-color .2s ease,background .2s ease;}.qty-btn:hover{border-color:var(--gold);background:rgba(184,135,58,0.08);}.qty-btn:active{transform:scale(.9);}.order-total-box{margin-top:10px;padding:14px 18px;border-radius:8px;background:linear-gradient(135deg,var(--cocoa) 0%,var(--cocoa-dark) 100%);display:flex;justify-content:space-between;align-items:center;box-shadow:0 8px 18px rgba(36,18,9,0.2);}.order-total-box span:first-child{color:var(--cream-2);font-size:0.95rem;}.order-total-box span#oQtyTotal{color:var(--white);font-weight:700;font-size:1.25rem;font-family:'Archivo Expanded',sans-serif;}.advance-note{background:var(--cream-2);border-left:3px solid var(--gold);border-radius:0 8px 8px 0;padding:14px 18px;}.advance-note p{font-size:0.9rem;line-height:1.6;color:var(--cocoa-dark);margin:0;}#orderForm button[onclick^="changeQty"]:active{transform:scale(.9);}#orderSubmitMsg{font-size:0.9rem;margin-top:4px;}#orderSubmitMsg.success{color:#1a7d3c;}#orderSubmitMsg.error{color:var(--swiss-red);}.values{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);}.value{background:linear-gradient(165deg,var(--cream-2) 0%,var(--cream) 100%);padding:32px 26px;}.value .n{font-family:'Archivo Expanded',sans-serif;color:var(--gold);font-weight:700;font-size:0.95rem;margin-bottom:14px;}.value h4{font-size:1.15rem;font-weight:600;margin-bottom:10px;}.value p{font-size:0.95rem;color:var(--cocoa);line-height:1.6;}@media(max-width:720px){.values{grid-template-columns:1fr;}}.reviews-grid{display:flex;overflow:hidden;position:relative;background:var(--white);border-radius:16px;padding:3px;gap:3px;box-shadow:0 4px 12px rgba(36,18,9,0.08);touch-action:pan-y;}.carousel-track{display:flex;width:100%;gap:3px;transition:transform .6s cubic-bezier(0.25,0.46,0.45,0.94);will-change:transform;}.review-card{flex:0 0 100%;padding:18px 20px 14px;border-radius:20px;border:1px solid var(--line);box-shadow:0 4px 12px rgba(36,18,9,0.06),0 20px 40px rgba(36,18,9,0.08);display:flex;flex-direction:column;gap:9px;transition:box-shadow .35s cubic-bezier(.2,.8,.2,1);position:relative;overflow:hidden;}.review-card::before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,0) 0%,rgba(255,255,255,0.3) 100%);pointer-events:none;opacity:0.4;}.review-card::after{content:"";position:absolute;inset:0;border-radius:20px;box-shadow:inset 0 1px 2px rgba(255,255,255,0.8);pointer-events:none;}.review-card > *{position:relative;z-index:1;}.review-card:nth-child(1){background:linear-gradient(135deg,rgba(229,147,96,0.35) 0%,rgba(255,200,150,0.15) 40%,#FFFFFF 100%);position:relative;}.review-card:nth-child(2){background:linear-gradient(135deg,rgba(76,159,168,0.35) 0%,rgba(150,200,210,0.15) 40%,#FFFFFF 100%);}.review-card:nth-child(3){background:linear-gradient(135deg,rgba(255,193,7,0.40) 0%,rgba(255,220,100,0.18) 40%,#FFFFFF 100%);}.review-card:nth-child(4){background:linear-gradient(135deg,rgba(184,135,58,0.35) 0%,rgba(220,180,120,0.15) 40%,#FFFFFF 100%);}.review-card:nth-child(5){background:linear-gradient(135deg,rgba(196,108,74,0.35) 0%,rgba(230,165,140,0.15) 40%,#FFFFFF 100%);}.review-card:hover{box-shadow:0 8px 24px rgba(36,18,9,0.1),0 28px 56px rgba(36,18,9,0.12);}.review-card .stars{color:var(--gold);font-size:1rem;letter-spacing:3px;font-weight:700;text-shadow:0 2px 3px rgba(184,135,58,0.12);}.review-card .quote{font-size:0.88rem;line-height:1.55;color:var(--cocoa);flex:1;}.review-card .quote[lang="bn"]{font-family:'Noto Sans Bengali',sans-serif;line-height:1.7;}.review-card .profile{display:flex;align-items:center;gap:10px;padding:10px 12px;margin-top:4px;border-radius:16px;background:rgba(255,255,255,0.45);position:relative;width:fit-content;max-width:100%;}.review-card .profile::before{content:"";position:absolute;top:0;left:50%;transform:translateX(-50%);width:44px;height:3px;border-radius:10px;background:rgba(36,18,9,0.1);}.review-card .avatar{width:40px;height:40px;border-radius:50%;object-fit:cover;flex:none;border:2px solid var(--line);background:var(--cream);box-shadow:0 2px 6px rgba(36,18,9,0.1);cursor:pointer;transition:transform .2s ease;}.review-card .avatar:hover{transform:scale(1.08);}.review-card .avatar:active{transform:scale(0.96);}.avatar-modal-overlay{position:fixed;inset:0;background:rgba(36,18,9,0.65);display:flex;align-items:center;justify-content:center;padding:24px;z-index:400;opacity:0;visibility:hidden;transition:opacity .28s ease,visibility .28s ease;}.avatar-modal-overlay.open{opacity:1;visibility:visible;}.avatar-modal-circle{width:min(78vw,320px);height:min(78vw,320px);border-radius:50%;overflow:hidden;border:4px solid var(--cream-2);box-shadow:0 24px 60px rgba(36,18,9,0.4);transform:scale(0.4);opacity:0;transition:transform .38s cubic-bezier(.2,.8,.2,1),opacity .3s ease;background:var(--cream);}.avatar-modal-overlay.open .avatar-modal-circle{transform:scale(1);opacity:1;}.avatar-modal-circle img{width:100%;height:100%;object-fit:cover;display:block;}.avatar-modal-close{position:absolute;top:20px;right:20px;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,0.15);border:none;color:var(--white);font-size:1.3rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s ease;}.avatar-modal-close:hover{background:rgba(255,255,255,0.3);}.review-card .avatar-fallback{display:flex;align-items:center;justify-content:center;font-family:'Archivo',sans-serif;font-weight:700;font-size:0.85rem;color:var(--cocoa-dark);}.review-card .profile-name{font-weight:700;font-size:0.97rem;color:var(--cocoa-dark);}.review-card .profile-role{font-size:0.81rem;color:var(--gold);margin-top:3px;font-weight:500;}.carousel-dots{display:flex;justify-content:center;align-items:center;gap:8px;margin-top:24px;padding:14px 0;}.dot{width:10px;height:10px;border-radius:50%;background:rgba(36,18,9,0.15);border:1.5px solid rgba(36,18,9,0.2);cursor:pointer;transition:background .35s cubic-bezier(.2,.8,.2,1),border-color .35s cubic-bezier(.2,.8,.2,1),transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s cubic-bezier(.2,.8,.2,1),width .35s cubic-bezier(.2,.8,.2,1),height .35s cubic-bezier(.2,.8,.2,1);position:relative;}.dot:hover{background:rgba(36,18,9,0.25);transform:scale(1.15);}.dot.active{background:var(--cocoa-dark);border-color:var(--cocoa-dark);box-shadow:0 0 0 3px rgba(36,18,9,0.12);width:12px;height:12px;}@media(max-width:720px){.reviews-grid{padding:0;border-radius:0;box-shadow:none;}.carousel-track{gap:0;}.review-card{border-radius:16px;padding:16px 16px 14px;gap:9px;border:none;border-bottom:1px solid var(--line);}.review-card::before{display:none;}.review-card::after{border-radius:16px;box-shadow:none;}.carousel-dots{margin-top:18px;gap:6px;padding:12px 0;}.dot{width:8px;height:8px;}.dot.active{width:10px;height:10px;}}.team-container{display:grid;grid-template-columns:1fr 1fr;gap:48px;}.team-member{background:linear-gradient(165deg,var(--cream-2) 0%,var(--cream) 100%);border:1px solid var(--line);padding:0;border-radius:8px;overflow:hidden;}.team-header{background:linear-gradient(135deg,var(--cocoa-dark) 0%,var(--cocoa) 100%);color:var(--white);padding:28px 24px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:background .2s;}.team-header:hover{background:linear-gradient(135deg,var(--swiss-red) 0%,var(--cocoa-dark) 100%);}.team-header h3{font-family:'Archivo Expanded',sans-serif;font-weight:700;font-size:1.3rem;margin:0;}.team-header .role{font-size:0.85rem;color:var(--cream);font-weight:500;margin-top:4px;}.team-toggle{font-size:1.4rem;background:none;border:none;color:var(--white);cursor:pointer;transition:transform .3s;}.team-toggle.open{transform:rotate(180deg);}.team-details{max-height:0;overflow:hidden;transition:max-height .4s cubic-bezier(.4,0,.2,1),opacity .3s ease;background:var(--cream-2);opacity:0;}.team-details.open{max-height:600px;opacity:1;}.team-info{padding:24px;display:flex;flex-direction:column;gap:16px;}.team-item{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--line);}.team-item:last-child{border-bottom:none;}.team-label{font-weight:600;color:var(--cocoa-dark);font-size:0.9rem;}.team-value{color:var(--cocoa);font-size:0.95rem;text-align:right;}.team-value a{color:var(--swiss-red);border-bottom:1px solid var(--swiss-red);transition:color .2s;}.team-value a:hover{color:var(--cocoa-dark);}@media(max-width:720px){.team-container{grid-template-columns:1fr;}}.choco-list{display:flex;flex-direction:column;gap:16px;}.choco-row{display:flex;align-items:center;gap:16px;background:linear-gradient(165deg,var(--cream-2) 0%,var(--cream) 100%);padding:20px 24px;border-radius:10px;border:1px solid var(--line);cursor:pointer;box-shadow:0 2px 6px rgba(36,18,9,0.06),0 10px 28px rgba(36,18,9,0.07);transition:box-shadow .35s cubic-bezier(.2,.8,.2,1),transform .35s cubic-bezier(.2,.8,.2,1),border-color .35s;}.choco-row:hover{box-shadow:0 6px 14px rgba(36,18,9,0.08),0 20px 40px rgba(36,18,9,0.12);transform:translateY(-2px);border-color:rgba(184,135,58,0.4);}.choco-num{font-family:'Archivo Expanded',sans-serif;font-weight:700;font-size:1.2rem;color:var(--cocoa-dark);min-width:24px;text-align:center;}.choco-box{width:60px;height:60px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex:none;box-shadow:0 2px 8px rgba(36,18,9,0.1);overflow:hidden;background:#f9f9f9;}.choco-box img{width:100%;height:100%;object-fit:contain;display:block;background:#f9f9f9;}.choco-box svg{width:100%;height:100%;display:block;}.choco-info{flex:1;}.choco-info h4{font-family:'Archivo Expanded',sans-serif;font-weight:700;font-size:1.05rem;color:var(--cocoa-dark);margin-bottom:4px;}.choco-info p{color:var(--cocoa);font-size:0.9rem;line-height:1.4;}.choco-weight{font-size:0.8rem;color:var(--cocoa);text-align:center;min-width:50px;font-weight:500;}.choco-price{font-family:'Archivo Expanded',sans-serif;font-weight:700;font-size:1.2rem;color:var(--swiss-red);min-width:70px;text-align:right;}@media(max-width:720px){.choco-row{gap:12px;padding:16px 16px;}.choco-box{width:50px;height:50px;}.choco-box img{width:100%;height:100%;object-fit:contain;display:block;}.choco-box svg{width:100%;height:100%;display:block;}.choco-info h4{font-size:0.95rem;}.choco-info p{font-size:0.85rem;}}.complaints-wrapper{background:linear-gradient(165deg,var(--cream) 0%,var(--cream-2) 100%);padding:48px 24px;border-radius:12px;box-shadow:0 4px 14px rgba(36,18,9,0.05);}.complaints-form{display:flex;flex-direction:column;gap:18px;}.form-group{display:flex;flex-direction:column;gap:8px;}.hp-field{position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;overflow:hidden;}.form-group label{font-weight:600;color:var(--cocoa-dark);font-size:0.95rem;display:flex;flex-wrap:wrap;align-items:baseline;gap:6px;}.form-group label .lbl-en{font-weight:700;color:var(--cocoa-dark);}.form-group label .lbl-sep{color:var(--gold);font-weight:400;}.form-group label .lbl-bn{font-weight:600;color:var(--swiss-red);font-family:'Noto Sans Bengali','Archivo',sans-serif;font-size:0.93rem;}.img-fallback{display:flex;align-items:center;justify-content:center;width:100%;height:100%;background:linear-gradient(135deg,var(--cocoa) 0%,var(--cocoa-dark) 100%);color:var(--cream-2);font-family:'Archivo Expanded',sans-serif;font-weight:700;text-align:center;font-size:0.85rem;padding:8px;}.form-group input,.form-group textarea,.form-group select{border:1px solid var(--line);padding:13px 16px;font-family:'Archivo',sans-serif;font-size:0.95rem;color:var(--cocoa-dark);border-radius:8px;background:var(--white);transition:border-color .2s ease,box-shadow .2s ease;}.form-group input:hover,.form-group textarea:hover,.form-group select:hover{border-color:rgba(184,135,58,0.5);}.form-group input:focus,.form-group textarea:focus,.form-group select:focus{outline:none;border-color:var(--swiss-red);box-shadow:0 0 0 3px rgba(200,16,46,0.1);}.form-group textarea{resize:vertical;min-height:120px;}.complaints-submit{background:linear-gradient(135deg,var(--cocoa) 0%,var(--cocoa-dark) 100%);color:var(--white);border:none;padding:14px 28px;font-weight:600;font-size:0.95rem;border-radius:6px;cursor:pointer;box-shadow:0 8px 18px rgba(36,18,9,0.2);transition:background .25s ease,transform .15s ease,box-shadow .25s ease;width:fit-content;}.complaints-submit:hover{background:linear-gradient(135deg,var(--swiss-red) 0%,#8f0c22 100%);box-shadow:0 10px 22px rgba(200,16,46,0.26);}.complaints-submit:active:not(:disabled){transform:scale(.98);}.complaints-submit:disabled{background:var(--cocoa);box-shadow:none;cursor:not-allowed;}.form-message{padding:16px;border-radius:6px;font-weight:600;text-align:center;display:none;}.form-message.success{background:rgba(76,175,80,0.1);color:#2e7d32;display:block;}.form-message.error{background:rgba(244,67,54,0.1);color:#c62828;display:block;}.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;}.contact-list{display:flex;flex-direction:column;}.contact-list a,.contact-list div.item{display:flex;justify-content:space-between;align-items:center;padding:18px 0;border-bottom:1px solid var(--line);font-size:1rem;}.contact-list .k{color:var(--cocoa);font-size:0.85rem;}.contact-list .v{font-weight:600;}.contact-form{display:flex;flex-direction:column;gap:14px;}.contact-form input,.contact-form textarea{border:none;border-bottom:1px solid var(--line);background:transparent;padding:12px 4px;font-family:'Archivo',sans-serif;font-size:1rem;color:var(--cocoa-dark);}.contact-form input:focus,.contact-form textarea:focus{outline:none;border-bottom-color:var(--cocoa-dark);}.contact-form textarea{resize:vertical;min-height:90px;}.contact-form button{margin-top:8px;background:linear-gradient(135deg,var(--cocoa) 0%,var(--cocoa-dark) 100%);color:var(--white);border:none;padding:14px 22px;font-weight:600;font-size:0.95rem;box-shadow:0 8px 18px rgba(36,18,9,0.2);cursor:pointer;width:fit-content;transition:background .25s ease,transform .15s ease,box-shadow .25s ease;}.contact-form button:hover{background:linear-gradient(135deg,var(--swiss-red) 0%,#8f0c22 100%);box-shadow:0 10px 22px rgba(200,16,46,0.26);}.contact-form button:active{transform:scale(.98);}@media(max-width:720px){.contact-grid{grid-template-columns:1fr;}}footer{padding:32px 0;}.foot-row{display:flex;justify-content:space-between;align-items:center;font-size:0.85rem;color:var(--cocoa);flex-wrap:wrap;gap:10px;}a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--swiss-red);outline-offset:2px;}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto;}*{transition:none !important;}}@keyframes heroRise{from{opacity:0;transform:translateY(22px);}to{opacity:1;transform:translateY(0);}}.hero-tag,.hero-side p,.hero-cta,.hero-strip{animation:heroRise .7s cubic-bezier(.2,.8,.2,1) both;}.hero-tag{animation-delay:.02s;}.hero-side p{animation-delay:.36s;}.hero-cta{animation-delay:.46s;}.hero-strip{animation-delay:.56s;}@keyframes heroTitleRise{from{opacity:0;transform:translateY(60%);}to{opacity:1;transform:translateY(0);}}.hero-title-mask h1{animation:heroTitleRise .9s cubic-bezier(.16,1,.3,1) both;animation-delay:.12s;}.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s cubic-bezier(.2,.8,.2,1),transform .7s cubic-bezier(.2,.8,.2,1);}.reveal.in-view{opacity:1;transform:translateY(0);}@media(prefers-reduced-motion:reduce){.hero-tag,.hero-side p,.hero-cta,.hero-strip{animation:none;}.hero-title-mask h1{animation:none;}.reveal{opacity:1;transform:none;transition:none;}}.leaf-fall-layer{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:60;}.branch-topright{position:fixed;top:58px;right:-10px;width:270px;height:auto;pointer-events:none;z-index:61;filter:drop-shadow(0 8px 14px rgba(36,18,9,0.22));}@media(max-width:720px){.branch-topright{width:175px;top:66px;right:-8px;}}.fall-leaf{position:absolute;opacity:0;will-change:transform,opacity;animation-timing-function:linear;animation-fill-mode:forwards;}.fall-leaf.type-straight{animation-name:leafFallStraight;}.fall-leaf.type-sway{animation-name:leafFallSway;}.fall-leaf.type-diagonal{animation-name:leafFallDiagonal;}.leaf-fall-layer.order-paused .fall-leaf{animation-play-state:paused;}@keyframes leafFallStraight{0%{transform:translate(0,0) rotate(0deg);opacity:0;}10%{opacity:0.9;}100%{transform:translate(-8vw,108vh) rotate(140deg);opacity:0.85;}}@keyframes leafFallSway{0%{transform:translate(0,0) rotate(0deg);opacity:0;}8%{opacity:0.9;}25%{transform:translate(-14vw,25vh) rotate(60deg);}50%{transform:translate(4vw,50vh) rotate(-40deg);}75%{transform:translate(-18vw,75vh) rotate(80deg);}92%{opacity:0.8;}100%{transform:translate(2vw,108vh) rotate(-20deg);opacity:0;}}@keyframes leafFallDiagonal{0%{transform:translate(0,0) rotate(0deg);opacity:0;}8%{opacity:0.85;}50%{transform:translate(-55vw,55vh) rotate(190deg);}92%{opacity:0.8;}100%{transform:translate(-118vw,118vh) rotate(360deg);opacity:0;}}.ambient-glow-layer{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:58;}.ambient-glow{position:absolute;top:2%;right:-6%;width:78vw;height:82vh;min-width:460px;min-height:460px;border-radius:50%;filter:blur(90px);opacity:0;mix-blend-mode:multiply;transform:translateX(6%) scale(0.94);will-change:opacity,transform;animation-timing-function:cubic-bezier(.3,.6,.35,1);animation-fill-mode:both;animation-iteration-count:1;}.ambient-glow.tone-cool{background:radial-gradient(ellipse at 80% 38%,rgba(61,171,203,0.68) 0%,rgba(61,171,203,0.42) 22%,rgba(61,171,203,0.22) 44%,rgba(61,171,203,0.08) 64%,transparent 82%);animation-name:ambientGlowFade;animation-duration:6.5s;}.ambient-glow.tone-violet{background:radial-gradient(ellipse at 82% 44%,rgba(144,91,222,0.65) 0%,rgba(144,91,222,0.4) 24%,rgba(144,91,222,0.2) 46%,rgba(144,91,222,0.07) 66%,transparent 84%);animation-name:ambientGlowFade;animation-duration:7s;}.ambient-glow.tone-violetblue{background:radial-gradient(ellipse at 74% 30%,rgba(135,77,220,0.55) 0%,rgba(135,77,220,0.24) 40%,transparent 72%),radial-gradient(ellipse at 88% 62%,rgba(58,124,230,0.55) 0%,rgba(58,124,230,0.24) 42%,transparent 74%);animation-name:ambientGlowFade;animation-duration:8s;}.ambient-glow.tone-emerald{background:radial-gradient(ellipse at 80% 40%,rgba(44,169,124,0.62) 0%,rgba(44,169,124,0.36) 24%,rgba(44,169,124,0.16) 46%,rgba(44,169,124,0.06) 66%,transparent 84%);animation-name:ambientGlowFade;animation-duration:7.5s;}.ambient-glow.tone-rosegold{background:radial-gradient(ellipse at 76% 32%,rgba(222,124,145,0.5) 0%,rgba(222,124,145,0.22) 42%,transparent 74%),radial-gradient(ellipse at 90% 64%,rgba(203,147,77,0.5) 0%,rgba(203,147,77,0.2) 44%,transparent 76%);animation-name:ambientGlowFade;animation-duration:8s;}.ambient-glow.tone-caramel{background:radial-gradient(ellipse at 78% 36%,rgba(203,139,61,0.6) 0%,rgba(203,139,61,0.32) 26%,rgba(203,139,61,0.12) 48%,transparent 78%);animation-name:ambientGlowFade;animation-duration:7s;}.ambient-glow.tone-wine{background:radial-gradient(ellipse at 84% 42%,rgba(174,61,77,0.55) 0%,rgba(174,61,77,0.28) 30%,rgba(174,61,77,0.1) 52%,transparent 80%);animation-name:ambientGlowFade;animation-duration:7.5s;}@keyframes ambientGlowFade{0%{opacity:0;transform:translateX(6%) scale(0.94);}24%{opacity:.6;transform:translateX(0) scale(1);}68%{opacity:.6;transform:translateX(0) scale(1);}100%{opacity:0;transform:translateX(0) scale(1.02);}}@media(max-width:720px){.ambient-glow{width:120vw;height:58vh;right:-30%;top:2%;}}@media(prefers-reduced-motion:reduce){.ambient-glow{animation:none;opacity:0;}}.about-visual::after{display:none;}.about-visual picture{position:absolute;inset:0;display:block;z-index:1;}.about-visual .about-img{width:100%;height:100%;object-fit:cover;object-position:center top;}.about-visual .cross{display:none;}</style>
+<style>:root{--cocoa-dark:#241209;--cocoa:#4A2C1A;--cream:#EDE4D0;--cream-2:#F6F1E6;--gold:#B8873A;--swiss-red:#C8102E;--white:#FFFFFF;--line:rgba(36,18,9,0.16);}*{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;scrollbar-gutter:stable;}body{font-family:'Archivo',sans-serif;background:radial-gradient(ellipse 1200px 600px at 50% 0%,rgba(184,135,58,0.05) 0%,transparent 60%),var(--cream-2);color:var(--cocoa-dark);font-weight:400;-webkit-font-smoothing:antialiased;}img{max-width:100%;display:block;}a{color:inherit;text-decoration:none;}.wrap{max-width:1120px;margin:0 auto;padding:0 24px;}header{position:sticky;top:0;z-index:50;background:var(--cream-2);border-bottom:1px solid var(--line);}.nav{display:flex;align-items:center;justify-content:space-between;padding:18px 24px;max-width:1120px;margin:0 auto;}.brand{font-family:'Archivo Expanded',sans-serif;font-weight:700;font-size:1.3rem;letter-spacing:0.01em;display:flex;align-items:center;gap:10px;}.brand .logo-img{width:34px;height:34px;object-fit:contain;flex:none;}nav.links{display:flex;gap:28px;font-size:0.95rem;}nav.links a{text-decoration:none;padding-bottom:3px;position:relative;}nav.links a::after{content:"";position:absolute;left:0;bottom:0;width:100%;height:1px;background:var(--cocoa-dark);transform:scaleX(0);transform-origin:left;transition:transform .3s cubic-bezier(.2,.8,.2,1);}nav.links a:hover::after{transform:scaleX(1);}.nav-toggle{display:none;background:none;border:none;font-size:1.6rem;cursor:pointer;color:var(--cocoa-dark);}@media(max-width:720px){nav.links{position:fixed;top:64px;left:0;right:0;background:var(--cream-2);flex-direction:column;gap:0;border-bottom:1px solid var(--line);max-height:0;overflow:hidden;transition:max-height .3s ease;}nav.links.open{max-height:400px;}nav.links a{padding:16px 24px;border-bottom:1px solid var(--line);}.nav-toggle{display:block;}}.hero{border-bottom:1px solid var(--line);padding:64px 0 0;}.hero-grid{display:grid;grid-template-columns:1.5fr 1fr;gap:40px;align-items:end;padding-bottom:48px;}.hero-tag{font-size:0.85rem;color:var(--gold);letter-spacing:0.02em;margin-bottom:18px;font-weight:600;}.hero h1{font-family:'Archivo Expanded',sans-serif;font-weight:700;font-size:clamp(2.4rem,6vw,4.6rem);line-height:0.98;letter-spacing:-0.01em;}.hero-title-mask{overflow:hidden;padding-bottom:0.08em;}.hero h1 em{font-style:normal;color:var(--swiss-red);}.hero-side{border-left:1px solid var(--line);padding-left:28px;display:flex;flex-direction:column;gap:18px;}.hero-side p{font-size:1rem;line-height:1.6;color:var(--cocoa);}.hero-cta{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,var(--cocoa) 0%,var(--cocoa-dark) 100%);color:var(--white);padding:14px 24px;font-weight:600;font-size:0.95rem;letter-spacing:0.01em;width:fit-content;box-shadow:0 8px 20px rgba(36,18,9,0.22);transition:background .25s ease,transform .15s ease,box-shadow .25s ease;border:none;cursor:pointer;}.hero-cta span.arrow{display:inline-block;transition:transform .25s cubic-bezier(.2,.8,.2,1);}.hero-cta:hover{background:linear-gradient(135deg,var(--swiss-red) 0%,#8f0c22 100%);box-shadow:0 10px 24px rgba(200,16,46,0.28);}.hero-cta:hover span.arrow{transform:translateX(4px);}.hero-cta:active{transform:scale(.97);}.hero-strip{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);}.hero-strip div{padding:20px 20px;border-right:1px solid var(--line);text-align:center;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:78px;transition:background .25s ease;}.hero-strip div:hover{background:rgba(184,135,58,0.07);}.hero-strip div:last-child{border-right:none;}.hero-strip .num{font-family:'Archivo Expanded',sans-serif;font-weight:700;font-size:1.4rem;color:var(--cocoa-dark);font-variant-numeric:tabular-nums;}.hero-strip .lbl{font-size:0.8rem;color:var(--cocoa);margin-top:4px;}@media(max-width:720px){.hero-grid{grid-template-columns:1fr;gap:28px;}.hero-side{border-left:none;padding-left:0;border-top:1px solid var(--line);padding-top:20px;}.hero-strip{grid-template-columns:repeat(2,1fr);}.hero-strip div:nth-child(2){border-right:none;}.hero-strip div:nth-child(3),.hero-strip div:nth-child(4){border-top:1px solid var(--line);}}.section{padding:72px 0;border-bottom:1px solid var(--line);}.section-head{display:grid;grid-template-columns:1fr 2fr;gap:24px;margin-bottom:44px;}.section-head .label{font-weight:600;color:var(--gold);font-size:0.9rem;}.section-head h2{font-family:'Archivo Expanded',sans-serif;font-weight:700;font-size:clamp(1.8rem,4vw,2.6rem);line-height:1.08;}@media(max-width:720px){.section-head{grid-template-columns:1fr;gap:10px;}}.about-body{display:grid;grid-template-columns:1fr 1fr;gap:48px;}.about-body p{font-size:1.05rem;line-height:1.75;color:var(--cocoa);margin-bottom:18px;}.about-visual{aspect-ratio:4/5;background:linear-gradient(135deg,var(--cocoa-dark) 0%,var(--cocoa) 55%,var(--gold) 100%);position:relative;overflow:hidden;}.about-visual::after{content:"";position:absolute;inset:0;background-image:repeating-linear-gradient(45deg,rgba(255,255,255,0.04) 0 2px,transparent 2px 18px);}.about-visual .cross{position:absolute;bottom:28px;right:28px;width:34px;height:34px;}.about-visual .cross::before,.about-visual .cross::after{content:"";position:absolute;background:var(--cream-2);}.about-visual .cross::before{left:50%;top:0;width:6px;height:100%;transform:translateX(-50%);}.about-visual .cross::after{top:50%;left:0;height:6px;width:100%;transform:translateY(-50%);}@media(max-width:720px){.about-body{grid-template-columns:1fr;}.about-visual{order:-1;aspect-ratio:16/9;}}.products{display:flex;flex-direction:column;gap:40px;}.product{background:linear-gradient(165deg,var(--cream-2) 0%,var(--cream) 100%);padding:40px 32px;display:flex;flex-direction:column;gap:16px;cursor:pointer;border-radius:12px;border:1px solid var(--line);box-shadow:0 2px 6px rgba(36,18,9,0.06),0 10px 28px rgba(36,18,9,0.07);transition:box-shadow .35s cubic-bezier(.2,.8,.2,1),transform .35s cubic-bezier(.2,.8,.2,1),border-color .35s;}.product:hover{box-shadow:0 6px 14px rgba(36,18,9,0.08),0 20px 40px rgba(36,18,9,0.12);transform:translateY(-4px);border-color:rgba(184,135,58,0.4);}.view-details{align-self:flex-start;background:none;border:none;padding:0;font-family:'Archivo',sans-serif;font-weight:600;font-size:0.88rem;color:var(--gold);cursor:pointer;transition:color .2s;}.view-details:hover{color:var(--swiss-red);}.view-details span.arrow{display:inline-block;transition:transform .25s cubic-bezier(.2,.8,.2,1);}.view-details:hover span.arrow{transform:translateX(3px);}.product .ph{aspect-ratio:1/1;background:var(--cocoa-dark);position:relative;overflow:hidden;border-radius:8px;box-shadow:inset 0 0 0 1px rgba(184,135,58,0.22);}.product .ph::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(160deg,rgba(184,135,58,0.08) 0%,transparent 40%,rgba(36,18,9,0.14) 100%);}.product .ph img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .5s cubic-bezier(.2,.8,.2,1);}.product:hover .ph img{transform:scale(1.06);}.product h3{font-family:'Archivo Expanded',sans-serif;font-weight:700;font-size:1.5rem;margin-top:8px;}.product .desc{color:var(--cocoa);font-size:0.98rem;line-height:1.6;}.product .row{display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--line);padding-top:16px;margin-top:auto;}.product .price{font-family:'Archivo Expanded',sans-serif;font-weight:700;font-size:1.3rem;}.product .order{font-weight:600;font-size:0.85rem;background:linear-gradient(135deg,var(--cocoa) 0%,var(--cocoa-dark) 100%);border:none;color:var(--white);padding:10px 20px;border-radius:6px;cursor:pointer;font-family:'Archivo',sans-serif;box-shadow:0 4px 12px rgba(36,18,9,0.18);transition:background .25s ease,transform .15s ease,box-shadow .25s ease;}.product .order:hover{background:linear-gradient(135deg,var(--swiss-red) 0%,#8f0c22 100%);box-shadow:0 6px 16px rgba(200,16,46,0.24);}.product .order:active{transform:scale(.95);}@media(min-width:721px){.product{flex-direction:row;align-items:stretch;gap:32px;}.product .ph{width:280px;flex:none;aspect-ratio:1/1;}.product > div.pbody{flex:1;display:flex;flex-direction:column;gap:16px;}}.product-modal-overlay{position:fixed;inset:0;background:rgba(36,18,9,0.55);display:flex;align-items:center;justify-content:center;padding:24px;z-index:200;opacity:0;visibility:hidden;transition:opacity .25s ease,visibility .25s ease;backface-visibility:hidden;}.product-modal-overlay.open{opacity:1;visibility:visible;}.product-modal{background:var(--cream-2);max-width:680px;width:100%;max-height:90vh;overflow-y:auto;border-radius:10px;position:relative;padding:44px;transform:translateY(18px) scale(.97);transition:transform .35s cubic-bezier(.2,.8,.2,1);will-change:transform;backface-visibility:hidden;}.product-modal-overlay.open .product-modal{transform:translateY(0) scale(1);}.product-modal-close{position:absolute;top:16px;right:16px;width:36px;height:36px;background:none;border:none;font-size:1.2rem;color:var(--cocoa);cursor:pointer;transition:color .2s;z-index:2;}.product-modal-close:hover{color:var(--swiss-red);}.product-modal-tabs{display:flex;gap:1px;background:var(--line);margin-bottom:24px;border-radius:6px;overflow:hidden;}.product-tab{flex:1;background:var(--cream);border:none;padding:14px;font-family:'Archivo',sans-serif;font-weight:600;font-size:0.95rem;color:var(--cocoa);cursor:pointer;transition:background .2s,color .2s;}.product-tab.active{background:var(--cocoa-dark);color:var(--white);}.pm-swipeport{position:relative;overflow:hidden;touch-action:pan-y;transition:height .3s cubic-bezier(.2,.8,.2,1);backface-visibility:hidden;}.pm-track{display:flex;transition:transform .34s cubic-bezier(.22,.8,.28,1);will-change:transform;backface-visibility:hidden;}.product-modal-panel{flex:none;width:100%;box-sizing:border-box;}.pm-head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:12px;}.pm-head h3{font-family:'Archivo Expanded',sans-serif;font-weight:700;font-size:1.6rem;}.pm-price{font-family:'Archivo Expanded',sans-serif;font-weight:700;font-size:1.3rem;color:var(--swiss-red);}.pm-intro{color:var(--cocoa);line-height:1.6;margin-bottom:24px;}.pm-flavors{display:flex;flex-direction:column;gap:16px;margin-bottom:28px;}.pm-flavor{display:flex;gap:16px;padding:16px;background:var(--cream);border-radius:8px;}.pm-flavor-tag{font-family:'Archivo Expanded',sans-serif;font-weight:700;color:var(--gold);font-size:1.1rem;flex:none;width:26px;}.pm-flavor h4{font-size:1.05rem;font-weight:600;margin-bottom:4px;}.pm-flavor p{font-size:0.92rem;color:var(--cocoa);line-height:1.5;}.pm-order{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--cocoa) 0%,var(--cocoa-dark) 100%);color:var(--white);padding:14px 24px;font-weight:600;font-size:0.95rem;border:none;cursor:pointer;transition:background .25s ease,transform .15s ease,box-shadow .25s ease;box-shadow:0 8px 18px rgba(36,18,9,0.2);}.pm-order:hover{background:linear-gradient(135deg,var(--swiss-red) 0%,#8f0c22 100%);box-shadow:0 10px 22px rgba(200,16,46,0.26);}.pm-order:active{transform:scale(.97);}@media(max-width:720px){.product-modal-overlay{padding:12px;}.product-modal{padding:26px 18px 30px;max-height:92vh;border-radius:14px;}.pm-head{flex-direction:column;align-items:flex-start;gap:6px;}}.order-choice-overlay,.order-form-overlay{position:fixed;inset:0;background:rgba(36,18,9,0.55);display:flex;align-items:center;justify-content:center;padding:24px;z-index:300;opacity:0;visibility:hidden;transition:opacity .25s ease,visibility .25s ease;backface-visibility:hidden;}.order-choice-overlay.open,.order-form-overlay.open{opacity:1;visibility:visible;}.order-choice-box{background:linear-gradient(165deg,var(--cream-2) 0%,var(--cream) 100%);max-width:380px;width:100%;border-radius:14px;position:relative;padding:40px 30px 34px;text-align:center;box-shadow:0 24px 60px rgba(36,18,9,0.28);border-top:4px solid var(--gold);transform:translateY(18px) scale(.97);transition:transform .35s cubic-bezier(.2,.8,.2,1);will-change:transform;backface-visibility:hidden;}.order-choice-overlay.open .order-choice-box{transform:translateY(0) scale(1);}.order-choice-box h3{font-family:'Archivo Expanded',sans-serif;font-weight:700;font-size:1.3rem;margin-bottom:8px;}.order-choice-box p{color:var(--cocoa);font-size:0.92rem;margin-bottom:24px;}.order-choice-box .oc-btn{display:block;width:100%;padding:14px 20px;margin-bottom:12px;font-weight:600;font-size:0.95rem;border-radius:6px;border:none;cursor:pointer;font-family:'Archivo',sans-serif;transition:opacity .2s,transform .15s ease;}.order-choice-box .oc-btn:hover{opacity:0.88;}.order-choice-box .oc-btn:active{transform:scale(.97);}.oc-whatsapp{background:#25D366;color:#fff;box-shadow:0 6px 16px rgba(37,211,102,0.25);}.oc-website{background:linear-gradient(135deg,var(--cocoa) 0%,var(--cocoa-dark) 100%);color:#fff;box-shadow:0 6px 16px rgba(36,18,9,0.22);}.order-choice-close,.order-form-close{position:absolute;top:14px;right:14px;width:34px;height:34px;background:none;border:none;border-radius:50%;font-size:1.1rem;color:var(--cocoa);cursor:pointer;transition:background .2s ease,color .2s ease;}.order-choice-close:hover,.order-form-close:hover{background:rgba(36,18,9,0.08);color:var(--swiss-red);}.order-form-box{background:linear-gradient(165deg,var(--cream-2) 0%,var(--cream) 100%);max-width:480px;width:100%;max-height:88vh;overflow-y:auto;border-radius:14px;position:relative;padding:40px 32px 36px;box-shadow:0 24px 60px rgba(36,18,9,0.28);border-top:4px solid var(--gold);transform:translateY(18px) scale(.97);transition:transform .35s cubic-bezier(.2,.8,.2,1);will-change:transform;backface-visibility:hidden;}.order-form-overlay.open .order-form-box{transform:translateY(0) scale(1);}.order-form-box h3{font-family:'Archivo Expanded',sans-serif;font-weight:700;font-size:1.4rem;margin-bottom:6px;}.order-form-box .oform-sub{color:var(--cocoa);font-size:0.88rem;margin-bottom:22px;}#orderForm{display:flex;flex-direction:column;gap:16px;}.qty-btn{width:40px;height:40px;border:1px solid var(--line);background:var(--white);font-size:1.2rem;font-weight:700;cursor:pointer;border-radius:8px;color:var(--cocoa-dark);transition:transform .15s ease,border-color .2s ease,background .2s ease;}.qty-btn:hover{border-color:var(--gold);background:rgba(184,135,58,0.08);}.qty-btn:active{transform:scale(.9);}.order-total-box{margin-top:10px;padding:14px 18px;border-radius:8px;background:linear-gradient(135deg,var(--cocoa) 0%,var(--cocoa-dark) 100%);display:flex;justify-content:space-between;align-items:center;box-shadow:0 8px 18px rgba(36,18,9,0.2);}.order-total-box span:first-child{color:var(--cream-2);font-size:0.95rem;}.order-total-box span#oQtyTotal{color:var(--white);font-weight:700;font-size:1.25rem;font-family:'Archivo Expanded',sans-serif;}.advance-note{background:var(--cream-2);border-left:3px solid var(--gold);border-radius:0 8px 8px 0;padding:14px 18px;}.advance-note p{font-size:0.9rem;line-height:1.6;color:var(--cocoa-dark);margin:0;}#orderForm button[onclick^="changeQty"]:active{transform:scale(.9);}#orderSubmitMsg{font-size:0.9rem;margin-top:4px;}#orderSubmitMsg.success{color:#1a7d3c;}#orderSubmitMsg.error{color:var(--swiss-red);}.values{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);}.value{background:linear-gradient(165deg,var(--cream-2) 0%,var(--cream) 100%);padding:32px 26px;}.value .n{font-family:'Archivo Expanded',sans-serif;color:var(--gold);font-weight:700;font-size:0.95rem;margin-bottom:14px;}.value h3{font-size:1.15rem;font-weight:600;margin-bottom:10px;}.value p{font-size:0.95rem;color:var(--cocoa);line-height:1.6;}@media(max-width:720px){.values{grid-template-columns:1fr;}}.reviews-grid{display:flex;overflow:hidden;position:relative;background:var(--white);border-radius:16px;padding:3px;gap:3px;box-shadow:0 4px 12px rgba(36,18,9,0.08);touch-action:pan-y;}.carousel-track{display:flex;width:100%;gap:3px;transition:transform .6s cubic-bezier(0.25,0.46,0.45,0.94);will-change:transform;}.review-card{flex:0 0 100%;padding:18px 20px 14px;border-radius:20px;border:1px solid var(--line);box-shadow:0 4px 12px rgba(36,18,9,0.06),0 20px 40px rgba(36,18,9,0.08);display:flex;flex-direction:column;gap:9px;transition:box-shadow .35s cubic-bezier(.2,.8,.2,1);position:relative;overflow:hidden;}.review-card::before{content:"";position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,255,255,0) 0%,rgba(255,255,255,0.3) 100%);pointer-events:none;opacity:0.4;}.review-card::after{content:"";position:absolute;inset:0;border-radius:20px;box-shadow:inset 0 1px 2px rgba(255,255,255,0.8);pointer-events:none;}.review-card > *{position:relative;z-index:1;}.review-card:nth-child(1){background:linear-gradient(135deg,rgba(229,147,96,0.35) 0%,rgba(255,200,150,0.15) 40%,#FFFFFF 100%);position:relative;}.review-card:nth-child(2){background:linear-gradient(135deg,rgba(76,159,168,0.35) 0%,rgba(150,200,210,0.15) 40%,#FFFFFF 100%);}.review-card:nth-child(3){background:linear-gradient(135deg,rgba(255,193,7,0.40) 0%,rgba(255,220,100,0.18) 40%,#FFFFFF 100%);}.review-card:nth-child(4){background:linear-gradient(135deg,rgba(184,135,58,0.35) 0%,rgba(220,180,120,0.15) 40%,#FFFFFF 100%);}.review-card:nth-child(5){background:linear-gradient(135deg,rgba(196,108,74,0.35) 0%,rgba(230,165,140,0.15) 40%,#FFFFFF 100%);}.review-card:hover{box-shadow:0 8px 24px rgba(36,18,9,0.1),0 28px 56px rgba(36,18,9,0.12);}.review-card .stars{color:var(--gold);font-size:1rem;letter-spacing:3px;font-weight:700;text-shadow:0 2px 3px rgba(184,135,58,0.12);}.review-card .quote{font-size:0.88rem;line-height:1.55;color:var(--cocoa);flex:1;}.review-card .quote[lang="bn"]{font-family:'Noto Sans Bengali',sans-serif;line-height:1.7;}.review-card .profile{display:flex;align-items:center;gap:10px;padding:10px 12px;margin-top:4px;border-radius:16px;background:rgba(255,255,255,0.45);position:relative;width:fit-content;max-width:100%;}.review-card .profile::before{content:"";position:absolute;top:0;left:50%;transform:translateX(-50%);width:44px;height:3px;border-radius:10px;background:rgba(36,18,9,0.1);}.review-card .avatar{width:40px;height:40px;border-radius:50%;object-fit:cover;flex:none;border:2px solid var(--line);background:var(--cream);box-shadow:0 2px 6px rgba(36,18,9,0.1);cursor:pointer;transition:transform .2s ease;}.review-card .avatar:hover{transform:scale(1.08);}.review-card .avatar:active{transform:scale(0.96);}.avatar-modal-overlay{position:fixed;inset:0;background:rgba(36,18,9,0.65);display:flex;align-items:center;justify-content:center;padding:24px;z-index:400;opacity:0;visibility:hidden;transition:opacity .28s ease,visibility .28s ease;}.avatar-modal-overlay.open{opacity:1;visibility:visible;}.avatar-modal-circle{width:min(78vw,320px);height:min(78vw,320px);border-radius:50%;overflow:hidden;border:4px solid var(--cream-2);box-shadow:0 24px 60px rgba(36,18,9,0.4);transform:scale(0.4);opacity:0;transition:transform .38s cubic-bezier(.2,.8,.2,1),opacity .3s ease;background:var(--cream);}.avatar-modal-overlay.open .avatar-modal-circle{transform:scale(1);opacity:1;}.avatar-modal-circle img{width:100%;height:100%;object-fit:cover;display:block;}.avatar-modal-close{position:absolute;top:20px;right:20px;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,0.15);border:none;color:var(--white);font-size:1.3rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s ease;}.avatar-modal-close:hover{background:rgba(255,255,255,0.3);}.review-card .avatar-fallback{display:flex;align-items:center;justify-content:center;font-family:'Archivo',sans-serif;font-weight:700;font-size:0.85rem;color:var(--cocoa-dark);}.review-card .profile-name{font-weight:700;font-size:0.97rem;color:var(--cocoa-dark);}.review-card .profile-role{font-size:0.81rem;color:var(--gold);margin-top:3px;font-weight:500;}.carousel-dots{display:flex;justify-content:center;align-items:center;gap:8px;margin-top:24px;padding:14px 0;}.dot{width:10px;height:10px;border-radius:50%;background:rgba(36,18,9,0.15);border:1.5px solid rgba(36,18,9,0.2);cursor:pointer;transition:background .35s cubic-bezier(.2,.8,.2,1),border-color .35s cubic-bezier(.2,.8,.2,1),transform .35s cubic-bezier(.2,.8,.2,1),box-shadow .35s cubic-bezier(.2,.8,.2,1),width .35s cubic-bezier(.2,.8,.2,1),height .35s cubic-bezier(.2,.8,.2,1);position:relative;}.dot:hover{background:rgba(36,18,9,0.25);transform:scale(1.15);}.dot.active{background:var(--cocoa-dark);border-color:var(--cocoa-dark);box-shadow:0 0 0 3px rgba(36,18,9,0.12);width:12px;height:12px;}@media(max-width:720px){.reviews-grid{padding:0;border-radius:0;box-shadow:none;}.carousel-track{gap:0;}.review-card{border-radius:16px;padding:16px 16px 14px;gap:9px;border:none;border-bottom:1px solid var(--line);}.review-card::before{display:none;}.review-card::after{border-radius:16px;box-shadow:none;}.carousel-dots{margin-top:18px;gap:6px;padding:12px 0;}.dot{width:8px;height:8px;}.dot.active{width:10px;height:10px;}}.team-container{display:grid;grid-template-columns:1fr 1fr;gap:48px;}.team-member{background:linear-gradient(165deg,var(--cream-2) 0%,var(--cream) 100%);border:1px solid var(--line);padding:0;border-radius:8px;overflow:hidden;}.team-header{background:linear-gradient(135deg,var(--cocoa-dark) 0%,var(--cocoa) 100%);color:var(--white);padding:28px 24px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:background .2s;}.team-header:hover{background:linear-gradient(135deg,var(--swiss-red) 0%,var(--cocoa-dark) 100%);}.team-header h3{font-family:'Archivo Expanded',sans-serif;font-weight:700;font-size:1.3rem;margin:0;}.team-header .role{font-size:0.85rem;color:var(--cream);font-weight:500;margin-top:4px;}.team-toggle{font-size:1.4rem;background:none;border:none;color:var(--white);cursor:pointer;transition:transform .3s;}.team-toggle.open{transform:rotate(180deg);}.team-details{max-height:0;overflow:hidden;transition:max-height .4s cubic-bezier(.4,0,.2,1),opacity .3s ease;background:var(--cream-2);opacity:0;}.team-details.open{max-height:600px;opacity:1;}.team-info{padding:24px;display:flex;flex-direction:column;gap:16px;}.team-item{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--line);}.team-item:last-child{border-bottom:none;}.team-label{font-weight:600;color:var(--cocoa-dark);font-size:0.9rem;}.team-value{color:var(--cocoa);font-size:0.95rem;text-align:right;}.team-value a{color:var(--swiss-red);border-bottom:1px solid var(--swiss-red);transition:color .2s;}.team-value a:hover{color:var(--cocoa-dark);}@media(max-width:720px){.team-container{grid-template-columns:1fr;}}.choco-list{display:flex;flex-direction:column;gap:16px;}.choco-row{display:flex;align-items:center;gap:16px;background:linear-gradient(165deg,var(--cream-2) 0%,var(--cream) 100%);padding:20px 24px;border-radius:10px;border:1px solid var(--line);cursor:pointer;box-shadow:0 2px 6px rgba(36,18,9,0.06),0 10px 28px rgba(36,18,9,0.07);transition:box-shadow .35s cubic-bezier(.2,.8,.2,1),transform .35s cubic-bezier(.2,.8,.2,1),border-color .35s;}.choco-row:hover{box-shadow:0 6px 14px rgba(36,18,9,0.08),0 20px 40px rgba(36,18,9,0.12);transform:translateY(-2px);border-color:rgba(184,135,58,0.4);}.choco-num{font-family:'Archivo Expanded',sans-serif;font-weight:700;font-size:1.2rem;color:var(--cocoa-dark);min-width:24px;text-align:center;}.choco-box{width:60px;height:60px;border-radius:8px;display:flex;align-items:center;justify-content:center;flex:none;box-shadow:0 2px 8px rgba(36,18,9,0.1);overflow:hidden;background:#f9f9f9;}.choco-box img{width:100%;height:100%;object-fit:contain;display:block;background:#f9f9f9;}.choco-box svg{width:100%;height:100%;display:block;}.choco-info{flex:1;}.choco-info h3{font-family:'Archivo Expanded',sans-serif;font-weight:700;font-size:1.05rem;color:var(--cocoa-dark);margin-bottom:4px;}.choco-info p{color:var(--cocoa);font-size:0.9rem;line-height:1.4;}.choco-weight{font-size:0.8rem;color:var(--cocoa);text-align:center;min-width:50px;font-weight:500;}.choco-price{font-family:'Archivo Expanded',sans-serif;font-weight:700;font-size:1.2rem;color:var(--swiss-red);min-width:70px;text-align:right;}@media(max-width:720px){.choco-row{gap:12px;padding:16px 16px;}.choco-box{width:50px;height:50px;}.choco-box img{width:100%;height:100%;object-fit:contain;display:block;}.choco-box svg{width:100%;height:100%;display:block;}.choco-info h3{font-size:0.95rem;}.choco-info p{font-size:0.85rem;}}.complaints-wrapper{background:linear-gradient(165deg,var(--cream) 0%,var(--cream-2) 100%);padding:48px 24px;border-radius:12px;box-shadow:0 4px 14px rgba(36,18,9,0.05);}.complaints-form{display:flex;flex-direction:column;gap:18px;}.form-group{display:flex;flex-direction:column;gap:8px;}.hp-field{position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;overflow:hidden;}.form-group label{font-weight:600;color:var(--cocoa-dark);font-size:0.95rem;display:flex;flex-wrap:wrap;align-items:baseline;gap:6px;}.form-group label .lbl-en{font-weight:700;color:var(--cocoa-dark);}.form-group label .lbl-sep{color:var(--gold);font-weight:400;}.form-group label .lbl-bn{font-weight:600;color:var(--swiss-red);font-family:'Noto Sans Bengali','Archivo',sans-serif;font-size:0.93rem;}.img-fallback{display:flex;align-items:center;justify-content:center;width:100%;height:100%;background:linear-gradient(135deg,var(--cocoa) 0%,var(--cocoa-dark) 100%);color:var(--cream-2);font-family:'Archivo Expanded',sans-serif;font-weight:700;text-align:center;font-size:0.85rem;padding:8px;}.form-group input,.form-group textarea,.form-group select{border:1px solid var(--line);padding:13px 16px;font-family:'Archivo',sans-serif;font-size:0.95rem;color:var(--cocoa-dark);border-radius:8px;background:var(--white);transition:border-color .2s ease,box-shadow .2s ease;}.form-group input:hover,.form-group textarea:hover,.form-group select:hover{border-color:rgba(184,135,58,0.5);}.form-group input:focus,.form-group textarea:focus,.form-group select:focus{outline:none;border-color:var(--swiss-red);box-shadow:0 0 0 3px rgba(200,16,46,0.1);}.form-group textarea{resize:vertical;min-height:120px;}.complaints-submit{background:linear-gradient(135deg,var(--cocoa) 0%,var(--cocoa-dark) 100%);color:var(--white);border:none;padding:14px 28px;font-weight:600;font-size:0.95rem;border-radius:6px;cursor:pointer;box-shadow:0 8px 18px rgba(36,18,9,0.2);transition:background .25s ease,transform .15s ease,box-shadow .25s ease;width:fit-content;}.complaints-submit:hover{background:linear-gradient(135deg,var(--swiss-red) 0%,#8f0c22 100%);box-shadow:0 10px 22px rgba(200,16,46,0.26);}.complaints-submit:active:not(:disabled){transform:scale(.98);}.complaints-submit:disabled{background:var(--cocoa);box-shadow:none;cursor:not-allowed;}.form-message{padding:16px;border-radius:6px;font-weight:600;text-align:center;display:none;}.form-message.success{background:rgba(76,175,80,0.1);color:#2e7d32;display:block;}.form-message.error{background:rgba(244,67,54,0.1);color:#c62828;display:block;}.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;}.contact-list{display:flex;flex-direction:column;}.contact-list a,.contact-list div.item{display:flex;justify-content:space-between;align-items:center;padding:18px 0;border-bottom:1px solid var(--line);font-size:1rem;}.contact-list .k{color:var(--cocoa);font-size:0.85rem;}.contact-list .v{font-weight:600;}.contact-form{display:flex;flex-direction:column;gap:14px;}.contact-form input,.contact-form textarea{border:none;border-bottom:1px solid var(--line);background:transparent;padding:12px 4px;font-family:'Archivo',sans-serif;font-size:1rem;color:var(--cocoa-dark);}.contact-form input:focus,.contact-form textarea:focus{outline:none;border-bottom-color:var(--cocoa-dark);}.contact-form textarea{resize:vertical;min-height:90px;}.contact-form button{margin-top:8px;background:linear-gradient(135deg,var(--cocoa) 0%,var(--cocoa-dark) 100%);color:var(--white);border:none;padding:14px 22px;font-weight:600;font-size:0.95rem;box-shadow:0 8px 18px rgba(36,18,9,0.2);cursor:pointer;width:fit-content;transition:background .25s ease,transform .15s ease,box-shadow .25s ease;}.contact-form button:hover{background:linear-gradient(135deg,var(--swiss-red) 0%,#8f0c22 100%);box-shadow:0 10px 22px rgba(200,16,46,0.26);}.contact-form button:active{transform:scale(.98);}@media(max-width:720px){.contact-grid{grid-template-columns:1fr;}}footer{padding:32px 0;}.foot-row{display:flex;justify-content:space-between;align-items:center;font-size:0.85rem;color:var(--cocoa);flex-wrap:wrap;gap:10px;}a:focus-visible,button:focus-visible,input:focus-visible,textarea:focus-visible{outline:2px solid var(--swiss-red);outline-offset:2px;}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto;}*{transition:none !important;}}@keyframes heroRise{from{opacity:0;transform:translateY(22px);}to{opacity:1;transform:translateY(0);}}.hero-tag,.hero-side p,.hero-cta,.hero-strip{animation:heroRise .7s cubic-bezier(.2,.8,.2,1) both;}.hero-tag{animation-delay:.02s;}.hero-side p{animation-delay:.36s;}.hero-cta{animation-delay:.46s;}.hero-strip{animation-delay:.56s;}@keyframes heroTitleRise{from{opacity:0;transform:translateY(60%);}to{opacity:1;transform:translateY(0);}}.hero-title-mask h1{animation:heroTitleRise .9s cubic-bezier(.16,1,.3,1) both;animation-delay:.12s;}.reveal{opacity:0;transform:translateY(24px);transition:opacity .7s cubic-bezier(.2,.8,.2,1),transform .7s cubic-bezier(.2,.8,.2,1);}.reveal.in-view{opacity:1;transform:translateY(0);}@media(prefers-reduced-motion:reduce){.hero-tag,.hero-side p,.hero-cta,.hero-strip{animation:none;}.hero-title-mask h1{animation:none;}.reveal{opacity:1;transform:none;transition:none;}}.leaf-fall-layer{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:60;}.branch-topright{position:fixed;top:58px;right:-10px;width:270px;height:auto;pointer-events:none;z-index:61;filter:drop-shadow(0 8px 14px rgba(36,18,9,0.22));}@media(max-width:720px){.branch-topright{width:175px;top:66px;right:-8px;}}.fall-leaf{position:absolute;opacity:0;will-change:transform,opacity;animation-timing-function:linear;animation-fill-mode:forwards;}.fall-leaf.type-straight{animation-name:leafFallStraight;}.fall-leaf.type-sway{animation-name:leafFallSway;}.fall-leaf.type-diagonal{animation-name:leafFallDiagonal;}.leaf-fall-layer.order-paused .fall-leaf{animation-play-state:paused;}@keyframes leafFallStraight{0%{transform:translate(0,0) rotate(0deg);opacity:0;}10%{opacity:0.9;}100%{transform:translate(-8vw,108vh) rotate(140deg);opacity:0.85;}}@keyframes leafFallSway{0%{transform:translate(0,0) rotate(0deg);opacity:0;}8%{opacity:0.9;}25%{transform:translate(-14vw,25vh) rotate(60deg);}50%{transform:translate(4vw,50vh) rotate(-40deg);}75%{transform:translate(-18vw,75vh) rotate(80deg);}92%{opacity:0.8;}100%{transform:translate(2vw,108vh) rotate(-20deg);opacity:0;}}@keyframes leafFallDiagonal{0%{transform:translate(0,0) rotate(0deg);opacity:0;}8%{opacity:0.85;}50%{transform:translate(-55vw,55vh) rotate(190deg);}92%{opacity:0.8;}100%{transform:translate(-118vw,118vh) rotate(360deg);opacity:0;}}.ambient-glow-layer{position:fixed;inset:0;pointer-events:none;overflow:hidden;z-index:58;}.ambient-glow{position:absolute;top:2%;right:-6%;width:78vw;height:82vh;min-width:460px;min-height:460px;border-radius:50%;filter:blur(90px);opacity:0;mix-blend-mode:multiply;transform:translateX(6%) scale(0.94);will-change:opacity,transform;animation-timing-function:cubic-bezier(.3,.6,.35,1);animation-fill-mode:both;animation-iteration-count:1;}.ambient-glow.tone-cool{background:radial-gradient(ellipse at 80% 38%,rgba(61,171,203,0.68) 0%,rgba(61,171,203,0.42) 22%,rgba(61,171,203,0.22) 44%,rgba(61,171,203,0.08) 64%,transparent 82%);animation-name:ambientGlowFade;animation-duration:6.5s;}.ambient-glow.tone-violet{background:radial-gradient(ellipse at 82% 44%,rgba(144,91,222,0.65) 0%,rgba(144,91,222,0.4) 24%,rgba(144,91,222,0.2) 46%,rgba(144,91,222,0.07) 66%,transparent 84%);animation-name:ambientGlowFade;animation-duration:7s;}.ambient-glow.tone-violetblue{background:radial-gradient(ellipse at 74% 30%,rgba(135,77,220,0.55) 0%,rgba(135,77,220,0.24) 40%,transparent 72%),radial-gradient(ellipse at 88% 62%,rgba(58,124,230,0.55) 0%,rgba(58,124,230,0.24) 42%,transparent 74%);animation-name:ambientGlowFade;animation-duration:8s;}.ambient-glow.tone-emerald{background:radial-gradient(ellipse at 80% 40%,rgba(44,169,124,0.62) 0%,rgba(44,169,124,0.36) 24%,rgba(44,169,124,0.16) 46%,rgba(44,169,124,0.06) 66%,transparent 84%);animation-name:ambientGlowFade;animation-duration:7.5s;}.ambient-glow.tone-rosegold{background:radial-gradient(ellipse at 76% 32%,rgba(222,124,145,0.5) 0%,rgba(222,124,145,0.22) 42%,transparent 74%),radial-gradient(ellipse at 90% 64%,rgba(203,147,77,0.5) 0%,rgba(203,147,77,0.2) 44%,transparent 76%);animation-name:ambientGlowFade;animation-duration:8s;}.ambient-glow.tone-caramel{background:radial-gradient(ellipse at 78% 36%,rgba(203,139,61,0.6) 0%,rgba(203,139,61,0.32) 26%,rgba(203,139,61,0.12) 48%,transparent 78%);animation-name:ambientGlowFade;animation-duration:7s;}.ambient-glow.tone-wine{background:radial-gradient(ellipse at 84% 42%,rgba(174,61,77,0.55) 0%,rgba(174,61,77,0.28) 30%,rgba(174,61,77,0.1) 52%,transparent 80%);animation-name:ambientGlowFade;animation-duration:7.5s;}@keyframes ambientGlowFade{0%{opacity:0;transform:translateX(6%) scale(0.94);}24%{opacity:.6;transform:translateX(0) scale(1);}68%{opacity:.6;transform:translateX(0) scale(1);}100%{opacity:0;transform:translateX(0) scale(1.02);}}@media(max-width:720px){.ambient-glow{width:120vw;height:58vh;right:-30%;top:2%;}}@media(prefers-reduced-motion:reduce){.ambient-glow{animation:none;opacity:0;}}.about-visual::after{display:none;}.about-visual picture{position:absolute;inset:0;display:block;z-index:1;}.about-visual .about-img{width:100%;height:100%;object-fit:cover;object-position:center top;}.about-visual .cross{display:none;}</style>
 <style>
 /* ===== নতুন ডেলিভারি ভ্যান / New premium delivery van ===== */
 .avan{display:inline-flex;align-items:center;gap:10px;}
@@ -166,7 +194,7 @@
 .choco-num{width:40px;height:40px;min-width:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.05rem;color:var(--cream-2);background:radial-gradient(circle at 30% 25%,#7a4a2e 0%,var(--cocoa) 45%,var(--cocoa-dark) 100%);box-shadow:0 0 0 3px rgba(184,135,58,0.28),0 6px 14px rgba(36,18,9,0.28);}
 .choco-box{width:68px;height:68px;border-radius:14px;border:2px solid #fff;box-shadow:0 6px 16px rgba(36,18,9,0.16);transition:transform .4s cubic-bezier(.2,.8,.2,1);}
 .choco-row:hover .choco-box{transform:scale(1.06) rotate(-2deg);}
-.choco-info h4{font-size:1.12rem;margin-bottom:6px;letter-spacing:-0.005em;}
+.choco-info h3{font-size:1.12rem;margin-bottom:6px;letter-spacing:-0.005em;}
 .choco-info p{color:rgba(74,44,26,0.85);font-size:0.9rem;line-height:1.45;}
 .choco-sizes{gap:10px;}
 .choco-size{min-width:86px;padding:10px 12px;border-radius:12px;border:1px solid rgba(184,135,58,0.35);background:linear-gradient(165deg,#ffffff 0%,#f6f1e6 100%);box-shadow:0 1px 0 #fff inset,0 3px 8px rgba(36,18,9,0.07);transition:background .3s ease,border-color .3s ease,transform .2s cubic-bezier(.2,.8,.2,1),box-shadow .3s ease;}
@@ -180,7 +208,7 @@
 .choco-row{padding:18px 16px 18px 20px;border-radius:16px;gap:12px;}
 .choco-num{width:32px;height:32px;min-width:32px;font-size:0.9rem;}
 .choco-box{width:56px;height:56px;border-radius:12px;}
-.choco-info h4{font-size:1rem;}
+.choco-info h3{font-size:1rem;}
 .choco-sizes{gap:8px;margin-top:4px;}
 .choco-size{padding:9px 4px;border-radius:10px;}
 .choco-size .cs-p{font-size:0.95rem;}
@@ -228,7 +256,7 @@
 .choco-section .choco-row{padding:13px 20px 13px 24px;gap:14px;border-radius:14px;}
 .choco-section .choco-num{width:32px;height:32px;min-width:32px;font-size:0.9rem;}
 .choco-section .choco-box{width:52px;height:52px;border-radius:11px;}
-.choco-section .choco-info h4{font-size:1rem;margin-bottom:3px;}
+.choco-section .choco-info h3{font-size:1rem;margin-bottom:3px;}
 .choco-section .choco-info p{font-size:0.84rem;line-height:1.35;}
 .choco-section .choco-hint{font-size:0.62rem;margin-bottom:6px;}
 .choco-section .choco-sizes{gap:8px;padding-bottom:4px;}
@@ -246,7 +274,7 @@
 .choco-section .choco-row{padding:12px 12px 12px 16px;gap:10px;border-radius:12px;}
 .choco-section .choco-num{width:28px;height:28px;min-width:28px;font-size:0.8rem;}
 .choco-section .choco-box{width:44px;height:44px;border-radius:10px;}
-.choco-section .choco-info h4{font-size:0.92rem;}
+.choco-section .choco-info h3{font-size:0.92rem;}
 .choco-section .choco-info p{font-size:0.78rem;}
 .choco-section .choco-hint{display:none;}
 .choco-section .choco-sizes{gap:6px;margin-top:2px;}
@@ -326,6 +354,12 @@
 .product-modal-overlay.open .product-modal,.order-choice-overlay.open .order-choice-box,.order-form-overlay.open .order-form-box{will-change:transform;}
 .choco-section .choco-help-dot{box-shadow:0 0 8px 1px rgba(214,25,46,0.45);animation:chocoLiveLite 2s ease-in-out infinite;}
 @keyframes chocoLiveLite{0%,100%{opacity:1;}50%{opacity:.7;}}
+/* Step 5/C: endless decorative loops pause while off-screen (class set by a small IntersectionObserver; delete this rule + the ara-step5-offscreen script to revert) */
+.choco-help-dot.ara-offscreen,.choco-help-dot.ara-offscreen::before,.choco-help-dot.ara-offscreen::after,.socials.ara-offscreen .soc,.socials.ara-offscreen .soc::before{animation-play-state:paused !important;}
+/* Step 5/D: hero letters release their opacity layer once the write-on animation is finished */
+.hw-done .hw-c{will-change:auto;}
+/* Step 6/3 polish: the "View details" link sat directly on the card divider; 6px breathing room above and below (revert: delete this rule) */
+.view-details{margin-block:6px;}
 @media(prefers-reduced-motion:reduce){.choco-section .choco-help-dot{animation:none;}}
 </style>
 <style>
@@ -964,8 +998,47 @@ html[data-title-design="glass"][data-title-fx="run"] header::before{animation-pl
 @keyframes araHdGlint{from{background-position:0 0,0 0,0% 0%,0 0}to{background-position:0 0,0 0,100% 100%,0 0}}
 @media(prefers-reduced-motion:reduce){html[data-title-design="glass"] header::before{animation:none}}
 </style>
+<style id="ara-step3-a11y">
+/* Step 3 (accessibility & touch refinements). Additive overrides only; delete this block to revert the CSS part. */
+.skip-link{position:absolute;left:12px;top:-64px;z-index:10000;padding:10px 16px;background:var(--cocoa-dark);color:#fff;border-radius:6px;font:600 .95rem 'Archivo',sans-serif;text-decoration:none;transition:top .15s ease}
+.skip-link:focus,.skip-link:focus-visible{top:12px;outline:2px solid var(--swiss-red);outline-offset:2px}
+#main:focus{outline:none}
+.choco-section .choco-size .cs-w,.choco-section .choco-size .cs-o{font-size:.75rem}
+@media (max-width:720px),(pointer:coarse){
+.nav-toggle{position:relative}
+.nav-toggle::after{content:"";position:absolute;inset:-8px -11px}
+.view-details{position:relative}
+.view-details::after{content:"";position:absolute;left:0;right:0;top:-15px;bottom:-15px}
+.order{position:relative}
+.order::after{content:"";position:absolute;left:0;right:0;top:-5px;bottom:-5px}
+.dot::after{content:"";position:absolute;top:-20px;bottom:-20px;left:-3px;right:-3px}
+.team-toggle::after{content:"";position:absolute;inset:-6px}
+.team-value a,.contact-list a{position:relative}
+.team-value a::after{content:"";position:absolute;left:0;right:0;top:-13px;bottom:-13px}
+}
+/* Step 3 / #1: darker gold for TEXT only (contrast >= 4.5:1 on cream). Decorative gold (borders, gradients, dots, stars) unchanged. */
+:root{--gold-text:#84601E}
+.hero-tag,.section-head .label,.view-details,.pm-flavor-tag,.value .n,.review-card .profile-role,.choco-size .cs-w,.choco-size:hover .cs-w,.choco-section .choco-size .cs-o,.choco-section .choco-num,.choco-help em,.choco-section .choco-help em,.team-value a:hover{color:var(--gold-text)}
+/* Step 3 / #3: anchor jumps no longer hide section titles under the sticky header (~71px). */
+html{scroll-padding-top:80px}
+/* Step 3 / #2: dialog containers are only a focus fallback; no ring on them. */
+[role="dialog"][tabindex="-1"]:focus{outline:none}
+/* Step 3 / #7 + #10: visible keyboard focus on avatar photos and contact-form fields (mouse look unchanged). */
+.review-card .avatar:focus-visible{outline:2px solid var(--swiss-red);outline-offset:2px}
+.contact-form input:focus-visible,.contact-form textarea:focus-visible{outline:2px solid var(--swiss-red);outline-offset:2px}
+/* Step 3 / #3 + #4: mobile menu sits right under the real header height (was fixed top:64px), and while closed its links are not focusable. */
+@media(max-width:720px){
+nav.links{position:absolute;top:100%;visibility:hidden;transition:max-height .3s ease,visibility 0s linear .3s}
+nav.links.open{visibility:visible;transition:max-height .3s ease,visibility 0s}
+}
+</style>
+<!-- Product data repeats the names, descriptions and prices printed in the Products section. Availability, ratings and reviews are intentionally NOT claimed. -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"Product","name":"Chocolate Gift Box","description":"A larger collection made for sharing — ideal for gifting or a family occasion. Includes 3 flavors.","image":"https://arachocolates25.github.io/images/combo-box.png","brand":{"@type":"Brand","name":"Ara Chocolates"},"offers":{"@type":"Offer","price":"1499","priceCurrency":"BDT","url":"https://arachocolates25.github.io/#products"}},{"@type":"Product","name":"Pure Dark Chocolate Bar","description":"Made for a single serving — a small, rich moment just for you.","image":"https://arachocolates25.github.io/images/solo-bar.png","brand":{"@type":"Brand","name":"Ara Chocolates"},"offers":{"@type":"Offer","price":"390","priceCurrency":"BDT","url":"https://arachocolates25.github.io/#products"}}]}
+</script>
 </head>
 <body>
+<a class="skip-link" href="#main">Skip to main content</a>
 
 <div class="leaf-fall-layer" id="leafFallLayer" aria-hidden="true"></div>
 
@@ -973,7 +1046,7 @@ html[data-title-design="glass"][data-title-fx="run"] header::before{animation-pl
   <div class="ambient-glow" id="ambientGlow"></div>
 </div>
 
-<div class="avatar-modal-overlay" id="avatarModalOverlay" onclick="if(event.target===this) closeAvatarModal()">
+<div class="avatar-modal-overlay" id="avatarModalOverlay" role="dialog" aria-modal="true" aria-label="Profile photo" tabindex="-1" onclick="if(event.target===this) closeAvatarModal()">
   <button type="button" class="avatar-modal-close" onclick="closeAvatarModal()" aria-label="Close">✕</button>
   <div class="avatar-modal-circle">
     <img id="avatarModalImg" src="" alt="">
@@ -1005,7 +1078,7 @@ html[data-title-design="glass"][data-title-fx="run"] header::before{animation-pl
 <header>
   <div class="nav">
     <div class="brand"><img src="images/logo.png" alt="Ara Chocolates Logo" class="logo-img" width="34" height="34" fetchpriority="high" onerror="this.style.display='none'">Ara Chocolates</div>
-    <button type="button" class="nav-toggle" id="navToggle" aria-label="Open menu">☰</button>
+    <button type="button" class="nav-toggle" id="navToggle" aria-label="Open menu" aria-expanded="false" aria-controls="navLinks">☰</button>
     <nav class="links" id="navLinks">
       <a href="#about">About</a>
       <a href="#products">Products</a>
@@ -1016,6 +1089,7 @@ html[data-title-design="glass"][data-title-fx="run"] header::before{animation-pl
   </div>
 </header>
 
+<main id="main" tabindex="-1">
 <section class="hero">
   <div class="wrap">
     <div class="hero-grid">
@@ -1065,7 +1139,7 @@ html[data-title-design="glass"][data-title-fx="run"] header::before{animation-pl
       <div class="ph"><img src="images/combo-box.png" alt="Ara Chocolates Chocolate Gift Box — Premium Artisan Selection" width="280" height="280" loading="lazy" decoding="async" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'img-fallback',textContent:'Chocolate Gift Box'}))"></div>
       <div class="pbody">
         <h3>Chocolate Gift Box</h3>
-        <p class="desc">A larger collection made for sharing — ideal for gifting or a family occasion. Includes 3 flavors.</p>
+        <p class="desc">A larger collection made for sharing — ideal for gifting or a family occasion. Includes 3 flavors. Perfect for Eid, birthdays and corporate gifting.</p>
         <button type="button" class="view-details">View flavors &amp; details <span class="arrow">→</span></button>
         <div class="row">
           <div class="price">৳ 1499</div>
@@ -1095,13 +1169,13 @@ html[data-title-design="glass"][data-title-fx="run"] header::before{animation-pl
       <div class="label">Collections</div>
       <h2>Discover Our Chocolate Varieties</h2>
     </div>
-<div class="choco-help"><span class="choco-help-dot"></span><span>Choose your size &amp; tap its price button to order <em>·</em> <span class="bn">সাইজ বেছে দামের বাটনে ট্যাপ করলেই অর্ডার শুরু হবে</span></span></div>
+<div class="choco-help"><span class="choco-help-dot"></span><span>Choose your size &amp; tap its price button to order <em>·</em> <span class="bn" lang="bn">সাইজ বেছে দামের বাটনে ট্যাপ করলেই অর্ডার শুরু হবে</span></span></div>
     <div class="choco-list">
       <div class="choco-row">
         <div class="choco-num">1</div>
         <div class="choco-box"><img src="almond.png" alt="Almond Chocolate" width="60" height="60" loading="lazy" decoding="async" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'img-fallback',textContent:'Almond'}))"></div>
         <div class="choco-info">
-          <h4>Almond Chocolate</h4>
+          <h3>Almond Chocolate</h3>
           <p>Smooth milk chocolate with premium almonds</p>
         </div>
         <div class="choco-order-area"><div class="choco-hint">Tap a size to order</div><div class="choco-sizes"><button type="button" class="choco-size" aria-label="Order Almond Chocolate (120g) for ৳ 390" onclick="event.stopPropagation(); openOrderChoice('Almond Chocolate (120g)', '৳ 390')"><span class="cs-w">120 g</span><span class="cs-p">৳ 390</span><span class="cs-o">Order</span></button><button type="button" class="choco-size" aria-label="Order Almond Chocolate (90g) for ৳ 285" onclick="event.stopPropagation(); openOrderChoice('Almond Chocolate (90g)', '৳ 285')"><span class="cs-w">90 g</span><span class="cs-p">৳ 285</span><span class="cs-o">Order</span></button><button type="button" class="choco-size" aria-label="Order Almond Chocolate (60g) for ৳ 200" onclick="event.stopPropagation(); openOrderChoice('Almond Chocolate (60g)', '৳ 200')"><span class="cs-w">60 g</span><span class="cs-p">৳ 200</span><span class="cs-o">Order</span></button></div></div>
@@ -1111,7 +1185,7 @@ html[data-title-design="glass"][data-title-fx="run"] header::before{animation-pl
         <div class="choco-num">2</div>
         <div class="choco-box"><img src="cashew.png" alt="Cashew Chocolate" width="60" height="60" loading="lazy" decoding="async" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'img-fallback',textContent:'Cashew'}))"></div>
         <div class="choco-info">
-          <h4>Cashew Chocolate</h4>
+          <h3>Cashew Chocolate</h3>
           <p>Creamy chocolate filled with whole cashews</p>
         </div>
         <div class="choco-order-area"><div class="choco-hint">Tap a size to order</div><div class="choco-sizes"><button type="button" class="choco-size" aria-label="Order Cashew Chocolate (120g) for ৳ 390" onclick="event.stopPropagation(); openOrderChoice('Cashew Chocolate (120g)', '৳ 390')"><span class="cs-w">120 g</span><span class="cs-p">৳ 390</span><span class="cs-o">Order</span></button><button type="button" class="choco-size" aria-label="Order Cashew Chocolate (90g) for ৳ 285" onclick="event.stopPropagation(); openOrderChoice('Cashew Chocolate (90g)', '৳ 285')"><span class="cs-w">90 g</span><span class="cs-p">৳ 285</span><span class="cs-o">Order</span></button><button type="button" class="choco-size" aria-label="Order Cashew Chocolate (60g) for ৳ 200" onclick="event.stopPropagation(); openOrderChoice('Cashew Chocolate (60g)', '৳ 200')"><span class="cs-w">60 g</span><span class="cs-p">৳ 200</span><span class="cs-o">Order</span></button></div></div>
@@ -1121,7 +1195,7 @@ html[data-title-design="glass"][data-title-fx="run"] header::before{animation-pl
         <div class="choco-num">3</div>
         <div class="choco-box"><img src="mixed-nut.png" alt="Mixed Nut Chocolate" width="60" height="60" loading="lazy" decoding="async" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'img-fallback',textContent:'Mixed Nut'}))"></div>
         <div class="choco-info">
-          <h4>Mixed Nut Chocolate</h4>
+          <h3>Mixed Nut Chocolate</h3>
           <p>A blend of assorted premium nuts in chocolate</p>
         </div>
         <div class="choco-order-area"><div class="choco-hint">Tap a size to order</div><div class="choco-sizes"><button type="button" class="choco-size" aria-label="Order Mixed Nut Chocolate (120g) for ৳ 370" onclick="event.stopPropagation(); openOrderChoice('Mixed Nut Chocolate (120g)', '৳ 370')"><span class="cs-w">120 g</span><span class="cs-p">৳ 370</span><span class="cs-o">Order</span></button><button type="button" class="choco-size" aria-label="Order Mixed Nut Chocolate (90g) for ৳ 280" onclick="event.stopPropagation(); openOrderChoice('Mixed Nut Chocolate (90g)', '৳ 280')"><span class="cs-w">90 g</span><span class="cs-p">৳ 280</span><span class="cs-o">Order</span></button><button type="button" class="choco-size" aria-label="Order Mixed Nut Chocolate (60g) for ৳ 190" onclick="event.stopPropagation(); openOrderChoice('Mixed Nut Chocolate (60g)', '৳ 190')"><span class="cs-w">60 g</span><span class="cs-p">৳ 190</span><span class="cs-o">Order</span></button></div></div>
@@ -1131,7 +1205,7 @@ html[data-title-design="glass"][data-title-fx="run"] header::before{animation-pl
         <div class="choco-num">4</div>
         <div class="choco-box"><img src="pure-dark.png" alt="Pure Dark Chocolate" width="60" height="60" loading="lazy" decoding="async" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'img-fallback',textContent:'Pure Dark'}))"></div>
         <div class="choco-info">
-          <h4>Pure Dark Chocolate</h4>
+          <h3>Pure Dark Chocolate</h3>
           <p>100% pure, rich and intense dark chocolate</p>
         </div>
         <div class="choco-order-area"><div class="choco-hint">Tap a size to order</div><div class="choco-sizes"><button type="button" class="choco-size" aria-label="Order Pure Dark Chocolate (120g) for ৳ 350" onclick="event.stopPropagation(); openOrderChoice('Pure Dark Chocolate (120g)', '৳ 350')"><span class="cs-w">120 g</span><span class="cs-p">৳ 350</span><span class="cs-o">Order</span></button><button type="button" class="choco-size" aria-label="Order Pure Dark Chocolate (90g) for ৳ 265" onclick="event.stopPropagation(); openOrderChoice('Pure Dark Chocolate (90g)', '৳ 265')"><span class="cs-w">90 g</span><span class="cs-p">৳ 265</span><span class="cs-o">Order</span></button><button type="button" class="choco-size" aria-label="Order Pure Dark Chocolate (60g) for ৳ 180" onclick="event.stopPropagation(); openOrderChoice('Pure Dark Chocolate (60g)', '৳ 180')"><span class="cs-w">60 g</span><span class="cs-p">৳ 180</span><span class="cs-o">Order</span></button></div></div>
@@ -1142,7 +1216,7 @@ html[data-title-design="glass"][data-title-fx="run"] header::before{animation-pl
 
 <!-- ========== PRODUCT DETAILS MODAL ========== -->
 <div class="product-modal-overlay" id="productModalOverlay" onclick="if(event.target===this)closeAllOrderLayers()">
-  <div class="product-modal" role="dialog" aria-modal="true" aria-labelledby="productModalTitle">
+  <div class="product-modal" role="dialog" aria-modal="true" aria-labelledby="productModalTitle" tabindex="-1">
     <div class="op-bar"><button type="button" class="oc-back" onclick="closeProductModal()" aria-label="Back"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg><span>Back</span></button><div class="op-center"><span class="op-steps" role="img" aria-label="Step 1 of 3"><i class="on"></i><i></i><i></i></span></div><button type="button" class="product-modal-close" onclick="closeAllOrderLayers()" aria-label="Close">✕</button></div>
 
     <div class="product-modal-tabs">
@@ -1190,7 +1264,7 @@ html[data-title-design="glass"][data-title-fx="run"] header::before{animation-pl
 
 <!-- ========== ORDER CHOICE MODAL ========== -->
 <div class="order-choice-overlay" id="orderChoiceOverlay" onclick="if(event.target===this)closeAllOrderLayers()">
-  <div class="order-choice-box">
+  <div class="order-choice-box" role="dialog" aria-modal="true" aria-labelledby="ocProductTitle" tabindex="-1">
     <div class="op-bar"><button type="button" class="oc-back" onclick="closeOrderChoice()" aria-label="Back"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg><span>Back</span></button><div class="op-center"><span class="op-steps" role="img" aria-label="Step 2 of 3"><i class="on"></i><i class="on"></i><i></i></span></div><button type="button" class="order-choice-close" onclick="closeAllOrderLayers()" aria-label="Close">✕</button></div>
     <div class="oc-hero">
       
@@ -1213,11 +1287,11 @@ html[data-title-design="glass"][data-title-fx="run"] header::before{animation-pl
 
 <!-- ========== ORDER ON WEBSITE FORM ========== -->
 <div class="order-form-overlay" id="orderFormOverlay" onclick="if(event.target===this)closeAllOrderLayers()">
-  <div class="order-form-box">
+  <div class="order-form-box" role="dialog" aria-modal="true" aria-labelledby="orderFormTitle" tabindex="-1">
     <div class="op-bar"><button type="button" class="oc-back" onclick="orderFormBack()" aria-label="Back"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg><span>Back</span></button><div class="op-center"><span class="op-steps" role="img" aria-label="Step 3 of 3"><i class="on"></i><i class="on"></i><i class="on"></i></span></div><button type="button" class="order-form-close" onclick="closeAllOrderLayers()" aria-label="Close">✕</button></div>
     <div class="of-hero">
       
-      <h3>Order on Website</h3>
+      <h3 id="orderFormTitle">Order on Website</h3>
       <p class="oform-sub">Fill in your details below — we'll confirm your order shortly.</p>
     </div>
     <form id="orderForm">
@@ -1315,7 +1389,7 @@ html[data-title-design="glass"][data-title-fx="run"] header::before{animation-pl
       </div>
 
       <button type="submit" class="complaints-submit"><span class="lbl-en" style="color:inherit;">Submit Order</span> <span class="lbl-sep" style="color:var(--gold);">/</span> <span lang="bn" style="color:inherit;">অর্ডার সাবমিট করুন</span></button>
-      <div class="form-message" id="orderSubmitMsg"></div>
+      <div class="form-message" id="orderSubmitMsg" role="status" aria-live="polite"></div>
     </form>
   </div>
 </div>
@@ -1329,17 +1403,17 @@ html[data-title-design="glass"][data-title-fx="run"] header::before{animation-pl
     <div class="values">
       <div class="value reveal">
         <div class="n">Ingredients</div>
-        <h4>Fully natural</h4>
+        <h3>Fully natural</h3>
         <p>No artificial colors or flavors — just real cocoa and honest ingredients.</p>
       </div>
       <div class="value reveal">
         <div class="n">Process</div>
-        <h4>Made in small batches</h4>
+        <h3>Made in small batches</h3>
         <p>Every batch is handmade, so quality control stays precise.</p>
       </div>
       <div class="value reveal">
         <div class="n">Inspiration</div>
-        <h4>Swiss craftsmanship</h4>
+        <h3>Swiss craftsmanship</h3>
         <p>Balance and precision learned from Swiss chocolate-making principles.</p>
       </div>
     </div>
@@ -1544,7 +1618,7 @@ html[data-title-design="glass"][data-title-fx="run"] header::before{animation-pl
         </div>
 
         <button type="submit" class="complaints-submit"><span style="color:inherit;">Submit Complaint</span> <span style="color:var(--gold);">/</span> <span lang="bn" style="color:inherit;">অভিযোগ সাবমিট করুন</span></button>
-        <div class="form-message" id="formMessage"></div>
+        <div class="form-message" id="formMessage" role="status" aria-live="polite"></div>
       </form>
     </div>
   </div>
@@ -1559,25 +1633,26 @@ html[data-title-design="glass"][data-title-fx="run"] header::before{animation-pl
     </div>
     <div class="contact-grid">
       <div class="contact-list reveal">
-        <a href="tel:01403896475"><span class="k">Phone / ফোন</span><span class="v">01403896475</span></a>
-        <a href="mailto:rayhan120y@gmail.com"><span class="k">Email / ইমেইল</span><span class="v">rayhan120y@gmail.com</span></a>
+        <a href="tel:01403896475"><span class="k">Phone / <bdi lang="bn">ফোন</bdi></span><span class="v">01403896475</span></a>
+        <a href="mailto:rayhan120y@gmail.com"><span class="k">Email / <bdi lang="bn">ইমেইল</bdi></span><span class="v">rayhan120y@gmail.com</span></a>
         <a href="https://wa.me/8801764491395" target="_blank" rel="noopener"><span class="k">WhatsApp</span><span class="v">01764491395</span></a>
       </div>
       <form class="contact-form reveal" id="contactForm">
-        <input type="text" placeholder="Your name / আপনার নাম" required>
-        <input type="email" placeholder="Your email / ইমেইল" required>
-        <textarea placeholder="Write your message / আপনার বার্তা লিখুন" required></textarea>
-        <button type="submit">Send message on WhatsApp / হোয়াটসঅ্যাপে বার্তা পাঠান</button>
+        <input type="text" placeholder="Your name / আপনার নাম" aria-label="Your name" autocomplete="name" required>
+        <input type="email" placeholder="Your email / ইমেইল" aria-label="Your email" autocomplete="email" required>
+        <textarea placeholder="Write your message / আপনার বার্তা লিখুন" aria-label="Your message" required></textarea>
+        <button type="submit">Send message on WhatsApp / <bdi lang="bn">হোয়াটসঅ্যাপে বার্তা পাঠান</bdi></button>
       </form>
     </div>
   </div>
 </section>
+</main>
 
 <footer>
   <div class="wrap">
     <div class="foot-row">
       <div>© <span id="year"></span> Ara Chocolates. All rights reserved.</div>
-      <div>Absolute Richness Chocolate</div>
+      <div>Absolute Richness Chocolate — handmade in Bangladesh</div>
     </div>
     <div class="socials">
       <a class="soc fb page" href="https://www.facebook.com/share/1CcmDGtsqY/" target="_blank" rel="noopener noreferrer">
@@ -1617,8 +1692,9 @@ document.querySelectorAll('.reveal').forEach(el => el.classList.add('in-view'));
 }
 const navToggle = document.getElementById('navToggle');
 const navLinks = document.getElementById('navLinks');
-navToggle.addEventListener('click', () => navLinks.classList.toggle('open'));
-navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+function araSyncNav(){const o=navLinks.classList.contains('open');navToggle.setAttribute('aria-expanded',o?'true':'false');navToggle.setAttribute('aria-label',o?'Close menu':'Open menu');}
+navToggle.addEventListener('click', () => { navLinks.classList.toggle('open'); araSyncNav(); });
+navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => { navLinks.classList.remove('open'); araSyncNav(); }));
 let teamAnimating = false;
 let teamResumeTimer = null;
 function toggleTeam(header) {
@@ -2119,14 +2195,12 @@ msgDiv.className = 'form-message error';
 msgDiv.textContent = '✗ অনুগ্রহ করে কমপক্ষে ১টি কোয়ান্টিটি সিলেক্ট করুন।';
 return;
 }
-const isBotO = document.getElementById('oWebsite').value.trim() !== '' || (Date.now() - orderFormOpenTime) < 3000;
-if (isBotO) {
-msgDiv.className = 'form-message success';
-msgDiv.textContent = '✓ Your order has been submitted. We will contact you shortly to confirm. / আপনার অর্ডার সাবমিট হয়েছে।';
-this.reset();
-document.getElementById('oDistrict').innerHTML = '<option value="">--- Select District ---</option>';
-document.getElementById('oQty').value = 1;
-updateOrderTotal();
+/* Final fix: "success" is shown only after the server confirms (see result.success below).
+   Honeypot filled -> ignore silently, no success text. Submit within 3 s of opening -> ask to re-check and press Submit again, instead of discarding a real order. */
+if (document.getElementById('oWebsite').value.trim() !== '') { return; }
+if ((Date.now() - orderFormOpenTime) < 3000) {
+msgDiv.className = 'form-message error';
+msgDiv.textContent = '✗ Please check your details and press Submit again. / অনুগ্রহ করে তথ্য দেখে আবার সাবমিট করুন।';
 setTimeout(() => { msgDiv.className = 'form-message'; }, 3000);
 return;
 }
@@ -2209,12 +2283,18 @@ lastT: 0,
 velocity: 0,
 dragging: false,
 horizontal: false,
+resizeRaf: 0,
 init: function() {
 if (!this.track || this.cards.length === 0) return;
 this.trackWidth = this.grid.clientWidth;
 window.addEventListener('resize', () => {
+/* Step 5/B: at most one layout read + reposition per frame while resizing */
+if (this.resizeRaf) return;
+this.resizeRaf = requestAnimationFrame(() => {
+this.resizeRaf = 0;
 this.trackWidth = this.grid.clientWidth;
 this.goToIndex(this.currentIndex, false);
+});
 });
 this.grid.addEventListener('touchstart', (e) => this.handleStart(e.touches[0].clientX, e.touches[0].clientY), { passive: true });
 this.grid.addEventListener('touchmove', (e) => this.handleMove(e, e.touches[0].clientX, e.touches[0].clientY), { passive: true });
@@ -2303,6 +2383,7 @@ this.goToIndex(prevIndex, true);
 },
 startAutoSlide: function() {
 this.isAutoSliding = true;
+if (this.autoSlideInterval) return; /* Step 5/A: never stack a second interval */
 this.autoSlideInterval = setInterval(() => {
 let nextIndex = this.currentIndex + 1;
 if (nextIndex >= this.cards.length) {
@@ -2415,11 +2496,11 @@ document.getElementById('complaintsForm').addEventListener('submit', async funct
 e.preventDefault();
 const submitBtn = this.querySelector('.complaints-submit');
 const messageDiv = document.getElementById('formMessage');
-const isBotC = document.getElementById('cWebsite').value.trim() !== '' || (Date.now() - pageLoadTime) < 3000;
-if (isBotC) {
-messageDiv.className = 'form-message success';
-messageDiv.textContent = '✓ Your complaint has been submitted successfully. We will get in touch with you shortly.';
-this.reset();
+/* Final fix: no fake success. Honeypot -> ignore silently; very fast submit -> ask to press Submit again. */
+if (document.getElementById('cWebsite').value.trim() !== '') { return; }
+if ((Date.now() - pageLoadTime) < 3000) {
+messageDiv.className = 'form-message error';
+messageDiv.textContent = '✗ Please check your details and press Submit again.';
 setTimeout(() => { messageDiv.className = 'form-message'; }, 3000);
 return;
 }
@@ -2475,7 +2556,18 @@ let leafSlow = false;
 const colors = ['#3F7A2C', '#4E8A34', '#5E9640', '#2C5A22', '#8FA23A', '#B08A3A', '#8A5A2E'];
 const types = ['straight', 'sway', 'diagonal'];
 const leafSvg = (color) => `<svg viewBox="0 0 24 24" width="100%" height="100%"><path d="M12 1 C17 4 18.5 10 15.5 16 Q13.5 20.5 12 23 Q10.5 20.5 8.5 16 C5.5 10 7 4 12 1 Z" fill="${color}" stroke="rgba(20,40,10,0.45)" stroke-width="0.5"/><line x1="12" y1="3" x2="12" y2="21.5" stroke="rgba(235,245,190,0.75)" stroke-width="0.9"/><path d="M12 8 L15 6 M12 11 L16 9 M12 14 L15.5 12.5 M12 8 L9 6 M12 11 L8 9 M12 14 L8.5 12.5" stroke="rgba(235,245,190,0.4)" stroke-width="0.6" fill="none"/></svg>`;
-const MAX_LEAVES = 24;
+let MAX_LEAVES = 24;   /* these three are plain tunables; normal devices keep exactly these values */
+let LEAF_GAP = 1;      /* multiplier for the time between new leaves (1 = original 1000 ms / 1500 ms when slowed) */
+let LEAF_BURST = 7;    /* leaves released together at page load */
+/* LOW-END DEVICE OPTIMIZATION — START (falling leaves: fewer, sparser leaves on weak devices)
+   What: on devices reporting <=2 GB memory or <=2 CPU cores the leaf animation still runs, but with at most 8 leaves alive,
+         a new leaf every ~2 s (instead of ~1 s) and 3 leaves at load (instead of 7). Look, colours, motion and timing of each leaf are unchanged.
+   Why:  each live leaf is a separate animated layer; emulated weak-CPU tests showed the leaf layer was the largest removable background cost.
+   Revert: delete every line from this START comment to the END comment below. MAX_LEAVES / LEAF_GAP / LEAF_BURST above then keep the original values. */
+if ((navigator.deviceMemory && navigator.deviceMemory <= 2) || (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 2)) {
+  MAX_LEAVES = 8; LEAF_GAP = 2; LEAF_BURST = 3;
+}
+/* LOW-END DEVICE OPTIMIZATION — END (falling leaves: fewer, sparser leaves on weak devices) */
 let branchRect = branch.getBoundingClientRect();
 let branchRectResizeTimer = null;
 window.addEventListener('resize', () => {
@@ -2516,7 +2608,7 @@ leaf._rm = setTimeout(() => leaf.remove(), Math.max(0, leaf._dur - cur)/rate + 5
 let leafInterval = null;
 function startLeafInterval(){
 if (leafInterval) return;
-leafInterval = setInterval(spawnLeaf, leafSlow ? 1500 : 1000);
+leafInterval = setInterval(spawnLeaf, (leafSlow ? 1500 : 1000) * LEAF_GAP);
 }
 function stopLeafInterval(){
 clearInterval(leafInterval);
@@ -2535,7 +2627,7 @@ else if (!document.hidden && !orderSectionPaused) startLeafInterval();
 });
 leafSpawnObserver.observe(branch);
 }
-for(let i=0;i<7;i++){
+for(let i=0;i<LEAF_BURST;i++){
 setTimeout(spawnLeaf, i*550);
 }
 startLeafInterval();
@@ -2650,13 +2742,16 @@ this.reset();
 });
 </script>
 
-<noscript><style>.hw-c{animation-play-state:running !important;}</style></noscript>
+<noscript><style>.hw-c{animation-play-state:running !important;}.reveal{opacity:1 !important;transform:none !important;}</style></noscript>
 <script>
 (function(){
   var d=document.documentElement;
   function go(){d.classList.add('hw-ready');}
   requestAnimationFrame(function(){requestAnimationFrame(go);});
   setTimeout(go,1000);
+  /* Step 5/D: after the last letter (delay .2s + i*.1s, duration .55s) has finished, drop the permanent will-change */
+  var n=document.querySelectorAll('.hw-c').length;
+  setTimeout(function(){d.classList.add('hw-done');},1000+200+n*100+550+400);
 })();
 </script>
 
@@ -3550,6 +3645,15 @@ this.reset();
     var WATER = !(script && script.getAttribute('data-water') === 'off') && !liteSaved && waterOK();
     var calm = (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) ||
       (navigator.deviceMemory && navigator.deviceMemory <= 2) || (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 2);
+    /* LOW-END DEVICE OPTIMIZATION — START (chatbot: no SVG water backdrop on weak devices)
+       What: on devices reporting <=2 GB memory or <=2 CPU cores, the chat starts in the plain frosted-glass look
+             (the same look Firefox/iOS and the slow-device guard 'goLite' already use) instead of the SVG water backdrop-filter.
+       Why:  the SVG water backdrop-filter is a heavy paint effect; weak devices get the lighter look from the start instead of after the guard notices slow frames. (Gain only emulated, not measured on a real phone.)
+       Revert: delete every line from this START comment to the END comment below. Nothing else depends on it
+             ('calm', reduced-motion, slider, animations and the rest of the chatbot are untouched). */
+    var lowHw = !!((navigator.deviceMemory && navigator.deviceMemory <= 2) || (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 2));
+    if (lowHw) WATER = false;
+    /* LOW-END DEVICE OPTIMIZATION — END (chatbot: no SVG water backdrop on weak devices) */
     var waterMove = WATER && !calm && !!(wsvg && wsvg.pauseAnimations);
     if (calm) root.classList.add('calm');
     if (WATER) { root.classList.add('water'); try { if (wsvg.pauseAnimations) wsvg.pauseAnimations(); } catch (e) {} }
@@ -4705,6 +4809,13 @@ function lite(){try{return sessionStorage.getItem('ara_lite')==='1'}catch(e){ret
 var water=!(/iPhone|iPad|iPod|CriOS|FxiOS|EdgiOS|Firefox/.test(ua)||!/Chrome[/]|Chromium[/]/.test(ua)||!(W.CSS&&CSS.supports&&CSS.supports('backdrop-filter','blur(1px)'))||lite());
 if(water)d.setAttribute('data-title-water','on');
 var calm=(W.matchMedia&&W.matchMedia('(prefers-reduced-motion: reduce)').matches)||(navigator.deviceMemory&&navigator.deviceMemory<=2)||(navigator.hardwareConcurrency&&navigator.hardwareConcurrency<=2);
+/* LOW-END DEVICE OPTIMIZATION — START (title-bar glass: no SVG water backdrop on weak devices)
+   What: on devices reporting <=2 GB memory or <=2 CPU cores the title bar keeps the plain blur glass (data-title-water stays off).
+   Why:  same reason as the chatbot block. Currently dormant because the html element has data-title-design=classic.
+   Revert: delete every line from this START comment to the END comment below. */
+var lowHw=!!((navigator.deviceMemory&&navigator.deviceMemory<=2)||(navigator.hardwareConcurrency&&navigator.hardwareConcurrency<=2));
+if(lowHw){water=false;d.removeAttribute('data-title-water');}
+/* LOW-END DEVICE OPTIMIZATION — END (title-bar glass: no SVG water backdrop on weak devices) */
 function run(on){try{on?s.unpauseAnimations():s.pauseAnimations()}catch(e){}if(on)d.setAttribute('data-title-fx','run');else d.removeAttribute('data-title-fx')}
 run(false);if(calm||!s.pauseAnimations)return;
 var q=0;
@@ -4715,6 +4826,138 @@ W.addEventListener('scroll',sched,{passive:true});
 document.addEventListener('visibilitychange',sched);
 if(W.MutationObserver)new MutationObserver(sched).observe(d,{attributes:true,attributeFilter:['class']});
 sched()})();
+</script>
+<script id="ara-step3-modal-a11y">
+/* Step 3 / #2: modal focus handling (additive; delete this block + the role/aria attributes on the 4 dialogs to revert).
+   Watches the existing 'open' class on the overlays, so the current open/close/order logic is untouched.
+   - moves focus into the top-most open layer, traps Tab inside it, makes the page behind it inert
+   - when every layer is closed, gives focus back to the element that opened the first one */
+(function(){
+  try{
+    if(!('MutationObserver' in window)) return;
+    var ids=['avatarModalOverlay','orderFormOverlay','orderChoiceOverlay','productModalOverlay']; /* top-most first */
+    var overlays=ids.map(function(i){return document.getElementById(i);}).filter(Boolean);
+    if(!overlays.length) return;
+    var main=document.getElementById('main'),bg=[];
+    var h=document.querySelector('header'),f=document.querySelector('footer');
+    if(h)bg.push(h); if(f)bg.push(f);
+    if(main) Array.prototype.forEach.call(main.children,function(c){if(c.tagName==='SECTION')bg.push(c);});
+    var FOC='a[href],button:not([disabled]),input:not([disabled]):not([type="hidden"]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])';
+    var opener=null,wasOpen=false,lastTop=null;
+    function isOpen(o){return o.classList.contains('open');}
+    function topLayer(){for(var i=0;i<overlays.length;i++){if(isOpen(overlays[i]))return overlays[i];}return null;}
+    function focusables(root){
+      return Array.prototype.filter.call(root.querySelectorAll(FOC),function(el){
+        return !el.closest('[hidden],[inert]') && el.getClientRects().length>0;
+      });
+    }
+    function setInert(el,on){if(on)el.setAttribute('inert','');else el.removeAttribute('inert');}
+    function sync(){
+      var t=topLayer();
+      if(t){
+        if(!wasOpen){opener=document.activeElement;if(!opener||opener===document.body||opener===document.documentElement)opener=null;}
+        bg.forEach(function(el){setInert(el,true);});
+        overlays.forEach(function(o){setInert(o,isOpen(o)&&o!==t);});
+        if(t!==lastTop||!t.contains(document.activeElement)){
+          /* wait for the overlay's visibility transition to begin; focus() fails on a still-hidden element */
+          var want=t;
+          setTimeout(function(){
+            if(topLayer()!==want||want.contains(document.activeElement))return;
+            var list=focusables(want),target=list[0]||want.querySelector('[role="dialog"]')||want;
+            try{target.focus({preventScroll:true});}catch(e){}
+          },60);
+        }
+      }else if(wasOpen){
+        bg.forEach(function(el){setInert(el,false);});
+        overlays.forEach(function(o){setInert(o,false);});
+        if(opener&&document.documentElement.contains(opener)){try{opener.focus({preventScroll:true});}catch(e){}}
+        opener=null;
+      }
+      wasOpen=!!t;lastTop=t;
+    }
+    var mo=new MutationObserver(sync);
+    overlays.forEach(function(o){mo.observe(o,{attributes:true,attributeFilter:['class']});});
+    document.addEventListener('keydown',function(e){
+      if(e.key==='Escape'){
+        /* the existing Escape handlers share a lock that swallows the product-modal close; close it directly */
+        var tl=topLayer();
+        if(tl&&tl.id==='productModalOverlay'&&typeof closeAllOrderLayers==='function'){try{closeAllOrderLayers();}catch(x){}}
+        return;
+      }
+      if(e.key!=='Tab')return;
+      var t=topLayer();if(!t)return;
+      var list=focusables(t);
+      if(!list.length){e.preventDefault();return;}
+      var first=list[0],last=list[list.length-1],a=document.activeElement;
+      if(!t.contains(a)){e.preventDefault();first.focus();}
+      else if(e.shiftKey&&a===first){e.preventDefault();last.focus();}
+      else if(!e.shiftKey&&a===last){e.preventDefault();first.focus();}
+    },true);
+  }catch(err){}
+})();
+</script>
+<script id="ara-step3-misc-a11y">
+/* Step 3 / #6, #7, #9: small accessibility additions (additive; delete this block to revert the JS part). */
+(function(){
+  try{
+    /* #6 slider: pause auto-slide while a mouse hovers it or keyboard focus is inside it; aria-current on dots */
+    if(typeof carousel!=='undefined'&&carousel&&carousel.grid){
+      var hoverHold=false,focusHold=false;
+      var origResume=carousel.resumeAutoSlide;
+      carousel.resumeAutoSlide=function(){if(hoverHold||focusHold)return;return origResume.apply(this,arguments);};
+      var areas=[carousel.grid,carousel.dotsContainer].filter(Boolean);
+      function hold(){return hoverHold||focusHold;}
+      function update(){if(hold())carousel.pauseAutoSlide();else carousel.resumeAutoSlide();}
+      areas.forEach(function(a){
+        a.addEventListener('pointerenter',function(e){if(e.pointerType==='mouse'){hoverHold=true;update();}});
+        a.addEventListener('pointerleave',function(e){if(e.pointerType==='mouse'){hoverHold=false;update();}});
+        a.addEventListener('focusin',function(e){var k=false;try{k=e.target.matches(':focus-visible');}catch(x){}if(k){focusHold=true;update();}});
+        a.addEventListener('focusout',function(e){if(!e.relatedTarget||!areas.some(function(r){return r.contains(e.relatedTarget);})){focusHold=false;update();}});
+      });
+      var origDots=carousel.updateDots;
+      function markDots(){carousel.dots.forEach(function(d,i){if(i===carousel.currentIndex)d.setAttribute('aria-current','true');else d.removeAttribute('aria-current');});}
+      carousel.updateDots=function(){origDots.apply(this,arguments);markDots();};
+      markDots();
+      if(carousel.dotsContainer&&!carousel.dotsContainer.getAttribute('role')){carousel.dotsContainer.setAttribute('role','group');carousel.dotsContainer.setAttribute('aria-label','Choose a review');}
+    }
+    /* #7 avatars: open the photo with Enter / Space too */
+    document.querySelectorAll('.review-card .avatar[onclick]').forEach(function(img){
+      img.setAttribute('role','button');img.setAttribute('tabindex','0');
+      img.setAttribute('aria-label','View photo: '+(img.getAttribute('alt')||''));
+    });
+    document.addEventListener('keydown',function(e){
+      var el=e.target;
+      if((e.key==='Enter'||e.key===' ')&&el&&el.classList&&el.classList.contains('avatar')&&el.getAttribute('role')==='button'){e.preventDefault();el.click();}
+    });
+    /* #9 team toggles: unique names + aria-expanded that follows the existing .open class */
+    document.querySelectorAll('.team-member').forEach(function(m){
+      var btn=m.querySelector('.team-toggle'),det=m.querySelector('.team-details'),nm=m.querySelector('.team-header h3');
+      if(!btn||!det)return;
+      var label='Toggle details'+(nm?': '+nm.textContent.trim():'');
+      btn.setAttribute('aria-label',label);
+      function s(){btn.setAttribute('aria-expanded',det.classList.contains('open')?'true':'false');}
+      s();
+      new MutationObserver(s).observe(det,{attributes:true,attributeFilter:['class']});
+    });
+    /* #9 product Order buttons: say which product */
+    document.querySelectorAll('.product .order').forEach(function(b){
+      var h=b.closest('.product');h=h&&h.querySelector('h3');
+      if(h&&!b.getAttribute('aria-label'))b.setAttribute('aria-label','Order '+h.textContent.trim());
+    });
+  }catch(err){}
+})();
+</script>
+<script id="ara-step5-offscreen">
+/* Step 5/C: pause the endless dot-pulse and social-button loops while they are off-screen (they resume the moment they come back). Delete this block + the .ara-offscreen CSS rule to revert. */
+(function(){
+  if(!('IntersectionObserver' in window)) return;
+  var t=document.querySelectorAll('.choco-help-dot,.socials');
+  if(!t.length) return;
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){e.target.classList.toggle('ara-offscreen',!e.isIntersecting);});
+  },{rootMargin:'120px 0px'});
+  for(var i=0;i<t.length;i++) io.observe(t[i]);
+})();
 </script>
 </body>
 </html>
